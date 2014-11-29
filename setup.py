@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2009 Google Inc.
 #
@@ -111,5 +111,5 @@ library may also be used with any Atom Publishing Protocol service (AtomPub).
       'gdata.youtube', 
       ],
     package_dir = {'gdata':'src/gdata', 'atom':'src/atom'},
-    install_requires=required
+    requires=required
 )
