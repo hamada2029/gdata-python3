@@ -27,48 +27,48 @@ class UrlTest(unittest.TestCase):
 
   def testParseUrl(self):
     url = atom.url.parse_url('http://www.google.com/calendar/feeds')
-    self.assert_(url.protocol == 'http')
-    self.assert_(url.port is None)
-    self.assert_(url.host == 'www.google.com')
-    self.assert_(url.path == '/calendar/feeds')
-    self.assert_(url.params == {})
+    self.assertTrue(url.protocol == 'http')
+    self.assertTrue(url.port is None)
+    self.assertTrue(url.host == 'www.google.com')
+    self.assertTrue(url.path == '/calendar/feeds')
+    self.assertTrue(url.params == {})
 
     url = atom.url.parse_url('http://example.com:6091/calendar/feeds')
-    self.assert_(url.protocol == 'http')
-    self.assert_(url.host == 'example.com')
-    self.assert_(url.port == '6091')
-    self.assert_(url.path == '/calendar/feeds')
-    self.assert_(url.params == {})
+    self.assertTrue(url.protocol == 'http')
+    self.assertTrue(url.host == 'example.com')
+    self.assertTrue(url.port == '6091')
+    self.assertTrue(url.path == '/calendar/feeds')
+    self.assertTrue(url.params == {})
     
     url = atom.url.parse_url('/calendar/feeds?foo=bar')
-    self.assert_(url.protocol is None)
-    self.assert_(url.host is None)
-    self.assert_(url.path == '/calendar/feeds')
-    self.assert_(len(url.params.keys()) == 1)
-    self.assert_('foo' in url.params)
-    self.assert_(url.params['foo'] == 'bar')
+    self.assertTrue(url.protocol is None)
+    self.assertTrue(url.host is None)
+    self.assertTrue(url.path == '/calendar/feeds')
+    self.assertTrue(len(list(url.params.keys())) == 1)
+    self.assertTrue('foo' in url.params)
+    self.assertTrue(url.params['foo'] == 'bar')
     
     url = atom.url.parse_url('/calendar/feeds?my+foo=bar%3Dx')
-    self.assert_(len(url.params.keys()) == 1)
-    self.assert_('my foo' in url.params)
-    self.assert_(url.params['my foo'] == 'bar=x')
+    self.assertTrue(len(list(url.params.keys())) == 1)
+    self.assertTrue('my foo' in url.params)
+    self.assertTrue(url.params['my foo'] == 'bar=x')
    
   def testUrlToString(self):
     url = atom.url.Url(port=80)
     url.host = 'example.com'
-    self.assert_(str(url), '//example.com:80')
+    self.assertTrue(str(url), '//example.com:80')
 
     url = atom.url.Url(protocol='http', host='example.com', path='/feed')
     url.params['has spaces'] = 'sneaky=values?&!'
-    self.assert_(url.to_string() == (
+    self.assertTrue(url.to_string() == (
         'http://example.com/feed?has+spaces=sneaky%3Dvalues%3F%26%21'))
 
   def testGetRequestUri(self):
     url = atom.url.Url(protocol='http', host='example.com', path='/feed')
     url.params['has spaces'] = 'sneaky=values?&!'
-    self.assert_(url.get_request_uri() == (
+    self.assertTrue(url.get_request_uri() == (
         '/feed?has+spaces=sneaky%3Dvalues%3F%26%21'))
-    self.assert_(url.get_param_string() == (
+    self.assertTrue(url.get_param_string() == (
         'has+spaces=sneaky%3Dvalues%3F%26%21'))
 
   def testComparistons(self):
@@ -76,16 +76,16 @@ class UrlTest(unittest.TestCase):
                         params={'x':'1', 'y':'2'})
     url2 = atom.url.Url(host='example.com', port=80, path='/feed', 
                         params={'y':'2', 'x':'1'})
-    self.assertEquals(url1, url2)
+    self.assertEqual(url1, url2)
     url3 = atom.url.Url(host='example.com', port=81, path='/feed', 
                         params={'x':'1', 'y':'2'})
-    self.assert_(url1 != url3)
-    self.assert_(url2 != url3)
+    self.assertTrue(url1 != url3)
+    self.assertTrue(url2 != url3)
     url4 = atom.url.Url(protocol='ftp', host='example.com', path='/feed',
                         params={'x':'1', 'y':'2'})
-    self.assert_(url1 != url4)
-    self.assert_(url2 != url4)
-    self.assert_(url3 != url4)
+    self.assertTrue(url1 != url4)
+    self.assertTrue(url2 != url4)
+    self.assertTrue(url3 != url4)
 
 
 def suite():

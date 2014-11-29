@@ -101,26 +101,26 @@ class MultidomainProvisioningClientTest(unittest.TestCase):
         '51eea05d46317fadd5cad6787a8f562be90b4446', 'true',
         hash_function='SHA-1')
 
-    self.assert_(isinstance(new_entry,
+    self.assertTrue(isinstance(new_entry,
         gdata.apps.multidomain.data.UserEntry))
-    self.assertEquals(new_entry.first_name, 'Elizabeth')
-    self.assertEquals(new_entry.last_name, 'Smith')
-    self.assertEquals(new_entry.email, email)
-    self.assertEquals(new_entry.password,
+    self.assertEqual(new_entry.first_name, 'Elizabeth')
+    self.assertEqual(new_entry.last_name, 'Smith')
+    self.assertEqual(new_entry.email, email)
+    self.assertEqual(new_entry.password,
         '51eea05d46317fadd5cad6787a8f562be90b4446')
-    self.assertEquals(new_entry.is_admin, 'true')
+    self.assertEqual(new_entry.is_admin, 'true')
 
     fetched_entry = self.client.RetrieveUser(email=email)
-    self.assertEquals(fetched_entry.first_name, 'Elizabeth')
-    self.assertEquals(fetched_entry.last_name, 'Smith')
-    self.assertEquals(fetched_entry.email, email)
-    self.assertEquals(fetched_entry.is_admin, 'true')
+    self.assertEqual(fetched_entry.first_name, 'Elizabeth')
+    self.assertEqual(fetched_entry.last_name, 'Smith')
+    self.assertEqual(fetched_entry.email, email)
+    self.assertEqual(fetched_entry.is_admin, 'true')
 
     new_entry.first_name = 'Joe'
     new_entry.last_name = 'Brown'
     updated_entry = self.client.UpdateUser(
         email=email, user_entry=new_entry)
-    self.assert_(isinstance(updated_entry,
+    self.assertTrue(isinstance(updated_entry,
         gdata.apps.multidomain.data.UserEntry))
     self.assertEqual(updated_entry.first_name, 'Joe')
     self.assertEqual(updated_entry.last_name, 'Brown')
@@ -128,25 +128,25 @@ class MultidomainProvisioningClientTest(unittest.TestCase):
     new_email = 'renamed_user%s@%s' % (rnd_number, self.client.domain)
     renamed_entry = self.client.RenameUser(
         old_email=email, new_email=new_email)
-    self.assert_(isinstance(renamed_entry,
+    self.assertTrue(isinstance(renamed_entry,
         gdata.apps.multidomain.data.UserRenameRequest))
     self.assertEqual(renamed_entry.new_email, new_email)
 
     new_alias = self.client.CreateAlias(new_email, alias)
-    self.assert_(isinstance(new_alias,
+    self.assertTrue(isinstance(new_alias,
         gdata.apps.multidomain.data.AliasEntry))
-    self.assertEquals(new_alias.user_email, new_email)
-    self.assertEquals(new_alias.alias_email, alias)
+    self.assertEqual(new_alias.user_email, new_email)
+    self.assertEqual(new_alias.alias_email, alias)
 
     fetched_alias = self.client.RetrieveAlias(alias)
-    self.assertEquals(fetched_alias.user_email, new_email)
-    self.assertEquals(fetched_alias.alias_email, alias)
+    self.assertEqual(fetched_alias.user_email, new_email)
+    self.assertEqual(fetched_alias.alias_email, alias)
 
     fetched_aliases = self.client.RetrieveAllUserAliases(new_email)
-    self.assertEquals(fetched_aliases.entry[0].user_email, new_email)
-    self.assertEquals(fetched_aliases.entry[0].alias_email, email)
-    self.assertEquals(fetched_aliases.entry[1].user_email, new_email)
-    self.assertEquals(fetched_aliases.entry[1].alias_email, alias)
+    self.assertEqual(fetched_aliases.entry[0].user_email, new_email)
+    self.assertEqual(fetched_aliases.entry[0].alias_email, email)
+    self.assertEqual(fetched_aliases.entry[1].user_email, new_email)
+    self.assertEqual(fetched_aliases.entry[1].alias_email, alias)
 
     self.client.DeleteAlias(alias)
     self.client.DeleteUser(new_email)

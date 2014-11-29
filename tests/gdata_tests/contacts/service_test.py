@@ -19,7 +19,7 @@ __author__ = 'api.jscudder (Jeff Scudder)'
 import getpass
 import re
 import unittest
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import atom
 import gdata.contacts.service
 import gdata.test_config as conf
@@ -43,10 +43,10 @@ class ContactsServiceTest(unittest.TestCase):
       return
     conf.configure_service_cache(self.gd_client, 'testGetContactsFeed')
     feed = self.gd_client.GetContactsFeed()
-    self.assert_(isinstance(feed, gdata.contacts.ContactsFeed))
+    self.assertTrue(isinstance(feed, gdata.contacts.ContactsFeed))
 
   def testDefaultContactList(self):
-    self.assertEquals('default', self.gd_client.contact_list)
+    self.assertEqual('default', self.gd_client.contact_list)
 
   def testCustomContactList(self):
     if not conf.options.get_value('runlive') == 'true':
@@ -55,11 +55,11 @@ class ContactsServiceTest(unittest.TestCase):
 
     self.gd_client.contact_list = conf.options.get_value('username')
     feed = self.gd_client.GetContactsFeed()
-    self.assert_(isinstance(feed, gdata.contacts.ContactsFeed))
+    self.assertTrue(isinstance(feed, gdata.contacts.ContactsFeed))
 
   def testGetFeedUriDefault(self):
     self.gd_client.contact_list = 'domain.com'
-    self.assertEquals('/m8/feeds/contacts/domain.com/full',
+    self.assertEqual('/m8/feeds/contacts/domain.com/full',
                       self.gd_client.GetFeedUri())
 
   def testGetFeedUriCustom(self):
@@ -67,7 +67,7 @@ class ContactsServiceTest(unittest.TestCase):
                                     contact_list='example.com',
                                     projection='base/batch',
                                     scheme='https')
-    self.assertEquals(
+    self.assertEqual(
         'https://www.google.com/m8/feeds/groups/example.com/base/batch', uri)
 
   def testCreateUpdateDeleteContactAndUpdatePhoto(self):
@@ -94,25 +94,25 @@ class ContactsServiceTest(unittest.TestCase):
     entry = self.gd_client.CreateContact(new_entry)
 
     # Generate and parse the XML for the new entry.
-    self.assertEquals(entry.title.text, new_entry.title.text)
-    self.assertEquals(entry.content.text, 'Test Notes')
-    self.assertEquals(len(entry.email), 1)
-    self.assertEquals(entry.email[0].rel, new_entry.email[0].rel)
-    self.assertEquals(entry.email[0].address, 'liz@gmail.com')
-    self.assertEquals(len(entry.phone_number), 1)
-    self.assertEquals(entry.phone_number[0].rel,
+    self.assertEqual(entry.title.text, new_entry.title.text)
+    self.assertEqual(entry.content.text, 'Test Notes')
+    self.assertEqual(len(entry.email), 1)
+    self.assertEqual(entry.email[0].rel, new_entry.email[0].rel)
+    self.assertEqual(entry.email[0].address, 'liz@gmail.com')
+    self.assertEqual(len(entry.phone_number), 1)
+    self.assertEqual(entry.phone_number[0].rel,
         new_entry.phone_number[0].rel)
-    self.assertEquals(entry.phone_number[0].text, '(206)555-1212')
-    self.assertEquals(entry.organization.org_name.text, 'TestCo.')
+    self.assertEqual(entry.phone_number[0].text, '(206)555-1212')
+    self.assertEqual(entry.organization.org_name.text, 'TestCo.')
 
     # Edit the entry.
     entry.phone_number[0].text = '(555)555-1212'
     updated = self.gd_client.UpdateContact(entry.GetEditLink().href, entry)
-    self.assertEquals(updated.content.text, 'Test Notes')
-    self.assertEquals(len(updated.phone_number), 1)
-    self.assertEquals(updated.phone_number[0].rel,
+    self.assertEqual(updated.content.text, 'Test Notes')
+    self.assertEqual(len(updated.phone_number), 1)
+    self.assertEqual(updated.phone_number[0].rel,
         entry.phone_number[0].rel)
-    self.assertEquals(updated.phone_number[0].text, '(555)555-1212')
+    self.assertEqual(updated.phone_number[0].text, '(555)555-1212')
 
     # Change the contact's photo.
     updated_photo = self.gd_client.ChangePhoto(
@@ -121,11 +121,11 @@ class ContactsServiceTest(unittest.TestCase):
 
     # Refetch the contact so that it has the new photo link
     updated = self.gd_client.GetContact(updated.GetSelfLink().href)
-    self.assert_(updated.GetPhotoLink() is not None)
+    self.assertTrue(updated.GetPhotoLink() is not None)
 
     # Fetch the photo data.
     hosted_image = self.gd_client.GetPhoto(updated)
-    self.assert_(hosted_image is not None)
+    self.assertTrue(hosted_image is not None)
 
     # Delete the entry.
     self.gd_client.DeleteContact(updated.GetEditLink().href)
@@ -160,17 +160,17 @@ class ContactsServiceTest(unittest.TestCase):
     batch_result = self.gd_client.ExecuteBatch(batch_request,
                                                default_batch_url)
     
-    self.assertEquals(len(batch_result.entry), 1)
-    self.assertEquals(batch_result.entry[0].title.text,
+    self.assertEqual(len(batch_result.entry), 1)
+    self.assertEqual(batch_result.entry[0].title.text,
                       random_contact_title)
-    self.assertEquals(batch_result.entry[0].batch_operation.type,
+    self.assertEqual(batch_result.entry[0].batch_operation.type,
                       gdata.BATCH_INSERT)
-    self.assertEquals(batch_result.entry[0].batch_status.code,
+    self.assertEqual(batch_result.entry[0].batch_status.code,
                       '201')
     expected_batch_url = re.compile('default').sub(
-        urllib.quote(self.gd_client.email),
+        urllib.parse.quote(self.gd_client.email),
         gdata.contacts.service.DEFAULT_BATCH_URL)
-    self.failUnless(batch_result.GetBatchLink().href,
+    self.assertTrue(batch_result.GetBatchLink().href,
                     expected_batch_url)
     
     # Create a batch request to delete the newly created entry.
@@ -180,18 +180,18 @@ class ContactsServiceTest(unittest.TestCase):
     batch_delete_result = self.gd_client.ExecuteBatch(
         batch_delete_request,
         batch_result.GetBatchLink().href)
-    self.assertEquals(len(batch_delete_result.entry), 1)
-    self.assertEquals(batch_delete_result.entry[0].batch_operation.type,
+    self.assertEqual(len(batch_delete_result.entry), 1)
+    self.assertEqual(batch_delete_result.entry[0].batch_operation.type,
                       gdata.BATCH_DELETE)
-    self.assertEquals(batch_result.entry[0].batch_status.code,
+    self.assertEqual(batch_result.entry[0].batch_status.code,
                       '201')
 
   def testCleanUriNeedsCleaning(self):
-    self.assertEquals('/relative/uri', self.gd_client._CleanUri(
+    self.assertEqual('/relative/uri', self.gd_client._CleanUri(
         'http://www.google.com/relative/uri'))
 
   def testCleanUriDoesNotNeedCleaning(self):
-    self.assertEquals('/relative/uri', self.gd_client._CleanUri(
+    self.assertEqual('/relative/uri', self.gd_client._CleanUri(
         '/relative/uri'))
 
 
@@ -199,21 +199,21 @@ class ContactsQueryTest(unittest.TestCase):
 
   def testConvertToStringDefaultFeed(self):
     query = gdata.contacts.service.ContactsQuery()
-    self.assertEquals(str(query), '/m8/feeds/contacts/default/full')
+    self.assertEqual(str(query), '/m8/feeds/contacts/default/full')
     query.max_results = 10
-    self.assertEquals(query.ToUri(),
+    self.assertEqual(query.ToUri(),
         '/m8/feeds/contacts/default/full?max-results=10')
 
   def testConvertToStringCustomFeed(self):
     query = gdata.contacts.service.ContactsQuery('/custom/feed/uri')
-    self.assertEquals(str(query), '/custom/feed/uri')
+    self.assertEqual(str(query), '/custom/feed/uri')
     query.max_results = '10'
-    self.assertEquals(query.ToUri(), '/custom/feed/uri?max-results=10')
+    self.assertEqual(query.ToUri(), '/custom/feed/uri?max-results=10')
 
   def testGroupQueryParameter(self):
     query = gdata.contacts.service.ContactsQuery()
     query.group = 'http://google.com/m8/feeds/groups/liz%40gmail.com/full/270f'
-    self.assertEquals(query.ToUri(), '/m8/feeds/contacts/default/full'
+    self.assertEqual(query.ToUri(), '/m8/feeds/contacts/default/full'
         '?group=http%3A%2F%2Fgoogle.com%2Fm8%2Ffeeds%2Fgroups'
         '%2Fliz%2540gmail.com%2Ffull%2F270f')
 
@@ -236,14 +236,14 @@ class ContactsGroupsTest(unittest.TestCase):
     test_group = gdata.contacts.GroupEntry(title=atom.Title(
         text='test group py'))
     new_group = self.gd_client.CreateGroup(test_group)
-    self.assert_(isinstance(new_group, gdata.contacts.GroupEntry))
-    self.assertEquals(new_group.title.text, 'test group py')
+    self.assertTrue(isinstance(new_group, gdata.contacts.GroupEntry))
+    self.assertEqual(new_group.title.text, 'test group py')
 
     # Change the group's title
     new_group.title.text = 'new group name py'
     updated_group = self.gd_client.UpdateGroup(new_group.GetEditLink().href, 
         new_group)
-    self.assertEquals(updated_group.title.text, new_group.title.text)
+    self.assertEqual(updated_group.title.text, new_group.title.text)
 
     # Remove the group
     self.gd_client.DeleteGroup(updated_group.GetEditLink().href)

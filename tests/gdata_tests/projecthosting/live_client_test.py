@@ -99,14 +99,14 @@ class ProjectHostingClientTest(unittest.TestCase):
     self.assertEqual(updates.status.text, 'Accepted')
 
     # Make sure it got all our label change requests.
-    self.assertEquals(len(updates.label), 2)
-    self.assertEquals(updates.label[0].text, '-label0')
-    self.assertEquals(updates.label[1].text, 'label1')
+    self.assertEqual(len(updates.label), 2)
+    self.assertEqual(updates.label[0].text, '-label0')
+    self.assertEqual(updates.label[1].text, 'label1')
 
     # Be sure it saw our CC change. We can't check the specific values (yet)
     # because ccUpdate and ownerUpdate responses are mungled.
-    self.assertEquals(len(updates.ccUpdate), 1)
-    self.assert_(updates.ownerUpdate.text)
+    self.assertEqual(len(updates.ccUpdate), 1)
+    self.assertTrue(updates.ownerUpdate.text)
 
   def test_get_issues(self):
     if not conf.options.get_value('runlive') == 'true':
@@ -126,11 +126,11 @@ class ProjectHostingClientTest(unittest.TestCase):
     feed = self.client.get_issues(self.project_name, query=query)
 
     # Make sure we at least find the entry we created with that label.
-    self.assert_(len(feed.entry) > 0)
+    self.assertTrue(len(feed.entry) > 0)
 
     for issue in feed.entry:
       label_texts = [label.text for label in issue.label]
-      self.assert_('label0' in label_texts, 'Issue does not have label label0')
+      self.assertTrue('label0' in label_texts, 'Issue does not have label label0')
 
   def test_get_comments(self):
     if not conf.options.get_value('runlive') == 'true':
@@ -212,14 +212,14 @@ class ProjectHostingDocExamplesTest(unittest.TestCase):
     """Retrieve all the issues in a project."""
     feed = client.get_issues(project_name)
     for issue in feed.entry:
-      self.assert_(issue.title.text is not None)
+      self.assertTrue(issue.title.text is not None)
 
   def retrieving_issues_using_query_parameters(self, client, project_name):
     """Retrieve a set of issues in a project."""
     query = gdata.projecthosting.client.Query(label='label0', max_results=1000)
     feed = client.get_issues(project_name, query=query)
     for issue in feed.entry:
-      self.assert_(issue.title.text is not None)
+      self.assertTrue(issue.title.text is not None)
     return feed
 
   def retrieving_issues_comments_for_an_issue(self, client, project_name,
@@ -227,7 +227,7 @@ class ProjectHostingDocExamplesTest(unittest.TestCase):
     """Retrieve all issue comments for an issue."""
     comments_feed = client.get_comments(project_name, issue_id)
     for comment in comments_feed.entry:
-      self.assert_(comment.content is not None)
+      self.assertTrue(comment.content is not None)
     return comments_feed
 
   def modifying_an_issue_or_creating_issue_comments(self, client, project_name,

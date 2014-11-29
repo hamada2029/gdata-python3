@@ -50,7 +50,7 @@ VIDEO_EXAMPLE = (
     'US","Maps"],"thumbnail": {"default": "http://i.ytimg.com/vi/hYB0mn5zh'
     '2c/default.jpg","hqDefault": "http://i.ytimg.com/vi/hYB0mn5zh2c/hqdef'
     'ault.jpg"},"player": {"default": "http://www.youtube.com/watch?v'
-    '\u003dhYB0mn5zh2c"},"content": {"1": "rtsp://v5.cache3.c.youtube.com/'
+    '\\u003dhYB0mn5zh2c"},"content": {"1": "rtsp://v5.cache3.c.youtube.com/'
     'CiILENy.../0/0/0/video.3gp","5": "http://www.youtube.com/v/hYB0mn5zh2'
     'c?f...","6": "rtsp://v1.cache1.c.youtube.com/CiILENy.../0/0/0/video.3'
     'gp"},"duration": 2840,"rating": 4.63,"ratingCount": 68,"viewCount": 2'
@@ -64,7 +64,7 @@ class JsoncConversionTest(unittest.TestCase):
     json = ('{"media$group":{"media$credit":[{"$t":"GoogleDevelopers", '
             '"role":"uploader", "scheme":"urn:youtube"}]}}')
     jsonc_obj = gdata.core.parse_json(json)
-    self.assert_(isinstance(jsonc_obj, gdata.core.Jsonc))
+    self.assertTrue(isinstance(jsonc_obj, gdata.core.Jsonc))
     raw = gdata.core._convert_to_object(jsonc_obj)
     self.assertEqual(raw['media$group']['media$credit'][0]['$t'],
                      'GoogleDevelopers')
@@ -91,10 +91,10 @@ class JsoncConversionTest(unittest.TestCase):
   def test_pretty_print(self):
     x = gdata.core.Jsonc(x=1, y=2, z=3)
     pretty = gdata.core.prettify_jsonc(x)
-    self.assert_(isinstance(pretty, (str, unicode)))
+    self.assertTrue(isinstance(pretty, str))
     
     pretty = gdata.core.prettify_jsonc(x, 4)
-    self.assert_(isinstance(pretty, (str, unicode)))
+    self.assertTrue(isinstance(pretty, str))
 
 
 class MemberNameConversionTest(unittest.TestCase):
@@ -126,17 +126,17 @@ class JsoncObjectTest(unittest.TestCase):
 
   def check_video_json(self, x):
     """Validates a JsoncObject similar to VIDEO_EXAMPLE."""
-    self.assert_(isinstance(x._dict, dict))
-    self.assert_(isinstance(x.data, gdata.core.Jsonc))
-    self.assert_(isinstance(x._dict['data'], gdata.core.Jsonc))
-    self.assert_(isinstance(x.data._dict, dict))
-    self.assert_(isinstance(x._dict['data']._dict, dict))
-    self.assert_(isinstance(x._dict['apiVersion'], (str, unicode)))
-    self.assert_(isinstance(x.api_version, (str, unicode)))
-    self.assert_(isinstance(x.data._dict['items'], list))
-    self.assert_(isinstance(x.data.items[0]._dict['commentCount'],
-                            (int, long)))
-    self.assert_(isinstance(x.data.items[0].favorite_count, (int, long)))
+    self.assertTrue(isinstance(x._dict, dict))
+    self.assertTrue(isinstance(x.data, gdata.core.Jsonc))
+    self.assertTrue(isinstance(x._dict['data'], gdata.core.Jsonc))
+    self.assertTrue(isinstance(x.data._dict, dict))
+    self.assertTrue(isinstance(x._dict['data']._dict, dict))
+    self.assertTrue(isinstance(x._dict['apiVersion'], str))
+    self.assertTrue(isinstance(x.api_version, str))
+    self.assertTrue(isinstance(x.data._dict['items'], list))
+    self.assertTrue(isinstance(x.data.items[0]._dict['commentCount'],
+                            int))
+    self.assertTrue(isinstance(x.data.items[0].favorite_count, int))
     self.assertEqual(x.data.total_items, 800)
     self.assertEqual(x._dict['data']._dict['totalItems'], 800)
     self.assertEqual(x.data.items[0].view_count, 220101)
@@ -154,21 +154,21 @@ class JsoncObjectTest(unittest.TestCase):
 
   def test_convert_to_jsonc(self):
     x = gdata.core._convert_to_jsonc(1)
-    self.assert_(isinstance(x, (int, long)))
+    self.assertTrue(isinstance(x, int))
     self.assertEqual(x, 1)
 
     x = gdata.core._convert_to_jsonc([1, 'a'])
-    self.assert_(isinstance(x, list))
+    self.assertTrue(isinstance(x, list))
     self.assertEqual(len(x), 2)
-    self.assert_(isinstance(x[0], (int, long)))
+    self.assertTrue(isinstance(x[0], int))
     self.assertEqual(x[0], 1)
-    self.assert_(isinstance(x[1], (str, unicode)))
+    self.assertTrue(isinstance(x[1], str))
     self.assertEqual(x[1], 'a')
 
     x = gdata.core._convert_to_jsonc([{'b': 1}, 'a'])
-    self.assert_(isinstance(x, list))
+    self.assertTrue(isinstance(x, list))
     self.assertEqual(len(x), 2)
-    self.assert_(isinstance(x[0], gdata.core.Jsonc))
+    self.assertTrue(isinstance(x[0], gdata.core.Jsonc))
     self.assertEqual(x[0].b, 1)
 
   def test_non_json_members(self):
@@ -186,24 +186,24 @@ class JsoncObjectTest(unittest.TestCase):
     self.assertEqual(gdata.core.jsonc_to_string(x).find('B'), -1)
     # We should find a 'b' becuse we don't consider names of dict keys in
     # the constructor as aliases to camelCase names.
-    self.assert_(not gdata.core.jsonc_to_string(x).find('b') == -1)
+    self.assertTrue(not gdata.core.jsonc_to_string(x).find('b') == -1)
 
   def test_constructor(self):
     x = gdata.core.Jsonc(a=[{'x': 'y'}, 2])
-    self.assert_(isinstance(x, gdata.core.Jsonc))
-    self.assert_(isinstance(x.a, list))
-    self.assert_(isinstance(x.a[0], gdata.core.Jsonc))
+    self.assertTrue(isinstance(x, gdata.core.Jsonc))
+    self.assertTrue(isinstance(x.a, list))
+    self.assertTrue(isinstance(x.a[0], gdata.core.Jsonc))
     self.assertEqual(x.a[0].x, 'y')
     self.assertEqual(x.a[1], 2)
 
   def test_read_json(self):
     x = gdata.core.parse_json(PLAYLIST_EXAMPLE)
-    self.assert_(isinstance(x._dict, dict))
+    self.assertTrue(isinstance(x._dict, dict))
     self.assertEqual(x._dict['apiVersion'], '2.0')
     self.assertEqual(x.api_version, '2.0')
 
     x = gdata.core.parse_json(VIDEO_EXAMPLE)
-    self.assert_(isinstance(x._dict, dict))
+    self.assertTrue(isinstance(x._dict, dict))
     self.assertEqual(x._dict['apiVersion'], '2.0')
     self.assertEqual(x.api_version, '2.0')
 
@@ -311,21 +311,21 @@ class JsoncObjectTest(unittest.TestCase):
     x = build_test_object()
 
     # Check for expected members using different access patterns.
-    self.assert_(isinstance(x._dict, dict))
-    self.assert_(isinstance(x['data'], gdata.core.Jsonc))
-    self.assert_(isinstance(x._dict['data'], gdata.core.Jsonc))
-    self.assert_(isinstance(x['data']._dict, dict))
-    self.assert_(isinstance(x._dict['data']._dict, dict))
-    self.assert_(isinstance(x['apiVersion'], (str, unicode)))
+    self.assertTrue(isinstance(x._dict, dict))
+    self.assertTrue(isinstance(x['data'], gdata.core.Jsonc))
+    self.assertTrue(isinstance(x._dict['data'], gdata.core.Jsonc))
+    self.assertTrue(isinstance(x['data']._dict, dict))
+    self.assertTrue(isinstance(x._dict['data']._dict, dict))
+    self.assertTrue(isinstance(x['apiVersion'], str))
     try:
       x['api_version']
       self.fail('Should not find using Python style name')
     except KeyError:
       pass
-    self.assert_(isinstance(x.data['items'], list))
-    self.assert_(isinstance(x.data['items'][0]._dict['commentCount'],
-                            (int, long)))
-    self.assert_(isinstance(x['data'].items[0]['favoriteCount'], (int, long)))
+    self.assertTrue(isinstance(x.data['items'], list))
+    self.assertTrue(isinstance(x.data['items'][0]._dict['commentCount'],
+                            int))
+    self.assertTrue(isinstance(x['data'].items[0]['favoriteCount'], int))
     self.assertEqual(x['data'].total_items, 800)
     self.assertEqual(x['data']['totalItems'], 800)
     self.assertEqual(x.data['items'][0]['viewCount'], 220101)

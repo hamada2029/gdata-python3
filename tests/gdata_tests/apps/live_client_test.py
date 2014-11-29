@@ -90,38 +90,38 @@ class AppsClientTest(unittest.TestCase):
         user_name=username, given_name='Elizabeth', family_name='Smith',
         password='password', admin='true')
 
-    self.assert_(isinstance(new_entry,
+    self.assertTrue(isinstance(new_entry,
         gdata.apps.data.UserEntry))
-    self.assertEquals(new_entry.name.given_name, 'Elizabeth')
-    self.assertEquals(new_entry.name.family_name, 'Smith')
-    self.assertEquals(new_entry.login.user_name, username)
-    self.assertEquals(new_entry.login.admin, 'true')
+    self.assertEqual(new_entry.name.given_name, 'Elizabeth')
+    self.assertEqual(new_entry.name.family_name, 'Smith')
+    self.assertEqual(new_entry.login.user_name, username)
+    self.assertEqual(new_entry.login.admin, 'true')
 
     fetched_entry = self.client.RetrieveUser(user_name=username)
-    self.assertEquals(fetched_entry.name.given_name, 'Elizabeth')
-    self.assertEquals(fetched_entry.name.family_name, 'Smith')
-    self.assertEquals(fetched_entry.login.user_name, username)
-    self.assertEquals(fetched_entry.login.admin, 'true')
+    self.assertEqual(fetched_entry.name.given_name, 'Elizabeth')
+    self.assertEqual(fetched_entry.name.family_name, 'Smith')
+    self.assertEqual(fetched_entry.login.user_name, username)
+    self.assertEqual(fetched_entry.login.admin, 'true')
 
     new_entry.name.given_name = 'Joe'
     new_entry.name.family_name = 'Brown'
     updated_entry = self.client.UpdateUser(
         user_name=username, user_entry=new_entry)
-    self.assert_(isinstance(updated_entry,
+    self.assertTrue(isinstance(updated_entry,
         gdata.apps.data.UserEntry))
     self.assertEqual(updated_entry.name.given_name, 'Joe')
     self.assertEqual(updated_entry.name.family_name, 'Brown')
 
     new_nickname = self.client.CreateNickname(user_name=username,
         nickname=nickname)
-    self.assert_(isinstance(new_nickname,
+    self.assertTrue(isinstance(new_nickname,
         gdata.apps.data.NicknameEntry))
-    self.assertEquals(new_nickname.login.user_name, username)
-    self.assertEquals(new_nickname.nickname.name, nickname)
+    self.assertEqual(new_nickname.login.user_name, username)
+    self.assertEqual(new_nickname.nickname.name, nickname)
 
     fetched_alias = self.client.RetrieveNickname(nickname)
-    self.assertEquals(fetched_alias.login.user_name, username)
-    self.assertEquals(fetched_alias.nickname.name, nickname)
+    self.assertEqual(fetched_alias.login.user_name, username)
+    self.assertEqual(fetched_alias.nickname.name, nickname)
 
     self.client.DeleteNickname(nickname)
     self.client.DeleteUser(username)

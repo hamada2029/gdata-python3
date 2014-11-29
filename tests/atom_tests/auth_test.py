@@ -31,9 +31,9 @@ class BasicAuthTest(unittest.TestCase):
   def test_modify_request(self):
     http_request = atom.http_core.HttpRequest()
     credentials = atom.auth.BasicAuth('Aladdin', 'open sesame')
-    self.assert_(credentials.basic_cookie == 'QWxhZGRpbjpvcGVuIHNlc2FtZQ==')
+    self.assertTrue(credentials.basic_cookie == 'QWxhZGRpbjpvcGVuIHNlc2FtZQ==')
     credentials.modify_request(http_request)
-    self.assert_(http_request.headers[
+    self.assertTrue(http_request.headers[
         'Authorization'] == 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==')
 
 

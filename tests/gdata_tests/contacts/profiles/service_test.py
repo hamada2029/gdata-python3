@@ -53,34 +53,34 @@ class ProfilesServiceTest(unittest.TestCase):
 
   def testGetFeedUriCustom(self):
     uri = self.gd_client.GetFeedUri(kind='profiles', scheme='https')
-    self.assertEquals(
+    self.assertEqual(
         'https://%s/m8/feeds/profiles/domain/%s/full' % (server, domain), uri)
 
   def testGetProfileFeedUriDefault(self):
     self.gd_client.contact_list = 'domain.com'
-    self.assertEquals('/m8/feeds/profiles/domain/domain.com/full',
+    self.assertEqual('/m8/feeds/profiles/domain/domain.com/full',
                       self.gd_client.GetFeedUri('profiles'))
 
   def testCleanUriNeedsCleaning(self):
-    self.assertEquals('/relative/uri', self.gd_client._CleanUri(
+    self.assertEqual('/relative/uri', self.gd_client._CleanUri(
         'http://www.google.com/relative/uri'))
 
   def testCleanUriDoesNotNeedCleaning(self):
-    self.assertEquals('/relative/uri', self.gd_client._CleanUri(
+    self.assertEqual('/relative/uri', self.gd_client._CleanUri(
         '/relative/uri'))
 
   def testGetProfilesFeed(self):
     feed = self.gd_client.GetProfilesFeed()
-    self.assert_(isinstance(feed, gdata.contacts.ProfilesFeed))
+    self.assertTrue(isinstance(feed, gdata.contacts.ProfilesFeed))
 
   def testGetProfile(self):
     # Gets an existing entry
     feed = self.gd_client.GetProfilesFeed()
     entry = feed.entry[0]
-    self.assert_(isinstance(entry, gdata.contacts.ProfileEntry))
-    self.assertEquals(entry.title.text,
+    self.assertTrue(isinstance(entry, gdata.contacts.ProfileEntry))
+    self.assertEqual(entry.title.text,
                       self.gd_client.GetProfile(entry.id.text).title.text)
-    self.assertEquals(entry._children,
+    self.assertEqual(entry._children,
                       self.gd_client.GetProfile(entry.id.text)._children)
 
   def testUpdateProfile(self):
@@ -89,7 +89,7 @@ class ProfilesServiceTest(unittest.TestCase):
     original_occupation = entry.occupation
     entry.occupation = gdata.contacts.Occupation(text='TEST')
     updated = self.gd_client.UpdateProfile(entry.GetEditLink().href, entry)
-    self.assertEquals('TEST', updated.occupation.text)
+    self.assertEqual('TEST', updated.occupation.text)
     updated.occupation = original_occupation
     self.gd_client.UpdateProfile(updated.GetEditLink().href, updated)
 
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 
   try:
     opts, args = getopt.getopt(sys.argv[1:], '', ['user=', 'pw=', 'domain='])
-  except getopt.error, msg:
+  except getopt.error as msg:
     print ('Profiles Tests\nNOTE: Please run these tests only with a test '
            'account. The tests may delete or update your data.\n'
            '\nUsage: service_test.py --email=EMAIL '
@@ -115,15 +115,15 @@ if __name__ == '__main__':
       domain = arg
 
   while not email:
-    print 'NOTE: Please run these tests only with a test account.'
-    email = raw_input('Please enter your email: ')
+    print('NOTE: Please run these tests only with a test account.')
+    email = input('Please enter your email: ')
   while not password:
     password = getpass.getpass('Please enter password: ')
     if not password:
-      print 'Password cannot be blank.'
+      print('Password cannot be blank.')
   while not domain:
-    print 'NOTE: Please run these tests only with a test account.'
-    domain = raw_input('Please enter your Apps domain: ')
+    print('NOTE: Please run these tests only with a test account.')
+    domain = input('Please enter your Apps domain: ')
 
   suite = unittest.makeSuite(ProfilesServiceTest)
   unittest.TextTestRunner().run(suite)

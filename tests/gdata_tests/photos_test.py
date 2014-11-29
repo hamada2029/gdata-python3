@@ -29,12 +29,12 @@ class AlbumFeedTest(unittest.TestCase):
     self.album_feed = gdata.photos.AlbumFeedFromString(test_data.ALBUM_FEED)
 
   def testCorrectXmlParsing(self):
-    self.assert_(self.album_feed.id.text == 'http://picasaweb.google.com/data/feed/api/user/sample.user/albumid/1')
-    self.assert_(self.album_feed.gphoto_id.text == '1')
-    self.assert_(len(self.album_feed.entry) == 4)
+    self.assertTrue(self.album_feed.id.text == 'http://picasaweb.google.com/data/feed/api/user/sample.user/albumid/1')
+    self.assertTrue(self.album_feed.gphoto_id.text == '1')
+    self.assertTrue(len(self.album_feed.entry) == 4)
     for entry in self.album_feed.entry:
       if entry.id.text == 'http://picasaweb.google.com/data/entry/api/user/sample.user/albumid/1/photoid/2':
-        self.assert_(entry.summary.text == 'Blue')
+        self.assertTrue(entry.summary.text == 'Blue')
 
 
 class PhotoFeedTest(unittest.TestCase):
@@ -45,12 +45,12 @@ class PhotoFeedTest(unittest.TestCase):
   def testCorrectXmlParsing(self):
     for entry in self.feed.entry:
       if entry.id.text == 'http://picasaweb.google.com/data/entry/api/user/sample.user/albumid/1/photoid/2':
-        self.assert_(entry.gphoto_id.text == '2')
-        self.assert_(entry.albumid.text == '1')
-        self.assert_(entry.exif.flash.text == 'true')
-        self.assert_(entry.media.title.type == 'plain')
-        self.assert_(entry.media.title.text == 'Aqua Blue.jpg')
-        self.assert_(len(entry.media.thumbnail) == 3)
+        self.assertTrue(entry.gphoto_id.text == '2')
+        self.assertTrue(entry.albumid.text == '1')
+        self.assertTrue(entry.exif.flash.text == 'true')
+        self.assertTrue(entry.media.title.type == 'plain')
+        self.assertTrue(entry.media.title.text == 'Aqua Blue.jpg')
+        self.assertTrue(len(entry.media.thumbnail) == 3)
 
 
 
@@ -62,7 +62,7 @@ class AnyFeedTest(unittest.TestCase):
   def testEntryTypeConversion(self):
     for entry in self.feed.entry:
       if entry.id.text == 'http://picasaweb.google.com/data/feed/api/user/sample.user/albumid/':
-        self.assert_(isinstance(entry, gdata.photos.PhotoEntry))
+        self.assertTrue(isinstance(entry, gdata.photos.PhotoEntry))
 
 
 if __name__ == '__main__':

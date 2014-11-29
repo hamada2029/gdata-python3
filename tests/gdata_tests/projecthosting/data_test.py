@@ -111,20 +111,20 @@ class CommentEntryTest(unittest.TestCase):
 
     updates = entry.updates
 
-    self.assertEquals(updates.summary.text, 'This is updated issue summary')
-    self.assertEquals(updates.status.text, 'Started')
-    self.assertEquals(updates.ownerUpdate.text, 'charlotte.lucas')
+    self.assertEqual(updates.summary.text, 'This is updated issue summary')
+    self.assertEqual(updates.status.text, 'Started')
+    self.assertEqual(updates.ownerUpdate.text, 'charlotte.lucas')
 
-    self.assertEquals(len(updates.label), 5)
-    self.assertEquals(updates.label[0].text, '-Type-Defect')
-    self.assertEquals(updates.label[1].text, 'Type-Enhancement')
-    self.assertEquals(updates.label[2].text, '-Milestone-2009')
-    self.assertEquals(updates.label[3].text, '-Priority-Medium')
-    self.assertEquals(updates.label[4].text, 'Priority-Low')
+    self.assertEqual(len(updates.label), 5)
+    self.assertEqual(updates.label[0].text, '-Type-Defect')
+    self.assertEqual(updates.label[1].text, 'Type-Enhancement')
+    self.assertEqual(updates.label[2].text, '-Milestone-2009')
+    self.assertEqual(updates.label[3].text, '-Priority-Medium')
+    self.assertEqual(updates.label[4].text, 'Priority-Low')
 
-    self.assertEquals(len(updates.ccUpdate), 2)
-    self.assertEquals(updates.ccUpdate[0].text, '-fitzwilliam.darcy')
-    self.assertEquals(updates.ccUpdate[1].text, 'marialucas@domain.com')
+    self.assertEqual(len(updates.ccUpdate), 2)
+    self.assertEqual(updates.ccUpdate[0].text, '-fitzwilliam.darcy')
+    self.assertEqual(updates.ccUpdate[1].text, 'marialucas@domain.com')
 
 
 class IssueEntryTest(unittest.TestCase):
@@ -132,24 +132,24 @@ class IssueEntryTest(unittest.TestCase):
   def testParsing(self):
     entry = atom.core.parse(ISSUE_ENTRY, gdata.projecthosting.data.IssueEntry)
 
-    self.assertEquals(entry.owner.uri.text, '/u/charlotte.lucas/')
+    self.assertEqual(entry.owner.uri.text, '/u/charlotte.lucas/')
     self.assertEqual(entry.owner.username.text, 'charlotte.lucas')
 
-    self.assertEquals(len(entry.cc), 2)
+    self.assertEqual(len(entry.cc), 2)
     cc_0 = entry.cc[0]
-    self.assertEquals(cc_0.uri.text, '/u/@UBhTQl1UARRAVga7/')
-    self.assertEquals(cc_0.username.text, 'mar...@domain.com')
+    self.assertEqual(cc_0.uri.text, '/u/@UBhTQl1UARRAVga7/')
+    self.assertEqual(cc_0.username.text, 'mar...@domain.com')
     cc_1 = entry.cc[1]
-    self.assertEquals(cc_1.uri.text, '/u/fitzwilliam.darcy/')
-    self.assertEquals(cc_1.username.text, 'fitzwilliam.darcy')
+    self.assertEqual(cc_1.uri.text, '/u/fitzwilliam.darcy/')
+    self.assertEqual(cc_1.username.text, 'fitzwilliam.darcy')
 
-    self.assertEquals(len(entry.label), 2)
-    self.assertEquals(entry.label[0].text, 'Type-Enhancement')
-    self.assertEquals(entry.label[1].text, 'Priority-Low')
+    self.assertEqual(len(entry.label), 2)
+    self.assertEqual(entry.label[0].text, 'Type-Enhancement')
+    self.assertEqual(entry.label[1].text, 'Priority-Low')
 
-    self.assertEquals(entry.stars.text, '0')
-    self.assertEquals(entry.state.text, 'open')
-    self.assertEquals(entry.status.text, 'Started')
+    self.assertEqual(entry.stars.text, '0')
+    self.assertEqual(entry.state.text, 'open')
+    self.assertEqual(entry.status.text, 'Started')
 
 
 class DataClassSanityTest(unittest.TestCase):

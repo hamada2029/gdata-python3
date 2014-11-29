@@ -102,37 +102,37 @@ class GroupsProvisioningClientTest(unittest.TestCase):
         group_id=group_id, group_name=group_name, description='Test Group',
         email_permission='Domain')
 
-    self.assert_(isinstance(new_group,
+    self.assertTrue(isinstance(new_group,
         gdata.apps.groups.data.GroupEntry))
-    self.assertEquals(new_group.group_id, group_id)
-    self.assertEquals(new_group.group_name, group_name)
-    self.assertEquals(new_group.description, 'Test Group')
-    self.assertEquals(new_group.email_permission, 'Domain')
+    self.assertEqual(new_group.group_id, group_id)
+    self.assertEqual(new_group.group_name, group_name)
+    self.assertEqual(new_group.description, 'Test Group')
+    self.assertEqual(new_group.email_permission, 'Domain')
 
     fetched_entry = self.client.RetrieveGroup(group_id=group_id)
-    self.assert_(isinstance(fetched_entry,
+    self.assertTrue(isinstance(fetched_entry,
         gdata.apps.groups.data.GroupEntry))
-    self.assertEquals(new_group.group_id, group_id)
-    self.assertEquals(new_group.group_name, group_name)
-    self.assertEquals(new_group.description, 'Test Group')
-    self.assertEquals(new_group.email_permission, 'Domain')
+    self.assertEqual(new_group.group_id, group_id)
+    self.assertEqual(new_group.group_name, group_name)
+    self.assertEqual(new_group.description, 'Test Group')
+    self.assertEqual(new_group.email_permission, 'Domain')
 
     new_group.group_name = 'updated name'
     updated_group = self.client.UpdateGroup(
         group_id=group_id, group_entry=new_group)
-    self.assert_(isinstance(updated_group,
+    self.assertTrue(isinstance(updated_group,
         gdata.apps.groups.data.GroupEntry))
     self.assertEqual(updated_group.group_name, 'updated name')
 
     new_member = self.client.AddMemberToGroup(group_id=group_id,
         member_id=member_id)
-    self.assert_(isinstance(new_member,
+    self.assertTrue(isinstance(new_member,
         gdata.apps.groups.data.GroupMemberEntry))
-    self.assertEquals(new_member.member_id, member_id)
+    self.assertEqual(new_member.member_id, member_id)
 
     fetched_member = self.client.RetrieveGroupMember(group_id=group_id,
         member_id=member_id)
-    self.assertEquals(fetched_member.member_id, member_id)
+    self.assertEqual(fetched_member.member_id, member_id)
 
     self.client.RemoveMemberFromGroup(group_id=group_id,
         member_id=member_id)

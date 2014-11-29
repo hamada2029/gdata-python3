@@ -36,9 +36,9 @@ class MockHttpClientUnitTest(unittest.TestCase):
 
     response = self.client.request('GET', 'http://example.com/hooray')
 
-    self.assertEquals(len(self.client.recordings), 1)
-    self.assertEquals(response.status, 200)
-    self.assertEquals(response.read(), 'Hooray!')
+    self.assertEqual(len(self.client.recordings), 1)
+    self.assertEqual(response.status, 200)
+    self.assertEqual(response.read(), 'Hooray!')
 
   def testRecordResponse(self):
     # Turn on pass-through record mode.
@@ -46,8 +46,8 @@ class MockHttpClientUnitTest(unittest.TestCase):
     live_response = self.client.request('GET', 
         'http://www.google.com/base/feeds/snippets?max-results=1')
     live_response_body = live_response.read()
-    self.assertEquals(live_response.status, 200)
-    self.assertEquals(live_response_body.startswith('<?xml'), True)
+    self.assertEqual(live_response.status, 200)
+    self.assertEqual(live_response_body.startswith('<?xml'), True)
 
     # Requery for the now canned data.
     self.client.real_client = None
@@ -56,8 +56,8 @@ class MockHttpClientUnitTest(unittest.TestCase):
 
     # The canned response should be the stored response.
     canned_response_body = canned_response.read()
-    self.assertEquals(canned_response.status, 200)
-    self.assertEquals(canned_response_body, live_response_body)
+    self.assertEqual(canned_response.status, 200)
+    self.assertEqual(canned_response_body, live_response_body)
 
   def testUnrecordedRequest(self):
     try:

@@ -36,37 +36,37 @@ class GroupEntryTest(unittest.TestCase):
         gdata.apps.groups.data.GroupFeed, 2)
 
   def testGroupEntryFromString(self):
-    self.assert_(isinstance(self.entry,
+    self.assertTrue(isinstance(self.entry,
         gdata.apps.groups.data.GroupEntry))
-    self.assertEquals(self.entry.group_id, 'trial@srkapps.com')
-    self.assertEquals(self.entry.group_name, 'Trial')
-    self.assertEquals(self.entry.email_permission, 'Domain')
-    self.assertEquals(self.entry.description, 'For try')
+    self.assertEqual(self.entry.group_id, 'trial@srkapps.com')
+    self.assertEqual(self.entry.group_name, 'Trial')
+    self.assertEqual(self.entry.email_permission, 'Domain')
+    self.assertEqual(self.entry.description, 'For try')
 
   def testGroupFeedFromString(self):
-    self.assertEquals(len(self.feed.entry), 2)
-    self.assert_(isinstance(self.feed,
+    self.assertEqual(len(self.feed.entry), 2)
+    self.assertTrue(isinstance(self.feed,
         gdata.apps.groups.data.GroupFeed))
-    self.assert_(isinstance(self.feed.entry[0],
+    self.assertTrue(isinstance(self.feed.entry[0],
         gdata.apps.groups.data.GroupEntry))
-    self.assert_(isinstance(self.feed.entry[1],
+    self.assertTrue(isinstance(self.feed.entry[1],
         gdata.apps.groups.data.GroupEntry))
-    self.assertEquals(
+    self.assertEqual(
         self.feed.entry[0].find_edit_link(),
         ('http://apps-apis.google.com/a/feeds/group/2.0/srkapps.com/'
          'firstgroup%40srkapps.com'))
-    self.assertEquals(self.feed.entry[0].group_id, 'firstgroup@srkapps.com')
-    self.assertEquals(self.feed.entry[0].group_name, 'FirstGroup')
-    self.assertEquals(self.feed.entry[0].email_permission, 'Domain')
-    self.assertEquals(self.feed.entry[0].description, 'First group')
-    self.assertEquals(
+    self.assertEqual(self.feed.entry[0].group_id, 'firstgroup@srkapps.com')
+    self.assertEqual(self.feed.entry[0].group_name, 'FirstGroup')
+    self.assertEqual(self.feed.entry[0].email_permission, 'Domain')
+    self.assertEqual(self.feed.entry[0].description, 'First group')
+    self.assertEqual(
         self.feed.entry[1].find_edit_link(),
         ('http://apps-apis.google.com/a/feeds/group/2.0/srkapps.com/'
          'trial%40srkapps.com'))
-    self.assertEquals(self.feed.entry[1].group_id, 'trial@srkapps.com')
-    self.assertEquals(self.feed.entry[1].group_name, 'Trial')
-    self.assertEquals(self.feed.entry[1].email_permission, 'Domain')
-    self.assertEquals(self.feed.entry[1].description, 'For try')
+    self.assertEqual(self.feed.entry[1].group_id, 'trial@srkapps.com')
+    self.assertEqual(self.feed.entry[1].group_name, 'Trial')
+    self.assertEqual(self.feed.entry[1].email_permission, 'Domain')
+    self.assertEqual(self.feed.entry[1].description, 'For try')
 
 
 class GroupMemberEntryTest(unittest.TestCase):
@@ -78,35 +78,35 @@ class GroupMemberEntryTest(unittest.TestCase):
         gdata.apps.groups.data.GroupMemberFeed)
 
   def testGroupMemberEntryFromString(self):
-    self.assert_(isinstance(self.entry,
+    self.assertTrue(isinstance(self.entry,
         gdata.apps.groups.data.GroupMemberEntry))
-    self.assertEquals(self.entry.member_id, 'abcd12310@srkapps.com')
-    self.assertEquals(self.entry.member_type, 'User')
-    self.assertEquals(self.entry.direct_member, 'true')
+    self.assertEqual(self.entry.member_id, 'abcd12310@srkapps.com')
+    self.assertEqual(self.entry.member_type, 'User')
+    self.assertEqual(self.entry.direct_member, 'true')
 
   def testGroupMemberFeedFromString(self):
-    self.assertEquals(len(self.feed.entry), 2)
-    self.assert_(isinstance(self.feed,
+    self.assertEqual(len(self.feed.entry), 2)
+    self.assertTrue(isinstance(self.feed,
         gdata.apps.groups.data.GroupMemberFeed))
-    self.assert_(isinstance(self.feed.entry[0],
+    self.assertTrue(isinstance(self.feed.entry[0],
         gdata.apps.groups.data.GroupMemberEntry))
-    self.assert_(isinstance(self.feed.entry[1],
+    self.assertTrue(isinstance(self.feed.entry[1],
         gdata.apps.groups.data.GroupMemberEntry))
-    self.assertEquals(
+    self.assertEqual(
         self.feed.entry[0].find_edit_link(),
         ('http://apps-apis.google.com/a/feeds/group/2.0/srkapps.com/trial/'
          'member/abcd12310%40srkapps.com'))
-    self.assertEquals(self.feed.entry[0].member_id, 'abcd12310@srkapps.com')
-    self.assertEquals(self.feed.entry[0].member_type, 'User')
-    self.assertEquals(self.feed.entry[0].direct_member, 'true')
-    self.assertEquals(
+    self.assertEqual(self.feed.entry[0].member_id, 'abcd12310@srkapps.com')
+    self.assertEqual(self.feed.entry[0].member_type, 'User')
+    self.assertEqual(self.feed.entry[0].direct_member, 'true')
+    self.assertEqual(
         self.feed.entry[1].find_edit_link(),
         ('http://apps-apis.google.com/a/feeds/group/2.0/srkapps.com/trial/'
          'member/neha.technocrat%40srkapps.com'))
-    self.assertEquals(self.feed.entry[1].member_id,
+    self.assertEqual(self.feed.entry[1].member_id,
         'neha.technocrat@srkapps.com')
-    self.assertEquals(self.feed.entry[1].member_type, 'User')
-    self.assertEquals(self.feed.entry[1].direct_member, 'true')
+    self.assertEqual(self.feed.entry[1].member_type, 'User')
+    self.assertEqual(self.feed.entry[1].direct_member, 'true')
 
 
 def suite():

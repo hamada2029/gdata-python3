@@ -62,7 +62,7 @@ class AnalyticsClientTest(unittest.TestCase):
     })
 
     feed = self.client.GetAccountFeed(account_query)
-    self.assert_(feed.entry is not None)
+    self.assertTrue(feed.entry is not None)
 
     properties = [
         'ga:accountId',
@@ -76,7 +76,7 @@ class AnalyticsClientTest(unittest.TestCase):
     entry = feed.entry[0]
     for prop in properties:
       property = entry.GetProperty(prop)
-      self.assertEquals(property.name, prop)
+      self.assertEqual(property.name, prop)
 
   def testDataFeed(self):
     """Tests if the Data Feed exists."""
@@ -98,10 +98,10 @@ class AnalyticsClientTest(unittest.TestCase):
     })
     feed = self.client.GetDataFeed(data_query)
 
-    self.assert_(feed.entry is not None)
-    self.assertEquals(feed.start_date.text, start_date)
-    self.assertEquals(feed.end_date.text, end_date)
-    self.assertEquals(feed.entry[0].GetMetric(metrics).name, metrics)
+    self.assertTrue(feed.entry is not None)
+    self.assertEqual(feed.start_date.text, start_date)
+    self.assertEqual(feed.end_date.text, end_date)
+    self.assertEqual(feed.entry[0].GetMetric(metrics).name, metrics)
 
   def testManagementFeed(self):
     """Tests of the Management Feed exists."""
@@ -113,7 +113,7 @@ class AnalyticsClientTest(unittest.TestCase):
     account_query = gdata.analytics.client.AccountQuery()
     feed = self.client.GetManagementFeed(account_query)
 
-    self.assert_(feed.entry is not None)
+    self.assertTrue(feed.entry is not None)
 
   def tearDown(self):
     """Closes client connection."""

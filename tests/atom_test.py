@@ -36,29 +36,29 @@ class AuthorTest(unittest.TestCase):
     self.author = atom.Author()
     
   def testEmptyAuthorShouldHaveEmptyExtensionsList(self):
-    self.assert_(isinstance(self.author.extension_elements, list))
-    self.assert_(len(self.author.extension_elements) == 0)
+    self.assertTrue(isinstance(self.author.extension_elements, list))
+    self.assertTrue(len(self.author.extension_elements) == 0)
     
   def testNormalAuthorShouldHaveNoExtensionElements(self):
     self.author.name = atom.Name(text='Jeff Scudder')
-    self.assert_(self.author.name.text == 'Jeff Scudder')
-    self.assert_(len(self.author.extension_elements) == 0)
+    self.assertTrue(self.author.name.text == 'Jeff Scudder')
+    self.assertTrue(len(self.author.extension_elements) == 0)
     new_author = atom.AuthorFromString(self.author.ToString())
-    self.assert_(len(self.author.extension_elements) == 0)
+    self.assertTrue(len(self.author.extension_elements) == 0)
     
     self.author.extension_elements.append(atom.ExtensionElement(
         'foo', text='bar'))
-    self.assert_(len(self.author.extension_elements) == 1)
-    self.assert_(self.author.name.text == 'Jeff Scudder')
+    self.assertTrue(len(self.author.extension_elements) == 1)
+    self.assertTrue(self.author.name.text == 'Jeff Scudder')
     new_author = atom.AuthorFromString(self.author.ToString())
-    self.assert_(len(self.author.extension_elements) == 1)
-    self.assert_(new_author.name.text == 'Jeff Scudder')
+    self.assertTrue(len(self.author.extension_elements) == 1)
+    self.assertTrue(new_author.name.text == 'Jeff Scudder')
 
   def testEmptyAuthorToAndFromStringShouldMatch(self):
     string_from_author = self.author.ToString()
     new_author = atom.AuthorFromString(string_from_author)
     string_from_new_author = new_author.ToString()
-    self.assert_(string_from_author == string_from_new_author)
+    self.assertTrue(string_from_author == string_from_new_author)
     
   def testAuthorWithNameToAndFromStringShouldMatch(self):
     self.author.name = atom.Name()
@@ -66,23 +66,23 @@ class AuthorTest(unittest.TestCase):
     string_from_author = self.author.ToString()
     new_author = atom.AuthorFromString(string_from_author)
     string_from_new_author = new_author.ToString()
-    self.assert_(string_from_author == string_from_new_author)
-    self.assert_(self.author.name.text == new_author.name.text)
+    self.assertTrue(string_from_author == string_from_new_author)
+    self.assertTrue(self.author.name.text == new_author.name.text)
   
   def testExtensionElements(self):
     self.author.extension_attributes['foo1'] = 'bar'
     self.author.extension_attributes['foo2'] = 'rab'
-    self.assert_(self.author.extension_attributes['foo1'] == 'bar')
-    self.assert_(self.author.extension_attributes['foo2'] == 'rab')
+    self.assertTrue(self.author.extension_attributes['foo1'] == 'bar')
+    self.assertTrue(self.author.extension_attributes['foo2'] == 'rab')
     new_author = atom.AuthorFromString(self.author.ToString())
-    self.assert_(new_author.extension_attributes['foo1'] == 'bar')
-    self.assert_(new_author.extension_attributes['foo2'] == 'rab')
+    self.assertTrue(new_author.extension_attributes['foo1'] == 'bar')
+    self.assertTrue(new_author.extension_attributes['foo2'] == 'rab')
     
   def testConvertFullAuthorToAndFromString(self):
     author = atom.AuthorFromString(test_data.TEST_AUTHOR)
-    self.assert_(author.name.text == 'John Doe')
-    self.assert_(author.email.text == 'johndoes@someemailadress.com')
-    self.assert_(author.uri.text == 'http://www.google.com')
+    self.assertTrue(author.name.text == 'John Doe')
+    self.assertTrue(author.email.text == 'johndoes@someemailadress.com')
+    self.assertTrue(author.uri.text == 'http://www.google.com')
     
     
 class EmailTest(unittest.TestCase):
@@ -93,8 +93,8 @@ class EmailTest(unittest.TestCase):
   def testEmailToAndFromString(self):
     self.email.text = 'This is a test'
     new_email = atom.EmailFromString(self.email.ToString())
-    self.assert_(self.email.text == new_email.text)
-    self.assert_(self.email.extension_elements == 
+    self.assertTrue(self.email.text == new_email.text)
+    self.assertTrue(self.email.extension_elements == 
         new_email.extension_elements)
     
   
@@ -107,20 +107,20 @@ class NameTest(unittest.TestCase):
     string_from_name = self.name.ToString()
     new_name = atom.NameFromString(string_from_name)
     string_from_new_name = new_name.ToString()
-    self.assert_(string_from_name == string_from_new_name)
+    self.assertTrue(string_from_name == string_from_new_name)
     
   def testText(self):
-    self.assert_(self.name.text is None)
+    self.assertTrue(self.name.text is None)
     self.name.text = 'Jeff Scudder'
-    self.assert_(self.name.text == 'Jeff Scudder')
+    self.assertTrue(self.name.text == 'Jeff Scudder')
     new_name = atom.NameFromString(self.name.ToString())
-    self.assert_(new_name.text == self.name.text)
+    self.assertTrue(new_name.text == self.name.text)
     
   def testExtensionElements(self):
     self.name.extension_attributes['foo'] = 'bar'
-    self.assert_(self.name.extension_attributes['foo'] == 'bar')
+    self.assertTrue(self.name.extension_attributes['foo'] == 'bar')
     new_name = atom.NameFromString(self.name.ToString())
-    self.assert_(new_name.extension_attributes['foo'] == 'bar')
+    self.assertTrue(new_name.extension_attributes['foo'] == 'bar')
     
     
 class ExtensionElementTest(unittest.TestCase):
@@ -133,34 +133,34 @@ class ExtensionElementTest(unittest.TestCase):
     
   def testEEParsesTreeCorrectly(self):
     deep_tree = atom.ExtensionElementFromString(test_data.EXTENSION_TREE)
-    self.assert_(deep_tree.tag == 'feed')
-    self.assert_(deep_tree.namespace == 'http://www.w3.org/2005/Atom')
-    self.assert_(deep_tree.children[0].tag == 'author')
-    self.assert_(deep_tree.children[0].namespace == 'http://www.google.com')
-    self.assert_(deep_tree.children[0].children[0].tag == 'name')
-    self.assert_(deep_tree.children[0].children[0].namespace == 
+    self.assertTrue(deep_tree.tag == 'feed')
+    self.assertTrue(deep_tree.namespace == 'http://www.w3.org/2005/Atom')
+    self.assertTrue(deep_tree.children[0].tag == 'author')
+    self.assertTrue(deep_tree.children[0].namespace == 'http://www.google.com')
+    self.assertTrue(deep_tree.children[0].children[0].tag == 'name')
+    self.assertTrue(deep_tree.children[0].children[0].namespace == 
         'http://www.google.com')
-    self.assert_(deep_tree.children[0].children[0].text.strip() == 'John Doe')
-    self.assert_(deep_tree.children[0].children[0].children[0].text.strip() ==
+    self.assertTrue(deep_tree.children[0].children[0].text.strip() == 'John Doe')
+    self.assertTrue(deep_tree.children[0].children[0].children[0].text.strip() ==
         'Bar')
     foo = deep_tree.children[0].children[0].children[0]
-    self.assert_(foo.tag == 'foo')
-    self.assert_(foo.namespace == 'http://www.google.com')
-    self.assert_(foo.attributes['up'] == 'down')
-    self.assert_(foo.attributes['yes'] == 'no')
-    self.assert_(foo.children == [])
+    self.assertTrue(foo.tag == 'foo')
+    self.assertTrue(foo.namespace == 'http://www.google.com')
+    self.assertTrue(foo.attributes['up'] == 'down')
+    self.assertTrue(foo.attributes['yes'] == 'no')
+    self.assertTrue(foo.children == [])
   
   def testEEToAndFromStringShouldMatch(self):
     string_from_ee = self.ee.ToString()
     new_ee = atom.ExtensionElementFromString(string_from_ee)
     string_from_new_ee = new_ee.ToString()
-    self.assert_(string_from_ee == string_from_new_ee)
+    self.assertTrue(string_from_ee == string_from_new_ee)
     
     deep_tree = atom.ExtensionElementFromString(test_data.EXTENSION_TREE)    
     string_from_deep_tree = deep_tree.ToString()
     new_deep_tree = atom.ExtensionElementFromString(string_from_deep_tree)
     string_from_new_deep_tree = new_deep_tree.ToString()
-    self.assert_(string_from_deep_tree == string_from_new_deep_tree)
+    self.assertTrue(string_from_deep_tree == string_from_new_deep_tree)
     
     
 class LinkTest(unittest.TestCase):
@@ -173,20 +173,20 @@ class LinkTest(unittest.TestCase):
     self.link.hreflang = 'english'
     self.link.type = 'text/html'
     self.link.extension_attributes['foo'] = 'bar'
-    self.assert_(self.link.href == 'test href')
-    self.assert_(self.link.hreflang == 'english')
-    self.assert_(self.link.type == 'text/html')
-    self.assert_(self.link.extension_attributes['foo'] == 'bar')
+    self.assertTrue(self.link.href == 'test href')
+    self.assertTrue(self.link.hreflang == 'english')
+    self.assertTrue(self.link.type == 'text/html')
+    self.assertTrue(self.link.extension_attributes['foo'] == 'bar')
     new_link = atom.LinkFromString(self.link.ToString())
-    self.assert_(self.link.href == new_link.href)
-    self.assert_(self.link.type == new_link.type)
-    self.assert_(self.link.hreflang == new_link.hreflang)
-    self.assert_(self.link.extension_attributes['foo'] == 
+    self.assertTrue(self.link.href == new_link.href)
+    self.assertTrue(self.link.type == new_link.type)
+    self.assertTrue(self.link.hreflang == new_link.hreflang)
+    self.assertTrue(self.link.extension_attributes['foo'] == 
         new_link.extension_attributes['foo'])
 
   def testLinkType(self):
     test_link = atom.Link(link_type='text/html')
-    self.assert_(test_link.type == 'text/html')
+    self.assertTrue(test_link.type == 'text/html')
 
 
 class GeneratorTest(unittest.TestCase):
@@ -198,13 +198,13 @@ class GeneratorTest(unittest.TestCase):
     self.generator.uri = 'www.google.com'
     self.generator.version = '1.0'
     self.generator.extension_attributes['foo'] = 'bar'
-    self.assert_(self.generator.uri == 'www.google.com')
-    self.assert_(self.generator.version == '1.0')
-    self.assert_(self.generator.extension_attributes['foo'] == 'bar')
+    self.assertTrue(self.generator.uri == 'www.google.com')
+    self.assertTrue(self.generator.version == '1.0')
+    self.assertTrue(self.generator.extension_attributes['foo'] == 'bar')
     new_generator = atom.GeneratorFromString(self.generator.ToString())
-    self.assert_(self.generator.uri == new_generator.uri)
-    self.assert_(self.generator.version == new_generator.version)
-    self.assert_(self.generator.extension_attributes['foo'] ==
+    self.assertTrue(self.generator.uri == new_generator.uri)
+    self.assertTrue(self.generator.version == new_generator.version)
+    self.assertTrue(self.generator.extension_attributes['foo'] ==
         new_generator.extension_attributes['foo'])
 
 
@@ -216,11 +216,11 @@ class TitleTest(unittest.TestCase):
   def testTitleToAndFromString(self):
     self.title.type = 'text'
     self.title.text = 'Less: &lt;'
-    self.assert_(self.title.type == 'text')
-    self.assert_(self.title.text == 'Less: &lt;')
+    self.assertTrue(self.title.type == 'text')
+    self.assertTrue(self.title.text == 'Less: &lt;')
     new_title = atom.TitleFromString(self.title.ToString())
-    self.assert_(self.title.type == new_title.type)
-    self.assert_(self.title.text == new_title.text)
+    self.assertTrue(self.title.type == new_title.type)
+    self.assertTrue(self.title.text == new_title.text)
 
 
 class SubtitleTest(unittest.TestCase):
@@ -231,11 +231,11 @@ class SubtitleTest(unittest.TestCase):
   def testTitleToAndFromString(self):
     self.subtitle.type = 'text'
     self.subtitle.text = 'sub & title'
-    self.assert_(self.subtitle.type == 'text')
-    self.assert_(self.subtitle.text == 'sub & title')
+    self.assertTrue(self.subtitle.type == 'text')
+    self.assertTrue(self.subtitle.text == 'sub & title')
     new_subtitle = atom.SubtitleFromString(self.subtitle.ToString())
-    self.assert_(self.subtitle.type == new_subtitle.type)
-    self.assert_(self.subtitle.text == new_subtitle.text)
+    self.assertTrue(self.subtitle.type == new_subtitle.type)
+    self.assertTrue(self.subtitle.text == new_subtitle.text)
 
 
 class SummaryTest(unittest.TestCase):
@@ -246,11 +246,11 @@ class SummaryTest(unittest.TestCase):
   def testTitleToAndFromString(self):
     self.summary.type = 'text'
     self.summary.text = 'Less: &lt;'
-    self.assert_(self.summary.type == 'text')
-    self.assert_(self.summary.text == 'Less: &lt;')
+    self.assertTrue(self.summary.type == 'text')
+    self.assertTrue(self.summary.text == 'Less: &lt;')
     new_summary = atom.SummaryFromString(self.summary.ToString())
-    self.assert_(self.summary.type == new_summary.type)
-    self.assert_(self.summary.text == new_summary.text)
+    self.assertTrue(self.summary.type == new_summary.type)
+    self.assertTrue(self.summary.text == new_summary.text)
 
 
 class CategoryTest(unittest.TestCase):
@@ -262,13 +262,13 @@ class CategoryTest(unittest.TestCase):
     self.category.term = 'x'
     self.category.scheme = 'y'
     self.category.label = 'z'
-    self.assert_(self.category.term == 'x')
-    self.assert_(self.category.scheme == 'y')
-    self.assert_(self.category.label == 'z')
+    self.assertTrue(self.category.term == 'x')
+    self.assertTrue(self.category.scheme == 'y')
+    self.assertTrue(self.category.label == 'z')
     new_category = atom.CategoryFromString(self.category.ToString())
-    self.assert_(self.category.term == new_category.term)
-    self.assert_(self.category.scheme == new_category.scheme)
-    self.assert_(self.category.label == new_category.label)
+    self.assertTrue(self.category.term == new_category.term)
+    self.assertTrue(self.category.scheme == new_category.scheme)
+    self.assertTrue(self.category.label == new_category.label)
 
 
 class ContributorTest(unittest.TestCase):
@@ -280,13 +280,13 @@ class ContributorTest(unittest.TestCase):
     self.contributor.name = atom.Name(text='J Scud')
     self.contributor.email = atom.Email(text='nobody@nowhere')
     self.contributor.uri = atom.Uri(text='http://www.google.com')
-    self.assert_(self.contributor.name.text == 'J Scud')
-    self.assert_(self.contributor.email.text == 'nobody@nowhere')
-    self.assert_(self.contributor.uri.text == 'http://www.google.com')
+    self.assertTrue(self.contributor.name.text == 'J Scud')
+    self.assertTrue(self.contributor.email.text == 'nobody@nowhere')
+    self.assertTrue(self.contributor.uri.text == 'http://www.google.com')
     new_contributor = atom.ContributorFromString(self.contributor.ToString())
-    self.assert_(self.contributor.name.text == new_contributor.name.text)
-    self.assert_(self.contributor.email.text == new_contributor.email.text)
-    self.assert_(self.contributor.uri.text == new_contributor.uri.text)
+    self.assertTrue(self.contributor.name.text == new_contributor.name.text)
+    self.assertTrue(self.contributor.email.text == new_contributor.email.text)
+    self.assertTrue(self.contributor.uri.text == new_contributor.uri.text)
 
 
 class IdTest(unittest.TestCase):
@@ -296,9 +296,9 @@ class IdTest(unittest.TestCase):
 
   def testIdToAndFromString(self):
     self.my_id.text = 'my nifty id'
-    self.assert_(self.my_id.text == 'my nifty id')
+    self.assertTrue(self.my_id.text == 'my nifty id')
     new_id = atom.IdFromString(self.my_id.ToString())
-    self.assert_(self.my_id.text == new_id.text)
+    self.assertTrue(self.my_id.text == new_id.text)
 
 
 class IconTest(unittest.TestCase):
@@ -308,9 +308,9 @@ class IconTest(unittest.TestCase):
 
   def testIconToAndFromString(self):
     self.icon.text = 'my picture'
-    self.assert_(self.icon.text == 'my picture')
+    self.assertTrue(self.icon.text == 'my picture')
     new_icon = atom.IconFromString(str(self.icon))
-    self.assert_(self.icon.text == new_icon.text)
+    self.assertTrue(self.icon.text == new_icon.text)
 
 
 class LogoTest(unittest.TestCase):
@@ -320,9 +320,9 @@ class LogoTest(unittest.TestCase):
 
   def testLogoToAndFromString(self):
     self.logo.text = 'my logo'
-    self.assert_(self.logo.text == 'my logo')
+    self.assertTrue(self.logo.text == 'my logo')
     new_logo = atom.LogoFromString(self.logo.ToString())
-    self.assert_(self.logo.text == new_logo.text)
+    self.assertTrue(self.logo.text == new_logo.text)
 
 
 class RightsTest(unittest.TestCase):
@@ -333,11 +333,11 @@ class RightsTest(unittest.TestCase):
   def testContributorToAndFromString(self):
     self.rights.text = 'you have the right to remain silent'
     self.rights.type = 'text'
-    self.assert_(self.rights.text == 'you have the right to remain silent')
-    self.assert_(self.rights.type == 'text')
+    self.assertTrue(self.rights.text == 'you have the right to remain silent')
+    self.assertTrue(self.rights.type == 'text')
     new_rights = atom.RightsFromString(self.rights.ToString())
-    self.assert_(self.rights.text == new_rights.text)
-    self.assert_(self.rights.type == new_rights.type)
+    self.assertTrue(self.rights.text == new_rights.text)
+    self.assertTrue(self.rights.type == new_rights.type)
 
 
 class UpdatedTest(unittest.TestCase):
@@ -347,9 +347,9 @@ class UpdatedTest(unittest.TestCase):
 
   def testUpdatedToAndFromString(self):
     self.updated.text = 'my time'
-    self.assert_(self.updated.text == 'my time')
+    self.assertTrue(self.updated.text == 'my time')
     new_updated = atom.UpdatedFromString(self.updated.ToString())
-    self.assert_(self.updated.text == new_updated.text)
+    self.assertTrue(self.updated.text == new_updated.text)
 
 
 class PublishedTest(unittest.TestCase):
@@ -359,9 +359,9 @@ class PublishedTest(unittest.TestCase):
 
   def testPublishedToAndFromString(self):
     self.published.text = 'pub time'
-    self.assert_(self.published.text == 'pub time')
+    self.assertTrue(self.published.text == 'pub time')
     new_published = atom.PublishedFromString(self.published.ToString())
-    self.assert_(self.published.text == new_published.text)
+    self.assertTrue(self.published.text == new_published.text)
 
 
 class FeedEntryParentTest(unittest.TestCase):
@@ -373,16 +373,16 @@ class FeedEntryParentTest(unittest.TestCase):
     copy = atom.FeedEntryParent()
  
     original.author.append(atom.Author(name=atom.Name(text='J Scud')))
-    self.assert_(original.author[0].name.text == 'J Scud')
-    self.assert_(copy.author == [])
+    self.assertTrue(original.author[0].name.text == 'J Scud')
+    self.assertTrue(copy.author == [])
 
     original.id = atom.Id(text='test id')
-    self.assert_(original.id.text == 'test id')
-    self.assert_(copy.id is None)
+    self.assertTrue(original.id.text == 'test id')
+    self.assertTrue(copy.id is None)
 
     copy._HarvestElementTree(original._ToElementTree())
-    self.assert_(original.author[0].name.text == copy.author[0].name.text)
-    self.assert_(original.id.text == copy.id.text)
+    self.assertTrue(original.author[0].name.text == copy.author[0].name.text)
+    self.assertTrue(original.id.text == copy.id.text)
 
 
 class EntryTest(unittest.TestCase):
@@ -391,28 +391,28 @@ class EntryTest(unittest.TestCase):
     entry = atom.Entry()
     entry.author.append(atom.Author(name=atom.Name(text='js')))
     entry.title = atom.Title(text='my test entry')
-    self.assert_(entry.author[0].name.text == 'js')
-    self.assert_(entry.title.text == 'my test entry')
+    self.assertTrue(entry.author[0].name.text == 'js')
+    self.assertTrue(entry.title.text == 'my test entry')
     new_entry = atom.EntryFromString(entry.ToString())
-    self.assert_(new_entry.author[0].name.text == 'js')
-    self.assert_(new_entry.title.text == 'my test entry')
+    self.assertTrue(new_entry.author[0].name.text == 'js')
+    self.assertTrue(new_entry.title.text == 'my test entry')
 
   def testEntryCorrectlyConvertsActualData(self):
     entry = atom.EntryFromString(test_data.XML_ENTRY_1)
-    self.assert_(entry.category[0].scheme == 
+    self.assertTrue(entry.category[0].scheme == 
         'http://base.google.com/categories/itemtypes')
-    self.assert_(entry.category[0].term == 'products')
-    self.assert_(entry.id.text == '    http://www.google.com/test/id/url   ')
-    self.assert_(entry.title.text == 'Testing 2000 series laptop')
-    self.assert_(entry.title.type == 'text')
-    self.assert_(entry.content.type == 'xhtml')
+    self.assertTrue(entry.category[0].term == 'products')
+    self.assertTrue(entry.id.text == '    http://www.google.com/test/id/url   ')
+    self.assertTrue(entry.title.text == 'Testing 2000 series laptop')
+    self.assertTrue(entry.title.type == 'text')
+    self.assertTrue(entry.content.type == 'xhtml')
     #TODO check all other values for the test entry
 
   def testAppControl(self):
     entry = atom.EntryFromString(test_data.TEST_BASE_ENTRY)
-    self.assertEquals(entry.control.draft.text, 'yes')
-    self.assertEquals(len(entry.control.extension_elements), 1)
-    self.assertEquals(entry.control.extension_elements[0].tag, 'disapproved')
+    self.assertEqual(entry.control.draft.text, 'yes')
+    self.assertEqual(len(entry.control.extension_elements), 1)
+    self.assertEqual(entry.control.extension_elements[0].tag, 'disapproved')
 
 
 class ControlTest(unittest.TestCase):
@@ -421,13 +421,13 @@ class ControlTest(unittest.TestCase):
     control = atom.Control()
     control.text = 'some text'
     control.draft = atom.Draft(text='yes')
-    self.assertEquals(control.draft.text, 'yes')
-    self.assertEquals(control.text, 'some text')
-    self.assertEquals(isinstance(control.draft, atom.Draft), True)
+    self.assertEqual(control.draft.text, 'yes')
+    self.assertEqual(control.text, 'some text')
+    self.assertEqual(isinstance(control.draft, atom.Draft), True)
     new_control = atom.ControlFromString(str(control))
-    self.assertEquals(control.draft.text, new_control.draft.text)
-    self.assertEquals(control.text, new_control.text)
-    self.assertEquals(isinstance(new_control.draft, atom.Draft), True)
+    self.assertEqual(control.draft.text, new_control.draft.text)
+    self.assertEqual(control.text, new_control.text)
+    self.assertEqual(isinstance(new_control.draft, atom.Draft), True)
 
 
 class DraftTest(unittest.TestCase):
@@ -436,11 +436,11 @@ class DraftTest(unittest.TestCase):
     draft = atom.Draft()
     draft.text = 'maybe'
     draft.extension_attributes['foo'] = 'bar'
-    self.assertEquals(draft.text, 'maybe')
-    self.assertEquals(draft.extension_attributes['foo'], 'bar')
+    self.assertEqual(draft.text, 'maybe')
+    self.assertEqual(draft.extension_attributes['foo'], 'bar')
     new_draft = atom.DraftFromString(str(draft))
-    self.assertEquals(draft.text, new_draft.text)
-    self.assertEquals(draft.extension_attributes['foo'], 
+    self.assertEqual(draft.text, new_draft.text)
+    self.assertEqual(draft.extension_attributes['foo'], 
         new_draft.extension_attributes['foo'])
     
     
@@ -452,13 +452,13 @@ class SourceTest(unittest.TestCase):
     source.author.append(atom.Author(name=atom.Name(text='js')))
     source.title = atom.Title(text='my test source')
     source.generator = atom.Generator(text='gen')
-    self.assert_(source.author[0].name.text == 'js')
-    self.assert_(source.title.text == 'my test source')
-    self.assert_(source.generator.text == 'gen')
+    self.assertTrue(source.author[0].name.text == 'js')
+    self.assertTrue(source.title.text == 'my test source')
+    self.assertTrue(source.generator.text == 'gen')
     new_source = atom.SourceFromString(source.ToString())
-    self.assert_(new_source.author[0].name.text == 'js')
-    self.assert_(new_source.title.text == 'my test source')
-    self.assert_(new_source.generator.text == 'gen')
+    self.assertTrue(new_source.author[0].name.text == 'js')
+    self.assertTrue(new_source.title.text == 'my test source')
+    self.assertTrue(new_source.generator.text == 'gen')
 
 
 class FeedTest(unittest.TestCase):
@@ -470,15 +470,15 @@ class FeedTest(unittest.TestCase):
     feed.generator = atom.Generator(text='gen')
     feed.entry.append(atom.Entry(author=[atom.Author(name=atom.Name(
         text='entry author'))]))
-    self.assert_(feed.author[0].name.text == 'js')
-    self.assert_(feed.title.text == 'my test source')
-    self.assert_(feed.generator.text == 'gen')
-    self.assert_(feed.entry[0].author[0].name.text == 'entry author')
+    self.assertTrue(feed.author[0].name.text == 'js')
+    self.assertTrue(feed.title.text == 'my test source')
+    self.assertTrue(feed.generator.text == 'gen')
+    self.assertTrue(feed.entry[0].author[0].name.text == 'entry author')
     new_feed = atom.FeedFromString(feed.ToString())
-    self.assert_(new_feed.author[0].name.text == 'js')
-    self.assert_(new_feed.title.text == 'my test source')
-    self.assert_(new_feed.generator.text == 'gen')    
-    self.assert_(new_feed.entry[0].author[0].name.text == 'entry author')
+    self.assertTrue(new_feed.author[0].name.text == 'js')
+    self.assertTrue(new_feed.title.text == 'my test source')
+    self.assertTrue(new_feed.generator.text == 'gen')    
+    self.assertTrue(new_feed.entry[0].author[0].name.text == 'entry author')
 
   def testPreserveEntryOrder(self):
     test_xml = (
@@ -498,23 +498,23 @@ class FeedTest(unittest.TestCase):
           '<entry><id>9</id></entry>'
         '</feed>')
     feed = atom.FeedFromString(test_xml)
-    for i in xrange(10):
-      self.assert_(feed.entry[i].id.text == str(i))
+    for i in range(10):
+      self.assertTrue(feed.entry[i].id.text == str(i))
     feed = atom.FeedFromString(feed.ToString())
-    for i in xrange(10):
-      self.assert_(feed.entry[i].id.text == str(i))
+    for i in range(10):
+      self.assertTrue(feed.entry[i].id.text == str(i))
     temp = feed.entry[3]
     feed.entry[3] = feed.entry[4]
     feed.entry[4] = temp
-    self.assert_(feed.entry[2].id.text == '2')
-    self.assert_(feed.entry[3].id.text == '4')
-    self.assert_(feed.entry[4].id.text == '3')
-    self.assert_(feed.entry[5].id.text == '5')
+    self.assertTrue(feed.entry[2].id.text == '2')
+    self.assertTrue(feed.entry[3].id.text == '4')
+    self.assertTrue(feed.entry[4].id.text == '3')
+    self.assertTrue(feed.entry[5].id.text == '5')
     feed = atom.FeedFromString(feed.ToString())
-    self.assert_(feed.entry[2].id.text == '2')
-    self.assert_(feed.entry[3].id.text == '4')
-    self.assert_(feed.entry[4].id.text == '3')
-    self.assert_(feed.entry[5].id.text == '5')
+    self.assertTrue(feed.entry[2].id.text == '2')
+    self.assertTrue(feed.entry[3].id.text == '4')
+    self.assertTrue(feed.entry[4].id.text == '3')
+    self.assertTrue(feed.entry[5].id.text == '5')
 
 
 class ContentEntryParentTest(unittest.TestCase):
@@ -527,17 +527,17 @@ class ContentEntryParentTest(unittest.TestCase):
     self.content.text = 'my content'
     self.content.type = 'text'
     self.content.src = 'my source'
-    self.assert_(self.content.text == 'my content')
-    self.assert_(self.content.type == 'text')
-    self.assert_(self.content.src == 'my source')
+    self.assertTrue(self.content.text == 'my content')
+    self.assertTrue(self.content.type == 'text')
+    self.assertTrue(self.content.src == 'my source')
     new_content = atom.ContentFromString(self.content.ToString())
-    self.assert_(self.content.text == new_content.text)
-    self.assert_(self.content.type == new_content.type)
-    self.assert_(self.content.src == new_content.src)
+    self.assertTrue(self.content.text == new_content.text)
+    self.assertTrue(self.content.type == new_content.type)
+    self.assertTrue(self.content.src == new_content.src)
 
   def testContentConstructorSetsSrc(self):
     new_content = atom.Content(src='abcd')
-    self.assertEquals(new_content.src, 'abcd')
+    self.assertEqual(new_content.src, 'abcd')
 
 
 class PreserveUnkownElementTest(unittest.TestCase):
@@ -547,32 +547,32 @@ class PreserveUnkownElementTest(unittest.TestCase):
     self.feed = atom.FeedFromString(test_data.GBASE_ATTRIBUTE_FEED)
 
   def testCaptureOpenSearchElements(self):
-    self.assertEquals(self.feed.FindExtensions('totalResults')[0].tag,
+    self.assertEqual(self.feed.FindExtensions('totalResults')[0].tag,
         'totalResults')
-    self.assertEquals(self.feed.FindExtensions('totalResults')[0].namespace,
+    self.assertEqual(self.feed.FindExtensions('totalResults')[0].namespace,
         'http://a9.com/-/spec/opensearchrss/1.0/')
     open_search_extensions = self.feed.FindExtensions(
         namespace='http://a9.com/-/spec/opensearchrss/1.0/')
-    self.assertEquals(len(open_search_extensions), 3)
+    self.assertEqual(len(open_search_extensions), 3)
     for element in open_search_extensions:
-      self.assertEquals(element.namespace, 
+      self.assertEqual(element.namespace, 
           'http://a9.com/-/spec/opensearchrss/1.0/')
 
   def testCaptureMetaElements(self):
     meta_elements = self.feed.entry[0].FindExtensions(
         namespace='http://base.google.com/ns-metadata/1.0')
-    self.assertEquals(len(meta_elements), 1)
-    self.assertEquals(meta_elements[0].attributes['count'], '4416629')
-    self.assertEquals(len(meta_elements[0].children), 10)
+    self.assertEqual(len(meta_elements), 1)
+    self.assertEqual(meta_elements[0].attributes['count'], '4416629')
+    self.assertEqual(len(meta_elements[0].children), 10)
 
   def testCaptureMetaChildElements(self):
     meta_elements = self.feed.entry[0].FindExtensions(
         namespace='http://base.google.com/ns-metadata/1.0')
     meta_children = meta_elements[0].FindChildren(
         namespace='http://base.google.com/ns-metadata/1.0')
-    self.assertEquals(len(meta_children), 10)
+    self.assertEqual(len(meta_children), 10)
     for child in meta_children:
-      self.assertEquals(child.tag, 'value')
+      self.assertEqual(child.tag, 'value')
 
 
 class LinkFinderTest(unittest.TestCase):
@@ -581,18 +581,18 @@ class LinkFinderTest(unittest.TestCase):
     self.entry = atom.EntryFromString(test_data.XML_ENTRY_1)
 
   def testLinkFinderGetsLicenseLink(self):
-    self.assertEquals(isinstance(self.entry.GetLicenseLink(), atom.Link), 
+    self.assertEqual(isinstance(self.entry.GetLicenseLink(), atom.Link), 
                       True)
-    self.assertEquals(self.entry.GetLicenseLink().href,
+    self.assertEqual(self.entry.GetLicenseLink().href,
         'http://creativecommons.org/licenses/by-nc/2.5/rdf')
-    self.assertEquals(self.entry.GetLicenseLink().rel, 'license')
+    self.assertEqual(self.entry.GetLicenseLink().rel, 'license')
 
   def testLinkFinderGetsAlternateLink(self):
-    self.assertEquals(isinstance(self.entry.GetAlternateLink(), atom.Link), 
+    self.assertEqual(isinstance(self.entry.GetAlternateLink(), atom.Link), 
                       True)
-    self.assertEquals(self.entry.GetAlternateLink().href,
+    self.assertEqual(self.entry.GetAlternateLink().href,
         'http://www.provider-host.com/123456789')
-    self.assertEquals(self.entry.GetAlternateLink().rel, 'alternate')
+    self.assertEqual(self.entry.GetAlternateLink().rel, 'alternate')
 
 
 class AtomBaseTest(unittest.TestCase):
@@ -605,21 +605,21 @@ class AtomBaseTest(unittest.TestCase):
          namespace='http://ns0.com')
      extension_child.children.append(extension_grandchild)
      atom_base.extension_elements.append(extension_child)
-     self.assertEquals(len(atom_base.extension_elements), 1)
-     self.assertEquals(len(atom_base.extension_elements[0].children), 1)
-     self.assertEquals(atom_base.extension_elements[0].tag, 'foo')
-     self.assertEquals(atom_base.extension_elements[0].children[0].tag, 'bar')
+     self.assertEqual(len(atom_base.extension_elements), 1)
+     self.assertEqual(len(atom_base.extension_elements[0].children), 1)
+     self.assertEqual(atom_base.extension_elements[0].tag, 'foo')
+     self.assertEqual(atom_base.extension_elements[0].children[0].tag, 'bar')
      
      element_tree = atom_base._ToElementTree()
-     self.assert_(element_tree.find('{http://ns0.com}foo') is not None)
-     self.assert_(element_tree.find('{http://ns0.com}foo').find(
+     self.assertTrue(element_tree.find('{http://ns0.com}foo') is not None)
+     self.assertTrue(element_tree.find('{http://ns0.com}foo').find(
          '{http://ns0.com}bar') is not None)
 
 
 class UtfParsingTest(unittest.TestCase):
   
   def setUp(self):
-    self.test_xml = u"""<?xml version="1.0" encoding="utf-8"?>
+    self.test_xml = """<?xml version="1.0" encoding="utf-8"?>
 <entry xmlns='http://www.w3.org/2005/Atom'>
   <id>http://www.google.com/test/id/url</id>
   <title type='\u03B1\u03BB\u03C6\u03B1'>\u03B1\u03BB\u03C6\u03B1</title>
@@ -634,38 +634,38 @@ class UtfParsingTest(unittest.TestCase):
 
     # Setting object members to unicode strings is supported even if 
     # MEMBER_STRING_ENCODING is set 'utf-8' (should it be?)
-    atom_entry.title.type = u'\u03B1\u03BB\u03C6\u03B1'
+    atom_entry.title.type = '\u03B1\u03BB\u03C6\u03B1'
     xml = atom_entry.ToString()
-    self.assert_(u'\u03B1\u03BB\u03C6\u03B1'.encode('utf-8') in xml)
+    self.assertTrue('\u03B1\u03BB\u03C6\u03B1'.encode('utf-8') in xml)
 
     # Make sure that we can use plain text when MEMBER_STRING_ENCODING is utf8
     atom_entry.title.type = "plain text"
     atom_entry.title.text = "more text"
     xml = atom_entry.ToString()
-    self.assert_("plain text" in xml)
-    self.assert_("more text" in xml)
+    self.assertTrue("plain text" in xml)
+    self.assertTrue("more text" in xml)
 
     # Test something else than utf-8
     atom.MEMBER_STRING_ENCODING = 'iso8859_7'
     atom_entry = atom.EntryFromString(self.test_xml)
-    self.assert_(atom_entry.title.type == u'\u03B1\u03BB\u03C6\u03B1'.encode(
+    self.assertTrue(atom_entry.title.type == '\u03B1\u03BB\u03C6\u03B1'.encode(
         'iso8859_7'))
-    self.assert_(atom_entry.title.text == u'\u03B1\u03BB\u03C6\u03B1'.encode(
+    self.assertTrue(atom_entry.title.text == '\u03B1\u03BB\u03C6\u03B1'.encode(
         'iso8859_7'))
 
     # Test using unicode strings directly for object members
-    atom.MEMBER_STRING_ENCODING = unicode
+    atom.MEMBER_STRING_ENCODING = str
     atom_entry = atom.EntryFromString(self.test_xml)
-    self.assert_(atom_entry.title.type == u'\u03B1\u03BB\u03C6\u03B1')
-    self.assert_(atom_entry.title.text == u'\u03B1\u03BB\u03C6\u03B1')
+    self.assertTrue(atom_entry.title.type == '\u03B1\u03BB\u03C6\u03B1')
+    self.assertTrue(atom_entry.title.text == '\u03B1\u03BB\u03C6\u03B1')
     
     # Make sure that we can use plain text when MEMBER_STRING_ENCODING is 
     # unicode
     atom_entry.title.type = "plain text"
     atom_entry.title.text = "more text"
     xml = atom_entry.ToString()
-    self.assert_("plain text" in xml)
-    self.assert_("more text" in xml)
+    self.assertTrue("plain text" in xml)
+    self.assertTrue("more text" in xml)
 
   def testConvertExampleXML(self):
     try:
@@ -680,17 +680,17 @@ class DeprecationDecoratorTest(unittest.TestCase):
   def testDeprecationWarning(self):
     def to_deprecate():
       return 5
-    self.assertEqual(to_deprecate.func_name, 'to_deprecate')
+    self.assertEqual(to_deprecate.__name__, 'to_deprecate')
     deprecated = atom.deprecated('test')(to_deprecate)
     self.assertNotEqual(to_deprecate, deprecated)
     # After decorating a function as deprecated, the function name should
     # still be the name of the original function.
-    self.assertEqual(deprecated.func_name, 'to_deprecate')
+    self.assertEqual(deprecated.__name__, 'to_deprecate')
     #@atom.deprecated()
     def also_deprecated():
       return 6
     also_deprecated = atom.deprecated()(also_deprecated)
-    self.assertEqual(also_deprecated.func_name, 'also_deprecated')
+    self.assertEqual(also_deprecated.__name__, 'also_deprecated')
 
 
 def suite():

@@ -87,7 +87,7 @@ class ResumableUploadTestCase(unittest.TestCase):
     # Verify upload has really completed.
     self.assertEqual(uploader.QueryUploadStatus(), True)
 
-    self.assert_(isinstance(entry, gdata.docs.data.DocsEntry))
+    self.assertTrue(isinstance(entry, gdata.docs.data.DocsEntry))
     self.assertEqual(entry.title.text, 'MyResumableTitleEntireFile')
     self.assertEqual(entry.GetDocumentType(), 'document')
     self.assertEqual(entry.writers_can_invite.value, 'false')
@@ -120,7 +120,7 @@ class ResumableUploadTestCase(unittest.TestCase):
     # Verify upload has really completed.
     self.assertEqual(uploader.QueryUploadStatus(), True)
 
-    self.assert_(isinstance(entry, gdata.docs.data.DocsEntry))
+    self.assertTrue(isinstance(entry, gdata.docs.data.DocsEntry))
     self.assertEqual(entry.title.text, 'MyManualChunksNoAtomTitle')
     self.assertEqual(entry.GetDocumentType(), 'document')
     self.client.Delete(entry, force=True)

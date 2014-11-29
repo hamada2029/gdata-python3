@@ -22,7 +22,7 @@ __author__ = 'j.s@google.com (Jeff Scudder)'
 
 
 import unittest
-import all_tests
+from . import all_tests
 import gdata.test_config as conf
 
 

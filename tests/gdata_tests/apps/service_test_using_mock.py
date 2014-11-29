@@ -48,7 +48,7 @@ def conceal_secrets(recordings):
       res.body = re.sub(r'SID=[^\n]+', 'SID=hogehoge', res.body)
       res.body = re.sub(r'LSID=[^\n]+', 'LSID=hogehoge', res.body)
       res.body = re.sub(r'Auth=[^\n]+', 'Auth=hogehoge', res.body)
-    if req.headers.has_key('Authorization'):
+    if 'Authorization' in req.headers:
       req.headers['Authorization'] = 'hogehoge'
     ret.append((req, res))
   return ret
@@ -93,7 +93,7 @@ class AppsServiceTestForGetGeneratorForAllRecipients(AppsServiceBaseTest,
     for recipient_feed in generator:
       for a_recipient in recipient_feed.entry:
         i = i + 1
-    self.assert_(i == 102)
+    self.assertTrue(i == 102)
 
 class AppsServiceTestForGetGeneratorForAllEmailLists(AppsServiceBaseTest,
                                                      unittest.TestCase):
@@ -105,7 +105,7 @@ class AppsServiceTestForGetGeneratorForAllEmailLists(AppsServiceBaseTest,
     for emaillist_feed in generator:
       for a_emaillist in emaillist_feed.entry:
         i = i + 1
-    self.assert_(i == 105)
+    self.assertTrue(i == 105)
 
 class AppsServiceTestForGetGeneratorForAllNicknames(AppsServiceBaseTest,
                                                 unittest.TestCase):
@@ -117,7 +117,7 @@ class AppsServiceTestForGetGeneratorForAllNicknames(AppsServiceBaseTest,
     for nickname_feed in generator:
       for a_nickname in nickname_feed.entry:
         i = i + 1
-    self.assert_(i == 102)
+    self.assertTrue(i == 102)
 
 
 class AppsServiceTestForGetGeneratorForAllUsers(AppsServiceBaseTest,
@@ -131,10 +131,10 @@ class AppsServiceTestForGetGeneratorForAllUsers(AppsServiceBaseTest,
     for user_feed in generator:
       for a_user in user_feed.entry:
         i = i + 1
-    self.assert_(i == 102)
+    self.assertTrue(i == 102)
 
 if __name__ == '__main__':
   print ('The tests may delete or update your data.')
-  apps_username = raw_input('Please enter your username: ')
+  apps_username = input('Please enter your username: ')
   apps_password = getpass.getpass()
   unittest.main()

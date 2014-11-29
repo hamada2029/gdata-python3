@@ -22,8 +22,8 @@ __author__ = 's@google.com (John Skidgel)'
 
 # Python imports.
 import unittest
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 
 # Google Data APIs imports.
 import gdata.youtube.client

@@ -39,7 +39,7 @@ class CommentEntryTest(unittest.TestCase):
 
   def testToAndFromStringCommentEntry(self):
     self.assertEqual(self.entry.Kind(), 'comment')
-    self.assert_(isinstance(self.entry.in_reply_to, gdata.sites.data.InReplyTo))
+    self.assertTrue(isinstance(self.entry.in_reply_to, gdata.sites.data.InReplyTo))
     self.assertEqual(self.entry.in_reply_to.type, 'text/html')
     self.assertEqual(
         self.entry.FindParentLink(),
@@ -62,7 +62,7 @@ class ListPageEntryTest(unittest.TestCase):
                        gdata.sites.data.ContentEntry)
 
   def testToAndFromStringWithData(self):
-    self.assert_(isinstance(self.entry, gdata.sites.data.ContentEntry))
+    self.assertTrue(isinstance(self.entry, gdata.sites.data.ContentEntry))
     self.assertEqual(self.entry.title.text, 'ListPagesTitle')
     self.assertEqual(len(self.entry.author), 1)
     self.assertEqual(self.entry.author[0].name.text, 'Test User')
@@ -71,15 +71,15 @@ class ListPageEntryTest(unittest.TestCase):
     self.assertEqual(self.entry.header.row, '1')
     self.assertEqual(self.entry.data.startRow, '2')
     self.assertEqual(len(self.entry.data.column), 5)
-    self.assert_(isinstance(self.entry.data.column[0], gdata.sites.data.Column))
+    self.assertTrue(isinstance(self.entry.data.column[0], gdata.sites.data.Column))
     self.assertEqual(self.entry.data.column[0].index, 'A')
     self.assertEqual(self.entry.data.column[0].name, 'Owner')
-    self.assert_(isinstance(self.entry.feed_link, gdata.data.FeedLink))
+    self.assertTrue(isinstance(self.entry.feed_link, gdata.data.FeedLink))
     self.assertEqual(
         self.entry.feed_link.href,
         'http:///sites.google.com/feeds/content/site/gdatatestsite?parent=abc')
-    self.assert_(isinstance(self.entry.content, gdata.sites.data.Content))
-    self.assert_(isinstance(self.entry.content.html, atom.core.XmlElement))
+    self.assertTrue(isinstance(self.entry.content, gdata.sites.data.Content))
+    self.assertTrue(isinstance(self.entry.content.html, atom.core.XmlElement))
     self.assertEqual(self.entry.content.type, 'xhtml')
 
 
@@ -90,9 +90,9 @@ class ListItemEntryTest(unittest.TestCase):
                        gdata.sites.data.ContentEntry)
 
   def testToAndFromStringWithData(self):
-    self.assert_(isinstance(self.entry, gdata.sites.data.ContentEntry))
+    self.assertTrue(isinstance(self.entry, gdata.sites.data.ContentEntry))
     self.assertEqual(len(self.entry.field), 5)
-    self.assert_(isinstance(self.entry.field[0], gdata.sites.data.Field))
+    self.assertTrue(isinstance(self.entry.field[0], gdata.sites.data.Field))
     self.assertEqual(self.entry.field[0].index, 'A')
     self.assertEqual(self.entry.field[0].name, 'Owner')
     self.assertEqual(self.entry.field[0].text, 'test value')
@@ -135,21 +135,21 @@ class ContentFeedTest(unittest.TestCase):
                       gdata.sites.data.ContentFeed)
 
   def testToAndFromStringContentFeed(self):
-    self.assert_(isinstance(self.feed, gdata.sites.data.ContentFeed))
+    self.assertTrue(isinstance(self.feed, gdata.sites.data.ContentFeed))
     self.assertEqual(len(self.feed.entry), 8)
-    self.assert_(isinstance(self.feed.entry[0].revision,
+    self.assertTrue(isinstance(self.feed.entry[0].revision,
                             gdata.sites.data.Revision))
     self.assertEqual(int(self.feed.entry[0].revision.text), 2)
     self.assertEqual(self.feed.entry[0].GetNodeId(), '1712987567114738703')
-    self.assert_(isinstance(self.feed.entry[0].page_name,
+    self.assertTrue(isinstance(self.feed.entry[0].page_name,
                             gdata.sites.data.PageName))
     self.assertEqual(self.feed.entry[0].page_name.text, 'home')
     self.assertEqual(self.feed.entry[0].FindRevisionLink(),
         'http:///sites.google.com/feeds/content/site/gdatatestsite/12345')
     for entry in self.feed.entry:
-      self.assert_(isinstance(entry, gdata.sites.data.ContentEntry))
+      self.assertTrue(isinstance(entry, gdata.sites.data.ContentEntry))
       if entry.deleted is not None:
-        self.assert_(isinstance(entry.deleted, gdata.sites.data.Deleted))
+        self.assertTrue(isinstance(entry.deleted, gdata.sites.data.Deleted))
         self.assertEqual(entry.IsDeleted(), True)
       else:
         self.assertEqual(entry.IsDeleted(), False)
@@ -158,16 +158,16 @@ class ContentFeedTest(unittest.TestCase):
     new_entry = gdata.sites.data.ContentEntry()
     new_entry.content = gdata.sites.data.Content()
     new_entry.content.html = '<div><p>here is html</p></div>'
-    self.assert_(isinstance(new_entry, gdata.sites.data.ContentEntry))
-    self.assert_(isinstance(new_entry.content, gdata.sites.data.Content))
-    self.assert_(isinstance(new_entry.content.html, atom.core.XmlElement))
+    self.assertTrue(isinstance(new_entry, gdata.sites.data.ContentEntry))
+    self.assertTrue(isinstance(new_entry.content, gdata.sites.data.Content))
+    self.assertTrue(isinstance(new_entry.content.html, atom.core.XmlElement))
 
     new_entry2 = gdata.sites.data.ContentEntry()
     new_entry2.content = gdata.sites.data.Content(
         html='<div><p>here is html</p></div>')
-    self.assert_(isinstance(new_entry2, gdata.sites.data.ContentEntry))
-    self.assert_(isinstance(new_entry2.content, gdata.sites.data.Content))
-    self.assert_(isinstance(new_entry2.content.html, atom.core.XmlElement))
+    self.assertTrue(isinstance(new_entry2, gdata.sites.data.ContentEntry))
+    self.assertTrue(isinstance(new_entry2.content, gdata.sites.data.Content))
+    self.assertTrue(isinstance(new_entry2.content.html, atom.core.XmlElement))
 
   def testGetHelpers(self):
     kinds = {'announcement': self.feed.GetAnnouncements,
@@ -179,7 +179,7 @@ class ContentFeedTest(unittest.TestCase):
              'listpage': self.feed.GetListPages,
              'webpage': self.feed.GetWebpages}
 
-    for k, v in kinds.iteritems():
+    for k, v in kinds.items():
       entries = v()
       self.assertEqual(len(entries), 1)
       for entry in entries:
@@ -196,12 +196,12 @@ class ActivityFeedTest(unittest.TestCase):
                       gdata.sites.data.ActivityFeed)
 
   def testToAndFromStringActivityFeed(self):
-    self.assert_(isinstance(self.feed, gdata.sites.data.ActivityFeed))
+    self.assertTrue(isinstance(self.feed, gdata.sites.data.ActivityFeed))
     self.assertEqual(len(self.feed.entry), 2)
     for entry in self.feed.entry:
-      self.assert_(isinstance(entry.summary, gdata.sites.data.Summary))
+      self.assertTrue(isinstance(entry.summary, gdata.sites.data.Summary))
       self.assertEqual(entry.summary.type, 'xhtml')
-      self.assert_(isinstance(entry.summary.html, atom.core.XmlElement))
+      self.assertTrue(isinstance(entry.summary.html, atom.core.XmlElement))
 
 
 class RevisionFeedTest(unittest.TestCase):
@@ -211,11 +211,11 @@ class RevisionFeedTest(unittest.TestCase):
                       gdata.sites.data.RevisionFeed)
 
   def testToAndFromStringRevisionFeed(self):
-    self.assert_(isinstance(self.feed, gdata.sites.data.RevisionFeed))
+    self.assertTrue(isinstance(self.feed, gdata.sites.data.RevisionFeed))
     self.assertEqual(len(self.feed.entry), 1)
     entry = self.feed.entry[0]
-    self.assert_(isinstance(entry.content, gdata.sites.data.Content))
-    self.assert_(isinstance(entry.content.html, atom.core.XmlElement))
+    self.assertTrue(isinstance(entry.content, gdata.sites.data.Content))
+    self.assertTrue(isinstance(entry.content.html, atom.core.XmlElement))
     self.assertEqual(entry.content.type, 'xhtml')
     self.assertEqual(
         entry.FindParentLink(),
@@ -229,10 +229,10 @@ class SiteFeedTest(unittest.TestCase):
                       gdata.sites.data.SiteFeed)
 
   def testToAndFromStringSiteFeed(self):
-    self.assert_(isinstance(self.feed, gdata.sites.data.SiteFeed))
+    self.assertTrue(isinstance(self.feed, gdata.sites.data.SiteFeed))
     self.assertEqual(len(self.feed.entry), 2)
     entry = self.feed.entry[0]
-    self.assert_(isinstance(entry.site_name, gdata.sites.data.SiteName))
+    self.assertTrue(isinstance(entry.site_name, gdata.sites.data.SiteName))
     self.assertEqual(entry.title.text, 'New Test Site')
     self.assertEqual(entry.site_name.text, 'new-test-site')
     self.assertEqual(
@@ -251,14 +251,14 @@ class AclFeedTest(unittest.TestCase):
                       gdata.sites.data.AclFeed)
 
   def testToAndFromStringAclFeed(self):
-    self.assert_(isinstance(self.feed, gdata.sites.data.AclFeed))
+    self.assertTrue(isinstance(self.feed, gdata.sites.data.AclFeed))
     self.assertEqual(len(self.feed.entry), 1)
     entry = self.feed.entry[0]
-    self.assert_(isinstance(entry, gdata.sites.data.AclEntry))
-    self.assert_(isinstance(entry.scope, gdata.acl.data.AclScope))
+    self.assertTrue(isinstance(entry, gdata.sites.data.AclEntry))
+    self.assertTrue(isinstance(entry.scope, gdata.acl.data.AclScope))
     self.assertEqual(entry.scope.type, 'user')
     self.assertEqual(entry.scope.value, 'user@example.com')
-    self.assert_(isinstance(entry.role, gdata.acl.data.AclRole))
+    self.assertTrue(isinstance(entry.role, gdata.acl.data.AclRole))
     self.assertEqual(entry.role.value, 'owner')
     self.assertEqual(
         entry.GetSelfLink().href,

@@ -35,9 +35,9 @@ class IndexedTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.indexed.text = 'true'
-    self.assert_(self.indexed.text == 'true')
+    self.assertTrue(self.indexed.text == 'true')
     new_indexed = webmastertools.IndexedFromString(self.indexed.ToString())
-    self.assert_(self.indexed.text == new_indexed.text)
+    self.assertTrue(self.indexed.text == new_indexed.text)
 
 
 class CrawledTest(unittest.TestCase):
@@ -47,9 +47,9 @@ class CrawledTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.crawled.text = 'true'
-    self.assert_(self.crawled.text == 'true')
+    self.assertTrue(self.crawled.text == 'true')
     new_crawled = webmastertools.CrawledFromString(self.crawled.ToString())
-    self.assert_(self.crawled.text == new_crawled.text)
+    self.assertTrue(self.crawled.text == new_crawled.text)
 
 
 class GeoLocationTest(unittest.TestCase):
@@ -59,10 +59,10 @@ class GeoLocationTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.geolocation.text = 'US'
-    self.assert_(self.geolocation.text == 'US')
+    self.assertTrue(self.geolocation.text == 'US')
     new_geolocation = webmastertools.GeoLocationFromString(
         self.geolocation.ToString())
-    self.assert_(self.geolocation.text == new_geolocation.text)
+    self.assertTrue(self.geolocation.text == new_geolocation.text)
 
 
 class PreferredDomainTest(unittest.TestCase):
@@ -72,10 +72,10 @@ class PreferredDomainTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.preferred_domain.text = 'none'
-    self.assert_(self.preferred_domain.text == 'none')
+    self.assertTrue(self.preferred_domain.text == 'none')
     new_preferred_domain = webmastertools.PreferredDomainFromString(
         self.preferred_domain.ToString())
-    self.assert_(self.preferred_domain.text == new_preferred_domain.text)
+    self.assertTrue(self.preferred_domain.text == new_preferred_domain.text)
 
 
 class CrawlRateTest(unittest.TestCase):
@@ -85,10 +85,10 @@ class CrawlRateTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.crawl_rate.text = 'normal'
-    self.assert_(self.crawl_rate.text == 'normal')
+    self.assertTrue(self.crawl_rate.text == 'normal')
     new_crawl_rate = webmastertools.CrawlRateFromString(
         self.crawl_rate.ToString())
-    self.assert_(self.crawl_rate.text == new_crawl_rate.text)
+    self.assertTrue(self.crawl_rate.text == new_crawl_rate.text)
 
 
 class EnhancedImageSearchTest(unittest.TestCase):
@@ -98,10 +98,10 @@ class EnhancedImageSearchTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.enhanced_image_search.text = 'true'
-    self.assert_(self.enhanced_image_search.text == 'true')
+    self.assertTrue(self.enhanced_image_search.text == 'true')
     new_enhanced_image_search = webmastertools.EnhancedImageSearchFromString(
         self.enhanced_image_search.ToString())
-    self.assert_(self.enhanced_image_search.text == 
+    self.assertTrue(self.enhanced_image_search.text == 
         new_enhanced_image_search.text)
 
 
@@ -112,9 +112,9 @@ class VerifiedTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.verified.text = 'true'
-    self.assert_(self.verified.text == 'true')
+    self.assertTrue(self.verified.text == 'true')
     new_verified = webmastertools.VerifiedFromString(self.verified.ToString())
-    self.assert_(self.verified.text == new_verified.text)
+    self.assertTrue(self.verified.text == new_verified.text)
 
 
 class VerificationMethodMetaTest(unittest.TestCase):
@@ -125,12 +125,12 @@ class VerificationMethodMetaTest(unittest.TestCase):
   def testToAndFromString(self):
     self.meta.name = 'verify-vf1'
     self.meta.content = 'a2Ai'
-    self.assert_(self.meta.name == 'verify-vf1')
-    self.assert_(self.meta.content == 'a2Ai')
+    self.assertTrue(self.meta.name == 'verify-vf1')
+    self.assertTrue(self.meta.content == 'a2Ai')
     new_meta = webmastertools.VerificationMethodMetaFromString(
         self.meta.ToString())
-    self.assert_(self.meta.name == new_meta.name)
-    self.assert_(self.meta.content == new_meta.content)
+    self.assertTrue(self.meta.name == new_meta.name)
+    self.assertTrue(self.meta.content == new_meta.content)
 
 
 class VerificationMethodTest(unittest.TestCase):
@@ -142,59 +142,59 @@ class VerificationMethodTest(unittest.TestCase):
     self.method = webmastertools.VerificationMethod()
     self.method.type = 'metatag'
     self.method.in_use = 'false'
-    self.assert_(self.method.type == 'metatag')
-    self.assert_(self.method.in_use == 'false')
+    self.assertTrue(self.method.type == 'metatag')
+    self.assertTrue(self.method.in_use == 'false')
     self.method.meta = webmastertools.VerificationMethodMeta(name='verify-vf1',
         content='a2Ai')
-    self.assert_(self.method.meta.name == 'verify-vf1')
-    self.assert_(self.method.meta.content == 'a2Ai')
+    self.assertTrue(self.method.meta.name == 'verify-vf1')
+    self.assertTrue(self.method.meta.content == 'a2Ai')
     new_method = webmastertools.VerificationMethodFromString(
         self.method.ToString())
-    self.assert_(self.method.type == new_method.type)
-    self.assert_(self.method.in_use == new_method.in_use)
-    self.assert_(self.method.meta.name == new_method.meta.name)
-    self.assert_(self.method.meta.content == new_method.meta.content)
+    self.assertTrue(self.method.type == new_method.type)
+    self.assertTrue(self.method.in_use == new_method.in_use)
+    self.assertTrue(self.method.meta.name == new_method.meta.name)
+    self.assertTrue(self.method.meta.content == new_method.meta.content)
 
     method = webmastertools.VerificationMethod(type='xyz')
     self.assertEqual(method.type, 'xyz')
     method = webmastertools.VerificationMethod()
-    self.assert_(method.type is None)
+    self.assertTrue(method.type is None)
 
   def testHtmlPageToAndFromString(self):
     self.method = webmastertools.VerificationMethod()
     self.method.type = 'htmlpage'
     self.method.in_use = 'false'
     self.method.text = '456456-google.html'
-    self.assert_(self.method.type == 'htmlpage')
-    self.assert_(self.method.in_use == 'false')
-    self.assert_(self.method.text == '456456-google.html')
-    self.assert_(self.method.meta is None)
+    self.assertTrue(self.method.type == 'htmlpage')
+    self.assertTrue(self.method.in_use == 'false')
+    self.assertTrue(self.method.text == '456456-google.html')
+    self.assertTrue(self.method.meta is None)
     new_method = webmastertools.VerificationMethodFromString(
         self.method.ToString())
-    self.assert_(self.method.type == new_method.type)
-    self.assert_(self.method.in_use == new_method.in_use)
-    self.assert_(self.method.text == new_method.text)
-    self.assert_(self.method.meta is None)
+    self.assertTrue(self.method.type == new_method.type)
+    self.assertTrue(self.method.in_use == new_method.in_use)
+    self.assertTrue(self.method.text == new_method.text)
+    self.assertTrue(self.method.meta is None)
 
   def testConvertActualData(self):
     feed = webmastertools.SitesFeedFromString(test_data.SITES_FEED)
-    self.assert_(len(feed.entry[0].verification_method) == 2)
+    self.assertTrue(len(feed.entry[0].verification_method) == 2)
     check = 0
     for method in feed.entry[0].verification_method:
-      self.assert_(isinstance(method, webmastertools.VerificationMethod))
+      self.assertTrue(isinstance(method, webmastertools.VerificationMethod))
       if method.type == 'metatag':
-        self.assert_(method.in_use == 'false')
-        self.assert_(method.text is None)
-        self.assert_(method.meta.name == 'verify-v1')
-        self.assert_(method.meta.content == 'a2Ai')
+        self.assertTrue(method.in_use == 'false')
+        self.assertTrue(method.text is None)
+        self.assertTrue(method.meta.name == 'verify-v1')
+        self.assertTrue(method.meta.content == 'a2Ai')
         check = check | 1
       elif method.type == 'htmlpage':
-        self.assert_(method.in_use == 'false')
-        self.assert_(method.text == '456456-google.html')
+        self.assertTrue(method.in_use == 'false')
+        self.assertTrue(method.text == '456456-google.html')
         check = check | 2
       else:
         self.fail('Wrong Verification Method: %s' % method.type)
-    self.assert_(check == 2 ** 2 - 1,
+    self.assertTrue(check == 2 ** 2 - 1,
         'Should only have two Verification Methods, metatag and htmlpage')
 
 
@@ -205,10 +205,10 @@ class MarkupLanguageTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.markup_language.text = 'HTML'
-    self.assert_(self.markup_language.text == 'HTML')
+    self.assertTrue(self.markup_language.text == 'HTML')
     new_markup_language = webmastertools.MarkupLanguageFromString(
         self.markup_language.ToString())
-    self.assert_(self.markup_language.text == new_markup_language.text)
+    self.assertTrue(self.markup_language.text == new_markup_language.text)
 
 
 class SitemapMobileTest(unittest.TestCase):
@@ -219,28 +219,28 @@ class SitemapMobileTest(unittest.TestCase):
   def testToAndFromString(self):
     self.sitemap_mobile.markup_language.append(webmastertools.MarkupLanguage(
         text = 'HTML'))
-    self.assert_(self.sitemap_mobile.text is None)
-    self.assert_(self.sitemap_mobile.markup_language[0].text == 'HTML')
+    self.assertTrue(self.sitemap_mobile.text is None)
+    self.assertTrue(self.sitemap_mobile.markup_language[0].text == 'HTML')
     new_sitemap_mobile = webmastertools.SitemapMobileFromString(
         self.sitemap_mobile.ToString())
-    self.assert_(new_sitemap_mobile.text is None)
-    self.assert_(self.sitemap_mobile.markup_language[0].text == 
+    self.assertTrue(new_sitemap_mobile.text is None)
+    self.assertTrue(self.sitemap_mobile.markup_language[0].text == 
         new_sitemap_mobile.markup_language[0].text)
 
   def testConvertActualData(self):
     feed = webmastertools.SitemapsFeedFromString(test_data.SITEMAPS_FEED)
-    self.assert_(feed.sitemap_mobile.text.strip() == '')
-    self.assert_(len(feed.sitemap_mobile.markup_language) == 2)
+    self.assertTrue(feed.sitemap_mobile.text.strip() == '')
+    self.assertTrue(len(feed.sitemap_mobile.markup_language) == 2)
     check = 0
     for markup_language in feed.sitemap_mobile.markup_language:
-      self.assert_(isinstance(markup_language, webmastertools.MarkupLanguage))
+      self.assertTrue(isinstance(markup_language, webmastertools.MarkupLanguage))
       if markup_language.text == "HTML":
         check = check | 1
       elif markup_language.text == "WAP":
         check = check | 2
       else:
         self.fail('Unexpected markup language: %s' % markup_language.text)
-    self.assert_(check == 2 ** 2 - 1, "Something is wrong with markup language")
+    self.assertTrue(check == 2 ** 2 - 1, "Something is wrong with markup language")
 
 
 class SitemapMobileMarkupLanguageTest(unittest.TestCase):
@@ -251,11 +251,11 @@ class SitemapMobileMarkupLanguageTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.sitemap_mobile_markup_language.text = 'HTML'
-    self.assert_(self.sitemap_mobile_markup_language.text == 'HTML')
+    self.assertTrue(self.sitemap_mobile_markup_language.text == 'HTML')
     new_sitemap_mobile_markup_language =\
         webmastertools.SitemapMobileMarkupLanguageFromString(
             self.sitemap_mobile_markup_language.ToString())
-    self.assert_(self.sitemap_mobile_markup_language.text ==\
+    self.assertTrue(self.sitemap_mobile_markup_language.text ==\
         new_sitemap_mobile_markup_language.text)
 
 
@@ -266,10 +266,10 @@ class PublicationLabelTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.publication_label.text = 'Value1'
-    self.assert_(self.publication_label.text == 'Value1')
+    self.assertTrue(self.publication_label.text == 'Value1')
     new_publication_label = webmastertools.PublicationLabelFromString(
         self.publication_label.ToString())
-    self.assert_(self.publication_label.text == new_publication_label.text)
+    self.assertTrue(self.publication_label.text == new_publication_label.text)
 
 
 class SitemapNewsTest(unittest.TestCase):
@@ -280,17 +280,17 @@ class SitemapNewsTest(unittest.TestCase):
   def testToAndFromString(self):
     self.sitemap_news.publication_label.append(webmastertools.PublicationLabel(
         text = 'Value1'))
-    self.assert_(self.sitemap_news.text is None)
-    self.assert_(self.sitemap_news.publication_label[0].text == 'Value1')
+    self.assertTrue(self.sitemap_news.text is None)
+    self.assertTrue(self.sitemap_news.publication_label[0].text == 'Value1')
     new_sitemap_news = webmastertools.SitemapNewsFromString(
         self.sitemap_news.ToString())
-    self.assert_(new_sitemap_news.text is None)
-    self.assert_(self.sitemap_news.publication_label[0].text == 
+    self.assertTrue(new_sitemap_news.text is None)
+    self.assertTrue(self.sitemap_news.publication_label[0].text == 
         new_sitemap_news.publication_label[0].text)
 
   def testConvertActualData(self):
     feed = webmastertools.SitemapsFeedFromString(test_data.SITEMAPS_FEED)
-    self.assert_(len(feed.sitemap_news.publication_label) == 3)
+    self.assertTrue(len(feed.sitemap_news.publication_label) == 3)
     check = 0
     for publication_label in feed.sitemap_news.publication_label:
       if publication_label.text == "Value1":
@@ -301,7 +301,7 @@ class SitemapNewsTest(unittest.TestCase):
         check = check | 4
       else:
         self.fail('Unexpected publication label: %s' % markup_language.text)
-    self.assert_(check == 2 ** 3 - 1,
+    self.assertTrue(check == 2 ** 3 - 1,
         'Something is wrong with publication label')
 
 
@@ -313,11 +313,11 @@ class SitemapNewsPublicationLabelTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.sitemap_news_publication_label.text = 'LabelValue'
-    self.assert_(self.sitemap_news_publication_label.text == 'LabelValue')
+    self.assertTrue(self.sitemap_news_publication_label.text == 'LabelValue')
     new_sitemap_news_publication_label =\
         webmastertools.SitemapNewsPublicationLabelFromString(
             self.sitemap_news_publication_label.ToString())
-    self.assert_(self.sitemap_news_publication_label.text ==\
+    self.assertTrue(self.sitemap_news_publication_label.text ==\
         new_sitemap_news_publication_label.text)
 
 
@@ -328,12 +328,12 @@ class SitemapLastDownloadedTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.sitemap_last_downloaded.text = '2006-11-18T19:27:32.543Z'
-    self.assert_(self.sitemap_last_downloaded.text ==\
+    self.assertTrue(self.sitemap_last_downloaded.text ==\
         '2006-11-18T19:27:32.543Z')
     new_sitemap_last_downloaded =\
         webmastertools.SitemapLastDownloadedFromString(
             self.sitemap_last_downloaded.ToString())
-    self.assert_(self.sitemap_last_downloaded.text ==\
+    self.assertTrue(self.sitemap_last_downloaded.text ==\
         new_sitemap_last_downloaded.text)
 
 
@@ -344,10 +344,10 @@ class SitemapTypeTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.sitemap_type.text = 'WEB'
-    self.assert_(self.sitemap_type.text == 'WEB')
+    self.assertTrue(self.sitemap_type.text == 'WEB')
     new_sitemap_type = webmastertools.SitemapTypeFromString(
         self.sitemap_type.ToString())
-    self.assert_(self.sitemap_type.text == new_sitemap_type.text)
+    self.assertTrue(self.sitemap_type.text == new_sitemap_type.text)
 
 
 class SitemapStatusTest(unittest.TestCase):
@@ -357,10 +357,10 @@ class SitemapStatusTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.sitemap_status.text = 'Pending'
-    self.assert_(self.sitemap_status.text == 'Pending')
+    self.assertTrue(self.sitemap_status.text == 'Pending')
     new_sitemap_status = webmastertools.SitemapStatusFromString(
         self.sitemap_status.ToString())
-    self.assert_(self.sitemap_status.text == new_sitemap_status.text)
+    self.assertTrue(self.sitemap_status.text == new_sitemap_status.text)
 
 
 class SitemapUrlCountTest(unittest.TestCase):
@@ -370,10 +370,10 @@ class SitemapUrlCountTest(unittest.TestCase):
 
   def testToAndFromString(self):
     self.sitemap_url_count.text = '0'
-    self.assert_(self.sitemap_url_count.text == '0')
+    self.assertTrue(self.sitemap_url_count.text == '0')
     new_sitemap_url_count = webmastertools.SitemapUrlCountFromString(
         self.sitemap_url_count.ToString())
-    self.assert_(self.sitemap_url_count.text == new_sitemap_url_count.text)
+    self.assertTrue(self.sitemap_url_count.text == new_sitemap_url_count.text)
 
 
 class SitesEntryTest(unittest.TestCase):
@@ -391,34 +391,34 @@ class SitesEntryTest(unittest.TestCase):
         enhanced_image_search=webmastertools.EnhancedImageSearch(text='true'),
         verified=webmastertools.Verified(text='false'),
         )
-    self.assert_(entry.indexed.text == 'true')
-    self.assert_(entry.crawled.text == '2008-09-14T08:59:28.000')
-    self.assert_(entry.geolocation.text == 'US')
-    self.assert_(entry.preferred_domain.text == 'none')
-    self.assert_(entry.crawl_rate.text == 'normal')
-    self.assert_(entry.enhanced_image_search.text == 'true')
-    self.assert_(entry.verified.text == 'false')
+    self.assertTrue(entry.indexed.text == 'true')
+    self.assertTrue(entry.crawled.text == '2008-09-14T08:59:28.000')
+    self.assertTrue(entry.geolocation.text == 'US')
+    self.assertTrue(entry.preferred_domain.text == 'none')
+    self.assertTrue(entry.crawl_rate.text == 'normal')
+    self.assertTrue(entry.enhanced_image_search.text == 'true')
+    self.assertTrue(entry.verified.text == 'false')
     new_entry = webmastertools.SitesEntryFromString(entry.ToString())
-    self.assert_(new_entry.indexed.text == 'true')
-    self.assert_(new_entry.crawled.text == '2008-09-14T08:59:28.000')
-    self.assert_(new_entry.geolocation.text == 'US')
-    self.assert_(new_entry.preferred_domain.text == 'none')
-    self.assert_(new_entry.crawl_rate.text == 'normal')
-    self.assert_(new_entry.enhanced_image_search.text == 'true')
-    self.assert_(new_entry.verified.text == 'false')
+    self.assertTrue(new_entry.indexed.text == 'true')
+    self.assertTrue(new_entry.crawled.text == '2008-09-14T08:59:28.000')
+    self.assertTrue(new_entry.geolocation.text == 'US')
+    self.assertTrue(new_entry.preferred_domain.text == 'none')
+    self.assertTrue(new_entry.crawl_rate.text == 'normal')
+    self.assertTrue(new_entry.enhanced_image_search.text == 'true')
+    self.assertTrue(new_entry.verified.text == 'false')
     
   def testConvertActualData(self):
     feed = webmastertools.SitesFeedFromString(test_data.SITES_FEED)
-    self.assert_(len(feed.entry) == 1)
+    self.assertTrue(len(feed.entry) == 1)
     entry = feed.entry[0]
-    self.assert_(isinstance(entry, webmastertools.SitesEntry))
-    self.assert_(entry.indexed.text == 'true')
-    self.assert_(entry.crawled.text == '2008-09-14T08:59:28.000')
-    self.assert_(entry.geolocation.text == 'US')
-    self.assert_(entry.preferred_domain.text == 'none')
-    self.assert_(entry.crawl_rate.text == 'normal')
-    self.assert_(entry.enhanced_image_search.text == 'true')
-    self.assert_(entry.verified.text == 'false')
+    self.assertTrue(isinstance(entry, webmastertools.SitesEntry))
+    self.assertTrue(entry.indexed.text == 'true')
+    self.assertTrue(entry.crawled.text == '2008-09-14T08:59:28.000')
+    self.assertTrue(entry.geolocation.text == 'US')
+    self.assertTrue(entry.preferred_domain.text == 'none')
+    self.assertTrue(entry.crawl_rate.text == 'normal')
+    self.assertTrue(entry.enhanced_image_search.text == 'true')
+    self.assertTrue(entry.verified.text == 'false')
 
 
 class SitesFeedTest(unittest.TestCase):
@@ -427,13 +427,13 @@ class SitesFeedTest(unittest.TestCase):
     self.feed = gdata.webmastertools.SitesFeedFromString(test_data.SITES_FEED)
     
   def testToAndFromString(self):
-    self.assert_(len(self.feed.entry) == 1)
+    self.assertTrue(len(self.feed.entry) == 1)
     for entry in self.feed.entry:
-      self.assert_(isinstance(entry, webmastertools.SitesEntry))
+      self.assertTrue(isinstance(entry, webmastertools.SitesEntry))
     new_feed = webmastertools.SitesFeedFromString(self.feed.ToString())
-    self.assert_(len(new_feed.entry) == 1)
+    self.assertTrue(len(new_feed.entry) == 1)
     for entry in new_feed.entry:
-      self.assert_(isinstance(entry, webmastertools.SitesEntry))
+      self.assertTrue(isinstance(entry, webmastertools.SitesEntry))
 
 
 class SitemapsEntryTest(unittest.TestCase):
@@ -446,48 +446,48 @@ class SitemapsEntryTest(unittest.TestCase):
           text='2006-11-18T19:27:32.543Z'),
        sitemap_url_count=webmastertools.SitemapUrlCount(text='102'),
        )
-    self.assert_(entry.sitemap_type.text == 'WEB')
-    self.assert_(entry.sitemap_status.text == 'Pending')
-    self.assert_(entry.sitemap_last_downloaded.text ==\
+    self.assertTrue(entry.sitemap_type.text == 'WEB')
+    self.assertTrue(entry.sitemap_status.text == 'Pending')
+    self.assertTrue(entry.sitemap_last_downloaded.text ==\
         '2006-11-18T19:27:32.543Z')
-    self.assert_(entry.sitemap_url_count.text == '102')
+    self.assertTrue(entry.sitemap_url_count.text == '102')
     new_entry = webmastertools.SitemapsEntryFromString(entry.ToString())
-    self.assert_(new_entry.sitemap_type.text == 'WEB')
-    self.assert_(new_entry.sitemap_status.text == 'Pending')
-    self.assert_(new_entry.sitemap_last_downloaded.text ==\
+    self.assertTrue(new_entry.sitemap_type.text == 'WEB')
+    self.assertTrue(new_entry.sitemap_status.text == 'Pending')
+    self.assertTrue(new_entry.sitemap_last_downloaded.text ==\
         '2006-11-18T19:27:32.543Z')
-    self.assert_(new_entry.sitemap_url_count.text == '102')
+    self.assertTrue(new_entry.sitemap_url_count.text == '102')
 
   def testConvertActualData(self):
     feed = gdata.webmastertools.SitemapsFeedFromString(test_data.SITEMAPS_FEED)
-    self.assert_(len(feed.entry) == 3)
+    self.assertTrue(len(feed.entry) == 3)
     for entry in feed.entry:
-      self.assert_(entry, webmastertools.SitemapsEntry)
-      self.assert_(entry.sitemap_status, webmastertools.SitemapStatus)
-      self.assert_(entry.sitemap_last_downloaded,
+      self.assertTrue(entry, webmastertools.SitemapsEntry)
+      self.assertTrue(entry.sitemap_status, webmastertools.SitemapStatus)
+      self.assertTrue(entry.sitemap_last_downloaded,
           webmastertools.SitemapLastDownloaded)
-      self.assert_(entry.sitemap_url_count, webmastertools.SitemapUrlCount)
-      self.assert_(entry.sitemap_status.text == 'StatusValue')
-      self.assert_(entry.sitemap_last_downloaded.text ==\
+      self.assertTrue(entry.sitemap_url_count, webmastertools.SitemapUrlCount)
+      self.assertTrue(entry.sitemap_status.text == 'StatusValue')
+      self.assertTrue(entry.sitemap_last_downloaded.text ==\
           '2006-11-18T19:27:32.543Z')
-      self.assert_(entry.sitemap_url_count.text == '102')
+      self.assertTrue(entry.sitemap_url_count.text == '102')
       if entry.id.text == 'http://www.example.com/sitemap-index.xml':
-        self.assert_(entry.sitemap_type, webmastertools.SitemapType)
-        self.assert_(entry.sitemap_type.text == 'WEB')
-        self.assert_(entry.sitemap_mobile_markup_language is None)
-        self.assert_(entry.sitemap_news_publication_label is None)
+        self.assertTrue(entry.sitemap_type, webmastertools.SitemapType)
+        self.assertTrue(entry.sitemap_type.text == 'WEB')
+        self.assertTrue(entry.sitemap_mobile_markup_language is None)
+        self.assertTrue(entry.sitemap_news_publication_label is None)
       elif entry.id.text == 'http://www.example.com/mobile/sitemap-index.xml':
-        self.assert_(entry.sitemap_mobile_markup_language,
+        self.assertTrue(entry.sitemap_mobile_markup_language,
             webmastertools.SitemapMobileMarkupLanguage)
-        self.assert_(entry.sitemap_mobile_markup_language.text == 'HTML')
-        self.assert_(entry.sitemap_type is None)
-        self.assert_(entry.sitemap_news_publication_label is None)
+        self.assertTrue(entry.sitemap_mobile_markup_language.text == 'HTML')
+        self.assertTrue(entry.sitemap_type is None)
+        self.assertTrue(entry.sitemap_news_publication_label is None)
       elif entry.id.text == 'http://www.example.com/news/sitemap-index.xml':
-        self.assert_(entry.sitemap_news_publication_label,
+        self.assertTrue(entry.sitemap_news_publication_label,
             webmastertools.SitemapNewsPublicationLabel)
-        self.assert_(entry.sitemap_news_publication_label.text == 'LabelValue')
-        self.assert_(entry.sitemap_type is None)
-        self.assert_(entry.sitemap_mobile_markup_language is None)
+        self.assertTrue(entry.sitemap_news_publication_label.text == 'LabelValue')
+        self.assertTrue(entry.sitemap_type is None)
+        self.assertTrue(entry.sitemap_mobile_markup_language is None)
 
 
 class SitemapsFeedTest(unittest.TestCase):
@@ -497,13 +497,13 @@ class SitemapsFeedTest(unittest.TestCase):
         test_data.SITEMAPS_FEED)
     
   def testToAndFromString(self):
-    self.assert_(len(self.feed.entry) == 3)
+    self.assertTrue(len(self.feed.entry) == 3)
     for entry in self.feed.entry:
-      self.assert_(isinstance(entry, webmastertools.SitemapsEntry))
+      self.assertTrue(isinstance(entry, webmastertools.SitemapsEntry))
     new_feed = webmastertools.SitemapsFeedFromString(self.feed.ToString())
-    self.assert_(len(new_feed.entry) == 3)
+    self.assertTrue(len(new_feed.entry) == 3)
     for entry in new_feed.entry:
-      self.assert_(isinstance(entry, webmastertools.SitemapsEntry))
+      self.assertTrue(isinstance(entry, webmastertools.SitemapsEntry))
 
 
 if __name__ == '__main__':

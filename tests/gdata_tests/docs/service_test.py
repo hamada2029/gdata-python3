@@ -20,7 +20,7 @@ __author__ = ('api.jfisher (Jeff Fisher), '
 import getpass
 import os
 import re
-import StringIO
+import io
 import time
 import unittest
 
@@ -55,12 +55,12 @@ class DocumentListQueryTest(DocumentsListServiceTest):
     self.feed = self.client.GetDocumentListFeed()
 
   def testGetDocumentsListFeed(self):
-    self.assert_(isinstance(self.feed, gdata.docs.DocumentListFeed))
+    self.assertTrue(isinstance(self.feed, gdata.docs.DocumentListFeed))
     uri = 'http://docs.google.com/feeds/documents/private/full/?max-results=1'
 
     # Query using GetDocumentListFeed()
     feed = self.client.GetDocumentListFeed(uri)
-    self.assert_(isinstance(feed, gdata.docs.DocumentListFeed))
+    self.assertTrue(isinstance(feed, gdata.docs.DocumentListFeed))
     self.assertEqual(len(feed.entry), 1)
     self.assertEqual(self.feed.entry[0].id.text, feed.entry[0].id.text)
     self.assertEqual(self.feed.entry[0].title.text, feed.entry[0].title.text)
@@ -74,13 +74,13 @@ class DocumentListQueryTest(DocumentsListServiceTest):
   def testGetDocumentsListEntry(self):
     self_link = self.feed.entry[0].GetSelfLink().href
     entry = self.client.GetDocumentListEntry(self_link)
-    self.assert_(isinstance(entry, gdata.docs.DocumentListEntry))
+    self.assertTrue(isinstance(entry, gdata.docs.DocumentListEntry))
     self.assertEqual(self.feed.entry[0].id.text, entry.id.text)
     self.assertEqual(self.feed.entry[0].title.text, entry.title.text)
 
-    self.assert_(self.feed.entry[0].resourceId.text is not None)
-    self.assert_(self.feed.entry[0].lastModifiedBy is not None)
-    self.assert_(self.feed.entry[0].lastViewed is not None)
+    self.assertTrue(self.feed.entry[0].resourceId.text is not None)
+    self.assertTrue(self.feed.entry[0].lastModifiedBy is not None)
+    self.assertTrue(self.feed.entry[0].lastViewed is not None)
 
   def testGetDocumentsListAclFeed(self):
     uri = ('http://docs.google.com/feeds/documents/private/full/'
@@ -88,10 +88,10 @@ class DocumentListQueryTest(DocumentsListServiceTest):
     feed = self.client.GetDocumentListFeed(uri)
     feed_link = feed.entry[0].GetAclLink().href
     acl_feed = self.client.GetDocumentListAclFeed(feed_link)
-    self.assert_(isinstance(acl_feed, gdata.docs.DocumentListAclFeed))
-    self.assert_(isinstance(acl_feed.entry[0], gdata.docs.DocumentListAclEntry))
-    self.assert_(acl_feed.entry[0].scope is not None)
-    self.assert_(acl_feed.entry[0].role is not None)
+    self.assertTrue(isinstance(acl_feed, gdata.docs.DocumentListAclFeed))
+    self.assertTrue(isinstance(acl_feed.entry[0], gdata.docs.DocumentListAclEntry))
+    self.assertTrue(acl_feed.entry[0].scope is not None)
+    self.assertTrue(acl_feed.entry[0].role is not None)
 
 
 class DocumentListAclTest(DocumentsListServiceTest):
@@ -115,7 +115,7 @@ class DocumentListAclTest(DocumentsListServiceTest):
         gdata.docs.DocumentListAclEntry(scope=scope, role=role),
         self.feed.entry[0].GetAclLink().href,
         converter=gdata.docs.DocumentListAclEntryFromString)
-    self.assert_(isinstance(acl_entry, gdata.docs.DocumentListAclEntry))
+    self.assertTrue(isinstance(acl_entry, gdata.docs.DocumentListAclEntry))
     self.assertEqual(acl_entry.scope.value, self.EMAIL)
     self.assertEqual(acl_entry.scope.type, self.SCOPE_TYPE)
     self.assertEqual(acl_entry.role.value, self.ROLE_VALUE)
@@ -139,7 +139,7 @@ class DocumentListAclTest(DocumentsListServiceTest):
     acl_feed = self.client.GetDocumentListAclFeed(
         self.feed.entry[0].GetAclLink().href)
     for acl_entry in acl_feed.entry:
-      self.assert_(acl_entry.scope.value != self.EMAIL)
+      self.assertTrue(acl_entry.scope.value != self.EMAIL)
 
 
 class DocumentListCreateAndDeleteTest(DocumentsListServiceTest):
@@ -253,7 +253,7 @@ class DocumentListMoveInAndOutOfFolderTest(DocumentsListServiceTest):
     for category in moved_entry.category:
       starts_with_folder__prefix = category.scheme.startswith(
           gdata.docs.service.FOLDERS_SCHEME_PREFIX)
-      self.assert_(not starts_with_folder__prefix)
+      self.assertTrue(not starts_with_folder__prefix)
 
     created_entry = self.client.Get(created_entry.GetSelfLink().href)
     self.editClient.Delete(created_entry.GetEditLink().href)
@@ -269,7 +269,7 @@ class DocumentListMoveInAndOutOfFolderTest(DocumentsListServiceTest):
       if category.term == dest_folder_name:
         folder_was_moved = True
         break
-    self.assert_(folder_was_moved)
+    self.assertTrue(folder_was_moved)
 
     #cleanup
     dest_folder = self.client.Get(dest_folder.GetSelfLink().href)
@@ -284,7 +284,7 @@ class DocumentListUploadTest(DocumentsListServiceTest):
     entry = self.client.Upload(ms, 'test doc')
     self.assertEqual(entry.title.text, 'test doc')
     self.assertEqual(entry.category[0].label, 'document')
-    self.assert_(isinstance(entry, gdata.docs.DocumentListEntry))
+    self.assertTrue(isinstance(entry, gdata.docs.DocumentListEntry))
     self.editClient.Delete(entry.GetEditLink().href)
 
   def testUploadAndDeletePresentation(self):
@@ -294,17 +294,17 @@ class DocumentListUploadTest(DocumentsListServiceTest):
     self.assertEqual(entry.title.text, 'test preso')
     self.assertEqual(entry.category[0].label, 'viewed')
     self.assertEqual(entry.category[1].label, 'presentation')
-    self.assert_(isinstance(entry, gdata.docs.DocumentListEntry))
+    self.assertTrue(isinstance(entry, gdata.docs.DocumentListEntry))
     self.editClient.Delete(entry.GetEditLink().href)
 
   def testUploadAndDeleteSpreadsheet(self):
     ms = gdata.MediaSource(file_path='test.csv',
                            content_type='text/csv')
     entry = self.client.Upload(ms, 'test spreadsheet')
-    self.assert_(entry.title.text == 'test spreadsheet')
+    self.assertTrue(entry.title.text == 'test spreadsheet')
     self.assertEqual(entry.category[0].label, 'viewed')
     self.assertEqual(entry.category[1].label, 'spreadsheet')
-    self.assert_(isinstance(entry, gdata.docs.DocumentListEntry))
+    self.assertTrue(isinstance(entry, gdata.docs.DocumentListEntry))
     self.editClient.Delete(entry.GetEditLink().href)
 
 
@@ -341,7 +341,7 @@ class DocumentListUpdateTest(DocumentsListServiceTest):
 
     # Append content to document
     data = 'data to append'
-    ms = gdata.MediaSource(file_handle=StringIO.StringIO(data),
+    ms = gdata.MediaSource(file_handle=io.StringIO(data),
                            content_type='text/plain',
                            content_length=len(data))
     uri = updated_entry.GetEditMediaLink().href + '?append=true'
@@ -360,8 +360,8 @@ class DocumentListExportTest(DocumentsListServiceTest):
                   './downloadedTest.txt', './downloadedTest.zip']
     for path in file_paths:
       self.client.Export(feed.entry[0], path)
-      self.assert_(os.path.exists(path))
-      self.assert_(os.path.getsize(path))
+      self.assertTrue(os.path.exists(path))
+      self.assertTrue(os.path.getsize(path))
       os.remove(path)
 
   def testExportPresentation(self):
@@ -372,8 +372,8 @@ class DocumentListExportTest(DocumentsListServiceTest):
                   './downloadedTest.swf', './downloadedTest.txt']
     for path in file_paths:
       self.client.Export(feed.entry[0].resourceId.text, path)
-      self.assert_(os.path.exists(path))
-      self.assert_(os.path.getsize(path))
+      self.assertTrue(os.path.exists(path))
+      self.assertTrue(os.path.getsize(path))
       os.remove(path)
 
   def testExportSpreadsheet(self):
@@ -387,8 +387,8 @@ class DocumentListExportTest(DocumentsListServiceTest):
     self.client.SetClientLoginToken(self.spreadsheets.GetClientLoginToken())
     for path in file_paths:
       self.client.Export(feed.entry[0], path)
-      self.assert_(os.path.exists(path))
-      self.assert_(os.path.getsize(path) > 0)
+      self.assertTrue(os.path.exists(path))
+      self.assertTrue(os.path.getsize(path) > 0)
       os.remove(path)
     self.client.SetClientLoginToken(docs_token)
 
@@ -397,15 +397,15 @@ class DocumentListExportTest(DocumentsListServiceTest):
     exception_raised = False
     try:
       self.client.Export('non_existent_doc', path)
-    except Exception, e:  # expected
+    except Exception as e:  # expected
       exception_raised = True
-      self.assert_(exception_raised)
-      self.assert_(not os.path.exists(path))
+      self.assertTrue(exception_raised)
+      self.assertTrue(not os.path.exists(path))
 
 if __name__ == '__main__':
   print ('DocList API Tests\nNOTE: Please run these tests only with a test '
          'account. The tests may delete or update your data.')
-  username = raw_input('Please enter your username: ')
+  username = input('Please enter your username: ')
   password = getpass.getpass()
   if client.GetClientLoginToken() is None:
     client.ClientLogin(username, password,

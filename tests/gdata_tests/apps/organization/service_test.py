@@ -20,7 +20,7 @@
 __author__ = 'Alexandre Vivien (alex@simplecode.fr)'
 
 
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import unittest
 try:
   from xml.etree import ElementTree
@@ -71,8 +71,8 @@ class OrganizationTest(unittest.TestCase):
                                                    given_name=given_name,
                                                    password=password,
                                                    suspended=suspended)
-      print 'User ' + user_name + ' created'
-    except Exception, e:
+      print('User ' + user_name + ' created')
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
     self.created_users.append(self.user_yuji)
@@ -89,8 +89,8 @@ class OrganizationTest(unittest.TestCase):
                                                    given_name=given_name,
                                                    password=password,
                                                    suspended=suspended)
-      print 'User ' + user_name + ' created'
-    except Exception, e:
+      print('User ' + user_name + ' created')
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
     self.created_users.append(self.user_taro)
@@ -107,28 +107,28 @@ class OrganizationTest(unittest.TestCase):
                                                    given_name=given_name,
                                                    password=password,
                                                    suspended=suspended)
-      print 'User ' + user_name + ' created'
-    except Exception, e:
+      print('User ' + user_name + ' created')
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
     self.created_users.append(self.user_alex)
 
   def tearDown(self):
-    print '\n'
+    print('\n')
     for user in self.created_users:
       try:
         self.apps_client.DeleteUser(user.login.user_name)
-        print 'User ' + user.login.user_name + ' deleted'
-      except Exception, e:
-        print e
+        print('User ' + user.login.user_name + ' deleted')
+      except Exception as e:
+        print(e)
     # We reverse to delete sub OrgUnit first
     self.created_org_units.reverse()
     for org_unit_path in self.created_org_units:
       try:
         self.organization_client.DeleteOrgUnit(self.customer_id, org_unit_path)
-        print 'OrgUnit ' + org_unit_path + ' deleted'
-      except Exception, e:
-        print e
+        print('OrgUnit ' + org_unit_path + ' deleted')
+      except Exception as e:
+        print(e)
 
   def testOrganizationService(self):
 
@@ -136,9 +136,9 @@ class OrganizationTest(unittest.TestCase):
     try:
       customer = self.organization_client.RetrieveCustomerId()
       self.customer_id = customer['customerId']
-    except Exception, e:
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
-    print 'tests RetrieveCustomerId successful'
+    print('tests RetrieveCustomerId successful')
     
     # tests CreateOrgUnit method
     orgUnit01_name = 'OrgUnit01-' + self.postfix
@@ -166,29 +166,29 @@ class OrganizationTest(unittest.TestCase):
                                                          parent_org_unit_path='/',
                                                          description='OrgUnit Test 03',
                                                          block_inheritance=False)
-    except Exception, e:
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
     
-    self.assertEquals(orgUnit01['orgUnitPath'], urllib.quote_plus(orgUnit01_name))
-    self.assertEquals(orgUnit02['orgUnitPath'], urllib.quote_plus(orgUnit02_name))
-    self.assertEquals(sub0rgUnit01['orgUnitPath'], urllib.quote_plus(orgUnit02_name) + '/' + urllib.quote_plus(sub0rgUnit01_name))
-    self.assertEquals(orgUnit03['orgUnitPath'], urllib.quote_plus(orgUnit03_name))
+    self.assertEqual(orgUnit01['orgUnitPath'], urllib.parse.quote_plus(orgUnit01_name))
+    self.assertEqual(orgUnit02['orgUnitPath'], urllib.parse.quote_plus(orgUnit02_name))
+    self.assertEqual(sub0rgUnit01['orgUnitPath'], urllib.parse.quote_plus(orgUnit02_name) + '/' + urllib.parse.quote_plus(sub0rgUnit01_name))
+    self.assertEqual(orgUnit03['orgUnitPath'], urllib.parse.quote_plus(orgUnit03_name))
     self.created_org_units.append(orgUnit01['orgUnitPath'])
     self.created_org_units.append(orgUnit02['orgUnitPath'])
     self.created_org_units.append(sub0rgUnit01['orgUnitPath'])
     self.created_org_units.append(orgUnit03['orgUnitPath'])
-    print 'tests CreateOrgUnit successful'
+    print('tests CreateOrgUnit successful')
     
     # tests UpdateOrgUnit method
     try:
       updated_orgunit = self.organization_client.UpdateOrgUnit(self.customer_id,
                                                                org_unit_path=self.created_org_units[3],
                                                                description='OrgUnit Test 03 Updated description')
-    except Exception, e:
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
-    self.assertEquals(updated_orgunit['orgUnitPath'], self.created_org_units[3])
-    print 'tests UpdateOrgUnit successful'
+    self.assertEqual(updated_orgunit['orgUnitPath'], self.created_org_units[3])
+    print('tests UpdateOrgUnit successful')
 
     # tests RetrieveOrgUnit method
     try:
@@ -196,21 +196,21 @@ class OrganizationTest(unittest.TestCase):
                                                                    org_unit_path=self.created_org_units[1])
       retrieved_suborgunit = self.organization_client.RetrieveOrgUnit(self.customer_id,
                                                                       org_unit_path=self.created_org_units[2])
-    except Exception, e:
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
-    self.assertEquals(retrieved_orgunit['orgUnitPath'], self.created_org_units[1])
-    self.assertEquals(retrieved_suborgunit['orgUnitPath'], self.created_org_units[2])
-    print 'tests RetrieveOrgUnit successful'
+    self.assertEqual(retrieved_orgunit['orgUnitPath'], self.created_org_units[1])
+    self.assertEqual(retrieved_suborgunit['orgUnitPath'], self.created_org_units[2])
+    print('tests RetrieveOrgUnit successful')
    
     # tests RetrieveAllOrgUnits method
     try:
       retrieved_orgunits = self.organization_client.RetrieveAllOrgUnits(self.customer_id)
-    except Exception, e:
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
     self.assertTrue(len(retrieved_orgunits) >= len(self.created_org_units))
-    print 'tests RetrieveAllOrgUnits successful'
+    print('tests RetrieveAllOrgUnits successful')
    
     # tests MoveUserToOrgUnit method
     try:
@@ -221,56 +221,56 @@ class OrganizationTest(unittest.TestCase):
                                                                      org_unit_path=self.created_org_units[1],
                                                                      users_to_move=[self.user_taro.login.user_name + '@' + domain,
                                                                                     self.user_alex.login.user_name + '@' + domain])
-    except Exception, e:
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
-    self.assertEquals(updated_orgunit01['usersMoved'], self.user_yuji.login.user_name + '@' + domain)
-    self.assertEquals(updated_orgunit02['usersMoved'], self.user_taro.login.user_name + '@' + domain + ',' + \
+    self.assertEqual(updated_orgunit01['usersMoved'], self.user_yuji.login.user_name + '@' + domain)
+    self.assertEqual(updated_orgunit02['usersMoved'], self.user_taro.login.user_name + '@' + domain + ',' + \
                                                        self.user_alex.login.user_name + '@' + domain)
-    print 'tests MoveUserToOrgUnit successful'
+    print('tests MoveUserToOrgUnit successful')
     
     # tests RetrieveSubOrgUnits method
     try:
       retrieved_suborgunits = self.organization_client.RetrieveSubOrgUnits(self.customer_id,
                                                                            org_unit_path=self.created_org_units[1])
-    except Exception, e:
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
-    self.assertEquals(len(retrieved_suborgunits), 1)
-    self.assertEquals(retrieved_suborgunits[0]['orgUnitPath'], self.created_org_units[2])
-    print 'tests RetrieveSubOrgUnits successful'
+    self.assertEqual(len(retrieved_suborgunits), 1)
+    self.assertEqual(retrieved_suborgunits[0]['orgUnitPath'], self.created_org_units[2])
+    print('tests RetrieveSubOrgUnits successful')
     
     # tests RetrieveOrgUser method
     try:
       retrieved_orguser = self.organization_client.RetrieveOrgUser(self.customer_id,
                                                                    user_email=self.user_yuji.login.user_name + '@' + domain)
-    except Exception, e:
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
-    self.assertEquals(retrieved_orguser['orgUserEmail'], self.user_yuji.login.user_name + '@' + domain)
-    self.assertEquals(retrieved_orguser['orgUnitPath'], self.created_org_units[0])
-    print 'tests RetrieveOrgUser successful'
+    self.assertEqual(retrieved_orguser['orgUserEmail'], self.user_yuji.login.user_name + '@' + domain)
+    self.assertEqual(retrieved_orguser['orgUnitPath'], self.created_org_units[0])
+    print('tests RetrieveOrgUser successful')
     
     # tests UpdateOrgUser method
     try:
       updated_orguser = self.organization_client.UpdateOrgUser(self.customer_id,
                                                                org_unit_path=self.created_org_units[0],
                                                                user_email=self.user_alex.login.user_name + '@' + domain)
-    except Exception, e:
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
-    self.assertEquals(updated_orguser['orgUserEmail'], self.user_alex.login.user_name + '@' + domain)
-    self.assertEquals(updated_orguser['orgUnitPath'], self.created_org_units[0])
-    print 'tests UpdateOrgUser successful'
+    self.assertEqual(updated_orguser['orgUserEmail'], self.user_alex.login.user_name + '@' + domain)
+    self.assertEqual(updated_orguser['orgUnitPath'], self.created_org_units[0])
+    print('tests UpdateOrgUser successful')
   
     # tests RetrieveAllOrgUsers method
     try:
       retrieved_orgusers = self.organization_client.RetrieveAllOrgUsers(self.customer_id)
-    except Exception, e:
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
     self.assertTrue(len(retrieved_orgusers) >= len(self.created_users))
-    print 'tests RetrieveAllOrgUsers successful'
+    print('tests RetrieveAllOrgUsers successful')
     
     """ This test needs to create more than 100 test users
     # tests RetrievePageOfOrgUsers method
@@ -293,11 +293,11 @@ class OrganizationTest(unittest.TestCase):
     try:
       retrieved_orgusers = self.organization_client.RetrieveOrgUnitUsers(self.customer_id,
                                                                          org_unit_path=self.created_org_units[0])
-    except Exception, e:
+    except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
-    self.assertEquals(len(retrieved_orgusers), 2)
-    print 'tests RetrieveOrgUnitUsers successful'
+    self.assertEqual(len(retrieved_orgusers), 2)
+    print('tests RetrieveOrgUnitUsers successful')
     
     """ This test needs to create more than 100 test users
     # tests RetrieveOrgUnitPageOfUsers method
@@ -324,7 +324,7 @@ if __name__ == '__main__':
 
 NOTE: Please run these tests only with a test user account.
 """)
-  domain = raw_input('Google Apps domain: ')
-  admin_email = '%s@%s' % (raw_input('Administrator username: '), domain)
+  domain = input('Google Apps domain: ')
+  admin_email = '%s@%s' % (input('Administrator username: '), domain)
   admin_password = getpass.getpass('Administrator password: ')
   unittest.main()

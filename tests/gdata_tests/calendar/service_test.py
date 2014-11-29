@@ -46,11 +46,11 @@ class CalendarServiceUnitTest(unittest.TestCase):
     pass
 
   def testUrlScrubbing(self):
-    self.assertEquals(self.cal_client._RemoveStandardUrlPrefix(
+    self.assertEqual(self.cal_client._RemoveStandardUrlPrefix(
         '/test'), '/test')
-    self.assertEquals(self.cal_client._RemoveStandardUrlPrefix(
+    self.assertEqual(self.cal_client._RemoveStandardUrlPrefix(
         'http://www.google.com/calendar/test'), '/calendar/test')
-    self.assertEquals(self.cal_client._RemoveStandardUrlPrefix(
+    self.assertEqual(self.cal_client._RemoveStandardUrlPrefix(
         'https://www.google.com/calendar/test'),
         'https://www.google.com/calendar/test')
 
@@ -67,22 +67,22 @@ class CalendarServiceUnitTest(unittest.TestCase):
     calendar = gdata.calendar.CalendarListEntry()
     calendar.id = atom.Id(text=subscription_id)
     returned_calendar = self.cal_client.InsertCalendarSubscription(calendar)
-    self.assertEquals(subscription_url, returned_calendar.id.text)
-    self.assertEquals('Google Doodles', returned_calendar.title.text)
+    self.assertEqual(subscription_url, returned_calendar.id.text)
+    self.assertEqual('Google Doodles', returned_calendar.title.text)
 
     # Update subscription
     calendar_to_update = self.cal_client.GetCalendarListEntry(subscription_url)
-    self.assertEquals('Google Doodles', calendar_to_update.title.text) 
-    self.assertEquals('true', calendar_to_update.selected.value) 
+    self.assertEqual('Google Doodles', calendar_to_update.title.text) 
+    self.assertEqual('true', calendar_to_update.selected.value) 
     calendar_to_update.selected.value = 'false'
-    self.assertEquals('false', calendar_to_update.selected.value) 
+    self.assertEqual('false', calendar_to_update.selected.value) 
     updated_calendar = self.cal_client.UpdateCalendar(calendar_to_update)
-    self.assertEquals('false', updated_calendar.selected.value) 
+    self.assertEqual('false', updated_calendar.selected.value) 
     
     # Delete subscription
     response = self.cal_client.DeleteCalendarEntry(
         returned_calendar.GetEditLink().href)
-    self.assertEquals(True, response)
+    self.assertEqual(True, response)
 
   def testPostUpdateAndDeleteCalendar(self):
     """Test posting a new calendar, updating it, deleting it"""
@@ -110,15 +110,15 @@ class CalendarServiceUnitTest(unittest.TestCase):
 
     # Create calendar
     new_calendar = self.cal_client.InsertCalendar(new_calendar=calendar)
-    self.assertEquals(title, new_calendar.title.text)
-    self.assertEquals(description, new_calendar.summary.text)
-    self.assertEquals(location, new_calendar.where.value_string)
-    self.assertEquals(color, new_calendar.color.value)
-    self.assertEquals(time_zone, new_calendar.timezone.value)
+    self.assertEqual(title, new_calendar.title.text)
+    self.assertEqual(description, new_calendar.summary.text)
+    self.assertEqual(location, new_calendar.where.value_string)
+    self.assertEqual(color, new_calendar.color.value)
+    self.assertEqual(time_zone, new_calendar.timezone.value)
     if hidden:
-      self.assertEquals('true', new_calendar.hidden.value) 
+      self.assertEqual('true', new_calendar.hidden.value) 
     else:
-      self.assertEquals('false', new_calendar.hidden.value) 
+      self.assertEqual('false', new_calendar.hidden.value) 
 
     # Update calendar
     calendar_to_update = self.cal_client.GetCalendarListEntry(
@@ -126,7 +126,7 @@ class CalendarServiceUnitTest(unittest.TestCase):
     updated_title = 'This is the updated title'
     calendar_to_update.title.text = updated_title 
     updated_calendar = self.cal_client.UpdateCalendar(calendar_to_update)
-    self.assertEquals(updated_title, updated_calendar.title.text)
+    self.assertEqual(updated_title, updated_calendar.title.text)
    
     # Delete calendar
     calendar_to_delete  = self.cal_client.GetCalendarListEntry(
@@ -157,7 +157,7 @@ class CalendarServiceUnitTest(unittest.TestCase):
     new_event = self.cal_client.InsertEvent(event, 
         '/calendar/feeds/default/private/full')
 
-    self.assertEquals(event.extended_property[0].value,
+    self.assertEqual(event.extended_property[0].value,
         new_event.extended_property[0].value)
 
     # Delete the event
@@ -239,11 +239,11 @@ class CalendarServiceUnitTest(unittest.TestCase):
         '/calendar/feeds/default/private/full')
 
     # Ensure that atom data returned from calendar server equals atom data sent 
-    self.assertEquals(event.title.text, new_event.title.text)
-    self.assertEquals(event.content.text, new_event.content.text)
+    self.assertEqual(event.title.text, new_event.title.text)
+    self.assertEqual(event.content.text, new_event.content.text)
 
     # Ensure that gd:where data returned from calendar equals value sent
-    self.assertEquals(event.where[0].value_string,
+    self.assertEqual(event.where[0].value_string,
         new_event.where[0].value_string)
 
     # Commented out as dateutil is not in this repository
@@ -265,7 +265,7 @@ class CalendarServiceUnitTest(unittest.TestCase):
         event_to_update.GetEditLink().href, event_to_update)
 
     # Ensure that updated title was set in the updated event
-    self.assertEquals(event_to_update.title.text, updated_event.title.text)
+    self.assertEqual(event_to_update.title.text, updated_event.title.text)
 
     # Delete the event
     self.cal_client.DeleteEvent(updated_event.GetEditLink().href)
@@ -279,11 +279,11 @@ class CalendarServiceUnitTest(unittest.TestCase):
         after_delete_query)
 
     # Ensure feed returned at max after_delete_query.max_results events 
-    self.assert_(
+    self.assertTrue(
         len(after_delete_query_result.entry) <= after_delete_query.max_results)
 
     # Ensure status of returned event is canceled
-    self.assertEquals(after_delete_query_result.entry[0].event_status.value,
+    self.assertEqual(after_delete_query_result.entry[0].event_status.value,
         'CANCELED')
 
   def testEventWithSyncEventAndUID(self):
@@ -313,7 +313,7 @@ class CalendarServiceUnitTest(unittest.TestCase):
     # the format doesn't seem to be important per the RFC except for being
     # globally unique.
     uid_string = ''
-    for i in xrange(121):
+    for i in range(121):
       uid_string += "%X" % r.randint(0, 0xf)
 
     # Set event data
@@ -337,7 +337,7 @@ class CalendarServiceUnitTest(unittest.TestCase):
       bad_event = self.cal_client.InsertEvent(event,
           '/calendar/feeds/default/private/full')
       self.fail('Was able to insert an event with a duplicate UID')
-    except gdata.service.RequestError, error:
+    except gdata.service.RequestError as error:
       # for the current problem with redirects, just re-raise so the
       # failure doesn't seem to be because of the duplicate UIDs.
       status = error[0]['status']
@@ -345,16 +345,16 @@ class CalendarServiceUnitTest(unittest.TestCase):
         raise
 
       # otherwise, make sure it was the right error
-      self.assertEquals(error[0]['status'], 409)
-      self.assertEquals(error[0]['reason'], 'Conflict')
+      self.assertEqual(error[0]['status'], 409)
+      self.assertEqual(error[0]['reason'], 'Conflict')
 
     # Ensure that atom data returned from calendar server equals atom data
     # sent
-    self.assertEquals(event.title.text, new_event.title.text)
-    self.assertEquals(event.content.text, new_event.content.text)
+    self.assertEqual(event.title.text, new_event.title.text)
+    self.assertEqual(event.content.text, new_event.content.text)
 
     # Ensure that gd:where data returned from calendar equals value sent
-    self.assertEquals(event.where[0].value_string,
+    self.assertEqual(event.where[0].value_string,
         new_event.where[0].value_string)
 
     # Delete the event
@@ -384,11 +384,11 @@ class CalendarServiceUnitTest(unittest.TestCase):
     batch_result = self.cal_client.ExecuteBatch(batch_request, 
         gdata.calendar.service.DEFAULT_BATCH_URL)
 
-    self.assertEquals(len(batch_result.entry), 1)
-    self.assertEquals(batch_result.entry[0].title.text, random_event_title)
-    self.assertEquals(batch_result.entry[0].batch_operation.type, 
+    self.assertEqual(len(batch_result.entry), 1)
+    self.assertEqual(batch_result.entry[0].title.text, random_event_title)
+    self.assertEqual(batch_result.entry[0].batch_operation.type, 
                       gdata.BATCH_INSERT)
-    self.assertEquals(batch_result.GetBatchLink().href, 
+    self.assertEqual(batch_result.GetBatchLink().href, 
                       gdata.calendar.service.DEFAULT_BATCH_URL)
 
     # Create a batch request to delete the newly created entry.
@@ -397,15 +397,15 @@ class CalendarServiceUnitTest(unittest.TestCase):
   
     batch_delete_result = self.cal_client.ExecuteBatch(batch_delete_request, 
         batch_result.GetBatchLink().href)
-    self.assertEquals(len(batch_delete_result.entry), 1)
-    self.assertEquals(batch_delete_result.entry[0].batch_operation.type, 
+    self.assertEqual(len(batch_delete_result.entry), 1)
+    self.assertEqual(batch_delete_result.entry[0].batch_operation.type, 
                       gdata.BATCH_DELETE)
 
   def testCorrectReturnTypesForGetMethods(self):
     self.cal_client.ProgrammaticLogin()
 
     result = self.cal_client.GetCalendarEventFeed()
-    self.assertEquals(isinstance(result, gdata.calendar.CalendarEventFeed), 
+    self.assertEqual(isinstance(result, gdata.calendar.CalendarEventFeed), 
                       True)
 
   def testValidHostName(self):
@@ -417,11 +417,11 @@ class CalendarServiceUnitTest(unittest.TestCase):
     self.cal_client.ssl = True
     self.cal_client.http_client = mock_http
     self.cal_client.SetAuthSubToken('foo')
-    self.assertEquals(str(self.cal_client.token_store.find_token(
+    self.assertEqual(str(self.cal_client.token_store.find_token(
         'https://www.google.com/calendar/feeds/default/allcalendars/full')),
         'AuthSub token=foo')
     resp = self.cal_client.Get('/calendar/feeds/default/allcalendars/full')
-    self.assert_(resp is not None)
+    self.assertTrue(resp is not None)
 
 
 class CalendarEventQueryUnitTest(unittest.TestCase):
@@ -431,31 +431,31 @@ class CalendarEventQueryUnitTest(unittest.TestCase):
 
   def testOrderByValidatesValues(self):
     self.query.orderby = 'lastmodified'
-    self.assertEquals(self.query.orderby, 'lastmodified')
+    self.assertEqual(self.query.orderby, 'lastmodified')
     try:
       self.query.orderby = 'illegal input'
       self.fail()
     except gdata.calendar.service.Error:
-      self.assertEquals(self.query.orderby, 'lastmodified')
+      self.assertEqual(self.query.orderby, 'lastmodified')
       
   def testSortOrderValidatesValues(self):
     self.query.sortorder = 'a'
-    self.assertEquals(self.query.sortorder, 'a')
+    self.assertEqual(self.query.sortorder, 'a')
     try:
       self.query.sortorder = 'illegal input'
       self.fail()
     except gdata.calendar.service.Error:
-      self.assertEquals(self.query.sortorder, 'a')
+      self.assertEqual(self.query.sortorder, 'a')
 
   def testTimezoneParameter(self):
     self.query.ctz = 'America/Los_Angeles'
-    self.assertEquals(self.query['ctz'], 'America/Los_Angeles')
-    self.assert_(self.query.ToUri().find('America%2FLos_Angeles') > -1)
+    self.assertEqual(self.query['ctz'], 'America/Los_Angeles')
+    self.assertTrue(self.query.ToUri().find('America%2FLos_Angeles') > -1)
 
 
 if __name__ == '__main__':
   print ('Google Calendar Test\nNOTE: Please run these tests only with a '
          'test account. The tests may delete or update your data.')
-  username = raw_input('Please enter your username: ')
+  username = input('Please enter your username: ')
   password = getpass.getpass()
   unittest.main()

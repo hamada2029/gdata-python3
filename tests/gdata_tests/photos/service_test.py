@@ -19,7 +19,7 @@ __author__ = 'api.jscudder (Jeffrey Scudder)'
 import getpass
 import time
 import unittest
-import StringIO
+import io
 import gdata.photos.service
 import gdata.photos
 import atom
@@ -49,9 +49,9 @@ class PhotosServiceTest(unittest.TestCase):
   def testUploadGetAndDeletePhoto(self):
     image_entry = self.client.InsertPhotoSimple(self.test_album,
         'test', 'a pretty testing picture', test_image_location)
-    self.assert_(image_entry.title.text == 'test')
+    self.assertTrue(image_entry.title.text == 'test')
     results_feed = self.client.SearchUserPhotos('test')
-    self.assert_(len(results_feed.entry) > 0)
+    self.assertTrue(len(results_feed.entry) > 0)
     self.client.Delete(image_entry)
 
   def testInsertPhotoUpdateBlobAndDelete(self):
@@ -63,9 +63,9 @@ class PhotosServiceTest(unittest.TestCase):
         term='http://schemas.google.com/photos/2007#photo'))
     entry = self.client.InsertPhoto(self.test_album, new_entry, 
         test_image_location, content_type='image/jpeg')
-    self.assert_(entry.id.text)
+    self.assertTrue(entry.id.text)
     updated_entry = self.client.UpdatePhotoBlob(entry, test_image_location)
-    self.assert_(entry.GetEditLink().href != updated_entry.GetEditLink().href)
+    self.assertTrue(entry.GetEditLink().href != updated_entry.GetEditLink().href)
     self.client.Delete(updated_entry)
 
   def tearDown(self):
@@ -77,6 +77,6 @@ class PhotosServiceTest(unittest.TestCase):
 if __name__ == '__main__':
   print ('Google Photos test\nNOTE: Please run these tests only with a test '
          'account. The tests may delete or update your data.')
-  username = raw_input('Please enter your username: ')
+  username = input('Please enter your username: ')
   password = getpass.getpass()
   unittest.main()

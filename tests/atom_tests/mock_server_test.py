@@ -45,10 +45,10 @@ class MockRequestTest(unittest.TestCase):
             'Header2':'1', 'Header3':'c'})
     bad_verb = atom.mock_service.MockRequest('POST', 'http://www.google.com',
         data='post data', extra_headers={'Header1':'a', 'Header2':'b'})
-    self.assertEquals(self.request_thumbprint.IsMatch(matching_request), True)
-    self.assertEquals(self.request_thumbprint.IsMatch(bad_url), False)
-    self.assertEquals(self.request_thumbprint.IsMatch(bad_header), True)
-    self.assertEquals(self.request_thumbprint.IsMatch(bad_verb), False)
+    self.assertEqual(self.request_thumbprint.IsMatch(matching_request), True)
+    self.assertEqual(self.request_thumbprint.IsMatch(bad_url), False)
+    self.assertEqual(self.request_thumbprint.IsMatch(bad_header), True)
+    self.assertEqual(self.request_thumbprint.IsMatch(bad_verb), False)
 
 
 class HttpRequestTest(unittest.TestCase):
@@ -65,14 +65,14 @@ class HttpRequestTest(unittest.TestCase):
     atom.mock_service.recordings.append((recorded_request, recorded_response))
     # Try a couple of GET requests which should match the recorded request.
     response = self.client.Get('http://example.com/', converter=str)
-    self.assertEquals(response, 'Got it')
+    self.assertEqual(response, 'Got it')
 
     self.client.server = 'example.com'
     raw_response = self.client.handler.HttpRequest(self.client, 'GET', None, 
         '/')
-    self.assertEquals(raw_response.read(), 'Got it')
-    self.assertEquals(raw_response.status, 200)
-    self.assertEquals(raw_response.reason, 'OK')
+    self.assertEqual(raw_response.read(), 'Got it')
+    self.assertEqual(raw_response.status, 200)
+    self.assertEqual(raw_response.reason, 'OK')
 
 
 class RecordRealHttpRequestsTest(unittest.TestCase):
@@ -88,9 +88,9 @@ class RecordRealHttpRequestsTest(unittest.TestCase):
     # Enter 'replay' mode
     atom.mock_service.real_request_handler = None
     mock_response = atom.mock_service.HttpRequest(client, 'GET', None, 'http://www.google.com/')
-    self.assertEquals(real_response.reason, mock_response.reason)
-    self.assertEquals(real_response.status, mock_response.status)
-    self.assertEquals(real_response.read(), mock_response.read())
+    self.assertEqual(real_response.reason, mock_response.reason)
+    self.assertEqual(real_response.status, mock_response.status)
+    self.assertEqual(real_response.read(), mock_response.read())
     
 
 if __name__ == '__main__':

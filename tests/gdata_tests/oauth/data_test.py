@@ -170,8 +170,8 @@ class OAuthRequestTest(OAuthTest):
     
   def test_get_nonoauth_parameters(self):
     non_oauth_params = self.oauth_request.get_nonoauth_parameters()
-    self.assertTrue(non_oauth_params.has_key(self.non_oauth_param_message))
-    self.assertFalse(non_oauth_params.has_key(OAuthParameters.CONSUMER_KEY))
+    self.assertTrue(self.non_oauth_param_message in non_oauth_params)
+    self.assertFalse(OAuthParameters.CONSUMER_KEY in non_oauth_params)
       
   def test_to_header(self):
     realm = 'google'
@@ -185,7 +185,7 @@ class OAuthRequestTest(OAuthTest):
       self.assertTrue(header_with_realm.find(k) > -1)
 
   def check_for_params_in_string(self, params, s):
-    for k, v in params.iteritems():
+    for k, v in params.items():
       self.assertTrue(s.find(oauth.escape(k)) > -1)
       self.assertTrue(s.find(oauth.escape(v)) > -1)
           
@@ -209,7 +209,7 @@ class OAuthRequestTest(OAuthTest):
     
     key_values = [tuple(kv.split('=')) for kv in normalized_params.split('&')]
     del _params[OAuthParameters.SIGNATURE]
-    expected_key_values = _params.items()
+    expected_key_values = list(_params.items())
     expected_key_values.sort()
     
     for k, v in expected_key_values:

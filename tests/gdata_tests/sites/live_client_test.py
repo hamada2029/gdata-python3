@@ -61,7 +61,7 @@ class SitesClientTest(unittest.TestCase):
 
     self.assertEqual(new_entry.title.text, 'Title Of Page')
     self.assertEqual(new_entry.page_name.text, 'title-of-page')
-    self.assert_(new_entry.GetAlternateLink().href is not None)
+    self.assertTrue(new_entry.GetAlternateLink().href is not None)
     self.assertEqual(new_entry.Kind(), 'webpage')
 
     # Change the title of the webpage we just added.
@@ -70,7 +70,7 @@ class SitesClientTest(unittest.TestCase):
 
     self.assertEqual(updated_entry.title.text, 'Edited')
     self.assertEqual(updated_entry.page_name.text, 'title-of-page')
-    self.assert_(isinstance(updated_entry, gdata.sites.data.ContentEntry))
+    self.assertTrue(isinstance(updated_entry, gdata.sites.data.ContentEntry))
 
     # Delete the test webpage from the Site.
     self.client.delete(updated_entry)
@@ -88,7 +88,7 @@ class SitesClientTest(unittest.TestCase):
 
     self.assertEqual(filecabinet.title.text, 'FilesGoHere')
     self.assertEqual(filecabinet.page_name.text, 'diff-pagename-than-title')
-    self.assert_(filecabinet.GetAlternateLink().href is not None)
+    self.assertTrue(filecabinet.GetAlternateLink().href is not None)
     self.assertEqual(filecabinet.Kind(), 'filecabinet')
 
     # Upload a file to the filecabinet

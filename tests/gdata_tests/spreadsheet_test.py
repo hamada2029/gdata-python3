@@ -221,9 +221,9 @@ class ColCountTest(unittest.TestCase):
     
   def testToAndFromString(self):
     self.col_count.text = '20'
-    self.assert_(self.col_count.text == '20')
+    self.assertTrue(self.col_count.text == '20')
     new_col_count = gdata.spreadsheet.ColCountFromString(self.col_count.ToString())
-    self.assert_(self.col_count.text == new_col_count.text)
+    self.assertTrue(self.col_count.text == new_col_count.text)
 
 
 class RowCountTest(unittest.TestCase):
@@ -233,9 +233,9 @@ class RowCountTest(unittest.TestCase):
     
   def testToAndFromString(self):
     self.row_count.text = '100'
-    self.assert_(self.row_count.text == '100')
+    self.assertTrue(self.row_count.text == '100')
     new_row_count = gdata.spreadsheet.RowCountFromString(self.row_count.ToString())
-    self.assert_(self.row_count.text == new_row_count.text)
+    self.assertTrue(self.row_count.text == new_row_count.text)
 
 
 class CellTest(unittest.TestCase):
@@ -245,21 +245,21 @@ class CellTest(unittest.TestCase):
     
   def testToAndFromString(self):
     self.cell.text = 'test cell'
-    self.assert_(self.cell.text == 'test cell')
+    self.assertTrue(self.cell.text == 'test cell')
     self.cell.row = '1'
-    self.assert_(self.cell.row == '1')
+    self.assertTrue(self.cell.row == '1')
     self.cell.col = '2'
-    self.assert_(self.cell.col == '2')
+    self.assertTrue(self.cell.col == '2')
     self.cell.inputValue = 'test input value'
-    self.assert_(self.cell.inputValue == 'test input value')
+    self.assertTrue(self.cell.inputValue == 'test input value')
     self.cell.numericValue = 'test numeric value'
-    self.assert_(self.cell.numericValue == 'test numeric value')
+    self.assertTrue(self.cell.numericValue == 'test numeric value')
     new_cell = gdata.spreadsheet.CellFromString(self.cell.ToString())
-    self.assert_(self.cell.text == new_cell.text)
-    self.assert_(self.cell.row == new_cell.row)
-    self.assert_(self.cell.col == new_cell.col)
-    self.assert_(self.cell.inputValue == new_cell.inputValue)
-    self.assert_(self.cell.numericValue == new_cell.numericValue)
+    self.assertTrue(self.cell.text == new_cell.text)
+    self.assertTrue(self.cell.row == new_cell.row)
+    self.assertTrue(self.cell.col == new_cell.col)
+    self.assertTrue(self.cell.inputValue == new_cell.inputValue)
+    self.assertTrue(self.cell.numericValue == new_cell.numericValue)
     
 
 class CustomTest(unittest.TestCase):
@@ -270,11 +270,11 @@ class CustomTest(unittest.TestCase):
   def testToAndFromString(self):
     self.custom.text = 'value'
     self.custom.column = 'column_name'
-    self.assert_(self.custom.text == 'value')
-    self.assert_(self.custom.column == 'column_name')
+    self.assertTrue(self.custom.text == 'value')
+    self.assertTrue(self.custom.column == 'column_name')
     new_custom = gdata.spreadsheet.CustomFromString(self.custom.ToString())
-    self.assert_(self.custom.text == new_custom.text)
-    self.assert_(self.custom.column == new_custom.column)
+    self.assertTrue(self.custom.text == new_custom.text)
+    self.assertTrue(self.custom.column == new_custom.column)
     
 
 class SpreadsheetsWorksheetTest(unittest.TestCase):
@@ -284,13 +284,13 @@ class SpreadsheetsWorksheetTest(unittest.TestCase):
     
   def testToAndFromString(self):
     self.worksheet.row_count = gdata.spreadsheet.RowCount(text='100')
-    self.assert_(self.worksheet.row_count.text == '100')
+    self.assertTrue(self.worksheet.row_count.text == '100')
     self.worksheet.col_count = gdata.spreadsheet.ColCount(text='20')
-    self.assert_(self.worksheet.col_count.text == '20')
+    self.assertTrue(self.worksheet.col_count.text == '20')
     new_worksheet = gdata.spreadsheet.SpreadsheetsWorksheetFromString(
         self.worksheet.ToString())
-    self.assert_(self.worksheet.row_count.text == new_worksheet.row_count.text)
-    self.assert_(self.worksheet.col_count.text == new_worksheet.col_count.text)
+    self.assertTrue(self.worksheet.row_count.text == new_worksheet.row_count.text)
+    self.assertTrue(self.worksheet.col_count.text == new_worksheet.col_count.text)
 
 
 class SpreadsheetsCellTest(unittest.TestCase):
@@ -301,17 +301,17 @@ class SpreadsheetsCellTest(unittest.TestCase):
   def testToAndFromString(self):
     self.entry.cell = gdata.spreadsheet.Cell(text='my cell', row='1', col='2', 
         inputValue='my input value', numericValue='my numeric value')
-    self.assert_(self.entry.cell.text == 'my cell')
-    self.assert_(self.entry.cell.row == '1')
-    self.assert_(self.entry.cell.col == '2')
-    self.assert_(self.entry.cell.inputValue == 'my input value')
-    self.assert_(self.entry.cell.numericValue == 'my numeric value')
+    self.assertTrue(self.entry.cell.text == 'my cell')
+    self.assertTrue(self.entry.cell.row == '1')
+    self.assertTrue(self.entry.cell.col == '2')
+    self.assertTrue(self.entry.cell.inputValue == 'my input value')
+    self.assertTrue(self.entry.cell.numericValue == 'my numeric value')
     new_cell = gdata.spreadsheet.SpreadsheetsCellFromString(self.entry.ToString())
-    self.assert_(self.entry.cell.text == new_cell.cell.text)
-    self.assert_(self.entry.cell.row == new_cell.cell.row)
-    self.assert_(self.entry.cell.col == new_cell.cell.col)
-    self.assert_(self.entry.cell.inputValue == new_cell.cell.inputValue)
-    self.assert_(self.entry.cell.numericValue == new_cell.cell.numericValue)
+    self.assertTrue(self.entry.cell.text == new_cell.cell.text)
+    self.assertTrue(self.entry.cell.row == new_cell.cell.row)
+    self.assertTrue(self.entry.cell.col == new_cell.cell.col)
+    self.assertTrue(self.entry.cell.inputValue == new_cell.cell.inputValue)
+    self.assertTrue(self.entry.cell.numericValue == new_cell.cell.numericValue)
     
     
 class SpreadsheetsListTest(unittest.TestCase):
@@ -324,15 +324,15 @@ class SpreadsheetsListTest(unittest.TestCase):
         text='my first column')
     self.row.custom['column_2'] = gdata.spreadsheet.Custom(column='column_2', 
         text='my second column')
-    self.assert_(self.row.custom['column_1'].column == 'column_1')
-    self.assert_(self.row.custom['column_1'].text == 'my first column')
-    self.assert_(self.row.custom['column_2'].column == 'column_2')
-    self.assert_(self.row.custom['column_2'].text == 'my second column')
+    self.assertTrue(self.row.custom['column_1'].column == 'column_1')
+    self.assertTrue(self.row.custom['column_1'].text == 'my first column')
+    self.assertTrue(self.row.custom['column_2'].column == 'column_2')
+    self.assertTrue(self.row.custom['column_2'].text == 'my second column')
     new_row = gdata.spreadsheet.SpreadsheetsListFromString(self.row.ToString())
-    self.assert_(self.row.custom['column_1'].column == new_row.custom['column_1'].column)
-    self.assert_(self.row.custom['column_1'].text == new_row.custom['column_1'].text)
-    self.assert_(self.row.custom['column_2'].column == new_row.custom['column_2'].column)
-    self.assert_(self.row.custom['column_2'].text == new_row.custom['column_2'].text)
+    self.assertTrue(self.row.custom['column_1'].column == new_row.custom['column_1'].column)
+    self.assertTrue(self.row.custom['column_1'].text == new_row.custom['column_1'].text)
+    self.assertTrue(self.row.custom['column_2'].column == new_row.custom['column_2'].column)
+    self.assertTrue(self.row.custom['column_2'].text == new_row.custom['column_2'].text)
 
 
 class SpreadsheetsSpreadsheetsFeedTest(unittest.TestCase):
@@ -343,13 +343,13 @@ class SpreadsheetsSpreadsheetsFeedTest(unittest.TestCase):
         SPREADSHEETS_FEED)
 
   def testToAndFromString(self):
-    self.assert_(len(self.feed.entry) == 1)
+    self.assertTrue(len(self.feed.entry) == 1)
     for an_entry in self.feed.entry:
-      self.assert_(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsSpreadsheet))
+      self.assertTrue(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsSpreadsheet))
     new_feed = gdata.spreadsheet.SpreadsheetsSpreadsheetsFeedFromString(
         str(self.feed))
     for an_entry in new_feed.entry:
-      self.assert_(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsSpreadsheet))
+      self.assertTrue(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsSpreadsheet))
       
 class SpreadsheetsWorksheetsFeedTest(unittest.TestCase):
 
@@ -359,13 +359,13 @@ class SpreadsheetsWorksheetsFeedTest(unittest.TestCase):
         WORKSHEETS_FEED)
 
   def testToAndFromString(self):
-    self.assert_(len(self.feed.entry) == 1)
+    self.assertTrue(len(self.feed.entry) == 1)
     for an_entry in self.feed.entry:
-      self.assert_(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsWorksheet))
+      self.assertTrue(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsWorksheet))
     new_feed = gdata.spreadsheet.SpreadsheetsWorksheetsFeedFromString(
         str(self.feed))
     for an_entry in new_feed.entry:
-      self.assert_(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsWorksheet))
+      self.assertTrue(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsWorksheet))
       
 class SpreadsheetsCellsFeedTest(unittest.TestCase):
 
@@ -375,18 +375,18 @@ class SpreadsheetsCellsFeedTest(unittest.TestCase):
         CELLS_FEED)
 
   def testToAndFromString(self):
-    self.assert_(len(self.feed.entry) == 2)
+    self.assertTrue(len(self.feed.entry) == 2)
     for an_entry in self.feed.entry:
-      self.assert_(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsCell))
+      self.assertTrue(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsCell))
     new_feed = gdata.spreadsheet.SpreadsheetsCellsFeedFromString(str(self.feed))
-    self.assert_(isinstance(new_feed.row_count, 
+    self.assertTrue(isinstance(new_feed.row_count, 
         gdata.spreadsheet.RowCount))
-    self.assert_(new_feed.row_count.text == '100')
-    self.assert_(isinstance(new_feed.col_count, 
+    self.assertTrue(new_feed.row_count.text == '100')
+    self.assertTrue(isinstance(new_feed.col_count, 
         gdata.spreadsheet.ColCount))
-    self.assert_(new_feed.col_count.text == '20')
+    self.assertTrue(new_feed.col_count.text == '20')
     for an_entry in new_feed.entry:
-      self.assert_(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsCell))
+      self.assertTrue(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsCell))
       
 class SpreadsheetsListFeedTest(unittest.TestCase):
 
@@ -396,12 +396,12 @@ class SpreadsheetsListFeedTest(unittest.TestCase):
         LIST_FEED)
 
   def testToAndFromString(self):
-    self.assert_(len(self.feed.entry) == 2)
+    self.assertTrue(len(self.feed.entry) == 2)
     for an_entry in self.feed.entry:
-      self.assert_(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsList))
+      self.assertTrue(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsList))
     new_feed = gdata.spreadsheet.SpreadsheetsListFeedFromString(str(self.feed))
     for an_entry in new_feed.entry:
-      self.assert_(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsList))
+      self.assertTrue(isinstance(an_entry, gdata.spreadsheet.SpreadsheetsList))
     
 if __name__ == '__main__':
   unittest.main()

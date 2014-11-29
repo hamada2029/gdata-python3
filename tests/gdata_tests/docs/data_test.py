@@ -33,26 +33,26 @@ class DocsEntryTest(unittest.TestCase):
                                  gdata.docs.data.Resource)
 
   def testToAndFromStringDocsEntry(self):
-    self.assert_(isinstance(self.entry, gdata.docs.data.Resource))
+    self.assertTrue(isinstance(self.entry, gdata.docs.data.Resource))
     self.assertEqual(self.entry.GetResourceType(), 'spreadsheet')
-    self.assert_(isinstance(self.entry.last_viewed, gdata.docs.data.LastViewed))
+    self.assertTrue(isinstance(self.entry.last_viewed, gdata.docs.data.LastViewed))
     self.assertEqual(self.entry.last_viewed.text, '2009-03-05T07:48:21.493Z')
-    self.assert_(
+    self.assertTrue(
         isinstance(self.entry.last_modified_by, gdata.docs.data.LastModifiedBy))
     self.assertEqual(
         self.entry.last_modified_by.email.text, 'test.user@gmail.com')
     self.assertEqual(self.entry.last_modified_by.name.text, 'test.user')
-    self.assert_(isinstance(self.entry.resource_id, gdata.docs.data.ResourceId))
+    self.assertTrue(isinstance(self.entry.resource_id, gdata.docs.data.ResourceId))
     self.assertEqual(self.entry.resource_id.text,
                      'spreadsheet:supercalifragilisticexpealidocious')
-    self.assert_(isinstance(self.entry.writers_can_invite,
+    self.assertTrue(isinstance(self.entry.writers_can_invite,
                             gdata.docs.data.WritersCanInvite))
     self.assertEqual(self.entry.writers_can_invite.value, 'true')
-    self.assert_(isinstance(self.entry.quota_bytes_used,
+    self.assertTrue(isinstance(self.entry.quota_bytes_used,
                             gdata.docs.data.QuotaBytesUsed))
     self.assertEqual(self.entry.quota_bytes_used.text, '1000')
     self.assertEqual(len(self.entry.feed_link), 2)
-    self.assert_(isinstance(self.entry.feed_link[0], gdata.data.FeedLink))
+    self.assertTrue(isinstance(self.entry.feed_link[0], gdata.data.FeedLink))
 
     self.assertEqual(
         self.entry.GetAclFeedLink().href,
@@ -79,30 +79,30 @@ class AclTest(unittest.TestCase):
       gdata.docs.data.AclEntry)
 
   def testToAndFromString(self):
-    self.assert_(isinstance(self.acl_entry, gdata.docs.data.AclEntry))
-    self.assert_(isinstance(self.acl_entry.role, gdata.acl.data.AclRole))
-    self.assert_(isinstance(self.acl_entry.scope, gdata.acl.data.AclScope))
+    self.assertTrue(isinstance(self.acl_entry, gdata.docs.data.AclEntry))
+    self.assertTrue(isinstance(self.acl_entry.role, gdata.acl.data.AclRole))
+    self.assertTrue(isinstance(self.acl_entry.scope, gdata.acl.data.AclScope))
     self.assertEqual(self.acl_entry.scope.value, 'user@gmail.com')
     self.assertEqual(self.acl_entry.scope.type, 'user')
     self.assertEqual(self.acl_entry.role.value, 'writer')
 
     acl_entry_str = str(self.acl_entry)
     new_acl_entry = atom.core.parse(acl_entry_str, gdata.docs.data.AclEntry)
-    self.assert_(isinstance(new_acl_entry, gdata.docs.data.AclEntry))
-    self.assert_(isinstance(new_acl_entry.role, gdata.acl.data.AclRole))
-    self.assert_(isinstance(new_acl_entry.scope, gdata.acl.data.AclScope))
+    self.assertTrue(isinstance(new_acl_entry, gdata.docs.data.AclEntry))
+    self.assertTrue(isinstance(new_acl_entry.role, gdata.acl.data.AclRole))
+    self.assertTrue(isinstance(new_acl_entry.scope, gdata.acl.data.AclScope))
     self.assertEqual(new_acl_entry.scope.value, self.acl_entry.scope.value)
     self.assertEqual(new_acl_entry.scope.type, self.acl_entry.scope.type)
     self.assertEqual(new_acl_entry.role.value, self.acl_entry.role.value)
 
   def testToAndFromStringWithKey(self):
-    self.assert_(isinstance(self.acl_entry_withkey, gdata.docs.data.AclEntry))
-    self.assert_(self.acl_entry_withkey.role is None)
-    self.assert_(isinstance(self.acl_entry_withkey.with_key,
+    self.assertTrue(isinstance(self.acl_entry_withkey, gdata.docs.data.AclEntry))
+    self.assertTrue(self.acl_entry_withkey.role is None)
+    self.assertTrue(isinstance(self.acl_entry_withkey.with_key,
                             gdata.acl.data.AclWithKey))
-    self.assert_(isinstance(self.acl_entry_withkey.with_key.role,
+    self.assertTrue(isinstance(self.acl_entry_withkey.with_key.role,
                             gdata.acl.data.AclRole))
-    self.assert_(isinstance(self.acl_entry_withkey.scope,
+    self.assertTrue(isinstance(self.acl_entry_withkey.scope,
                             gdata.acl.data.AclScope))
     self.assertEqual(self.acl_entry_withkey.with_key.key, 'somekey')
     self.assertEqual(self.acl_entry_withkey.with_key.role.value, 'writer')
@@ -112,13 +112,13 @@ class AclTest(unittest.TestCase):
     acl_entry_withkey_str = str(self.acl_entry_withkey)
     new_acl_entry_withkey = atom.core.parse(acl_entry_withkey_str,
                                             gdata.docs.data.AclEntry)
-    self.assert_(isinstance(new_acl_entry_withkey, gdata.docs.data.AclEntry))
-    self.assert_(new_acl_entry_withkey.role is None)
-    self.assert_(isinstance(new_acl_entry_withkey.with_key,
+    self.assertTrue(isinstance(new_acl_entry_withkey, gdata.docs.data.AclEntry))
+    self.assertTrue(new_acl_entry_withkey.role is None)
+    self.assertTrue(isinstance(new_acl_entry_withkey.with_key,
                             gdata.acl.data.AclWithKey))
-    self.assert_(isinstance(new_acl_entry_withkey.with_key.role,
+    self.assertTrue(isinstance(new_acl_entry_withkey.with_key.role,
                             gdata.acl.data.AclRole))
-    self.assert_(isinstance(new_acl_entry_withkey.scope,
+    self.assertTrue(isinstance(new_acl_entry_withkey.scope,
                             gdata.acl.data.AclScope))
     self.assertEqual(new_acl_entry_withkey.with_key.key,
                      self.acl_entry_withkey.with_key.key)
@@ -136,9 +136,9 @@ class AclTest(unittest.TestCase):
     acl_entry = gdata.docs.DocumentListAclEntry(category=[cat])
     acl_entry.scope = gdata.docs.Scope(value='user@gmail.com', type='user')
     acl_entry.role = gdata.docs.Role(value='writer')
-    self.assert_(isinstance(acl_entry, gdata.docs.DocumentListAclEntry))
-    self.assert_(isinstance(acl_entry.role, gdata.docs.Role))
-    self.assert_(isinstance(acl_entry.scope, gdata.docs.Scope))
+    self.assertTrue(isinstance(acl_entry, gdata.docs.DocumentListAclEntry))
+    self.assertTrue(isinstance(acl_entry.role, gdata.docs.Role))
+    self.assertTrue(isinstance(acl_entry.scope, gdata.docs.Scope))
     self.assertEqual(acl_entry.scope.value, 'user@gmail.com')
     self.assertEqual(acl_entry.scope.type, 'user')
     self.assertEqual(acl_entry.role.value, 'writer')
@@ -160,29 +160,29 @@ class AclFeedTest(unittest.TestCase):
 
   def testToAndFromString(self):
     for entry in self.feed.entry:
-      self.assert_(isinstance(entry, gdata.docs.data.AclEntry))
+      self.assertTrue(isinstance(entry, gdata.docs.data.AclEntry))
 
     feed = atom.core.parse(str(self.feed), gdata.docs.data.AclFeed)
     for entry in feed.entry:
-      self.assert_(isinstance(entry, gdata.docs.data.AclEntry))
+      self.assertTrue(isinstance(entry, gdata.docs.data.AclEntry))
 
   def testConvertActualData(self):
     entries = self.feed.entry
-    self.assert_(len(entries) == 2)
+    self.assertTrue(len(entries) == 2)
     self.assertEqual(entries[0].title.text,
                      'Document Permission - user@gmail.com')
     self.assertEqual(entries[0].role.value, 'owner')
     self.assertEqual(entries[0].scope.type, 'user')
     self.assertEqual(entries[0].scope.value, 'user@gmail.com')
-    self.assert_(entries[0].GetSelfLink() is not None)
-    self.assert_(entries[0].GetEditLink() is not None)
+    self.assertTrue(entries[0].GetSelfLink() is not None)
+    self.assertTrue(entries[0].GetEditLink() is not None)
     self.assertEqual(entries[1].title.text,
                      'Document Permission - user2@google.com')
     self.assertEqual(entries[1].role.value, 'writer')
     self.assertEqual(entries[1].scope.type, 'domain')
     self.assertEqual(entries[1].scope.value, 'google.com')
-    self.assert_(entries[1].GetSelfLink() is not None)
-    self.assert_(entries[1].GetEditLink() is not None)
+    self.assertTrue(entries[1].GetSelfLink() is not None)
+    self.assertTrue(entries[1].GetEditLink() is not None)
 
 
 class RevisionFeedTest(unittest.TestCase):
@@ -193,15 +193,15 @@ class RevisionFeedTest(unittest.TestCase):
 
   def testToAndFromString(self):
     for entry in self.feed.entry:
-      self.assert_(isinstance(entry, gdata.docs.data.Revision))
+      self.assertTrue(isinstance(entry, gdata.docs.data.Revision))
 
     feed = atom.core.parse(str(self.feed), gdata.docs.data.RevisionFeed)
     for entry in feed.entry:
-      self.assert_(isinstance(entry, gdata.docs.data.Revision))
+      self.assertTrue(isinstance(entry, gdata.docs.data.Revision))
 
   def testConvertActualData(self):
     entries = self.feed.entry
-    self.assert_(len(entries) == 1)
+    self.assertTrue(len(entries) == 1)
     self.assertEqual(entries[0].title.text, 'Revision 2')
     self.assertEqual(entries[0].publish.value, 'true')
     self.assertEqual(entries[0].publish_auto.value, 'true')

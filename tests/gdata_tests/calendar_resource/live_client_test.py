@@ -85,8 +85,8 @@ class CalendarResourceClientTest(unittest.TestCase):
           'CR-NYC-14-12-BR', 'Boardroom',
           ('This conference room is in New York City, building 14, floor 12, '
            'Boardroom'), 'CR')
-    except Exception, e:
-      print e
+    except Exception as e:
+      print(e)
       self.client.delete_resource('CR-NYC-14-12-BR')
       # If the test failed to run to completion
       # the resource may already exist
@@ -95,7 +95,7 @@ class CalendarResourceClientTest(unittest.TestCase):
           ('This conference room is in New York City, building 14, floor 12, '
            'Boardroom'), 'CR')
 
-    self.assert_(isinstance(new_entry,
+    self.assertTrue(isinstance(new_entry,
         gdata.calendar_resource.data.CalendarResourceEntry))
     self.assertEqual(new_entry.resource_id, 'CR-NYC-14-12-BR')
     self.assertEqual(new_entry.resource_common_name, 'Boardroom')
@@ -105,7 +105,7 @@ class CalendarResourceClientTest(unittest.TestCase):
     self.assertEqual(new_entry.resource_type, 'CR')
 
     fetched_entry = self.client.get_resource(resource_id='CR-NYC-14-12-BR')
-    self.assert_(isinstance(fetched_entry,
+    self.assertTrue(isinstance(fetched_entry,
         gdata.calendar_resource.data.CalendarResourceEntry))
     self.assertEqual(fetched_entry.resource_id, 'CR-NYC-14-12-BR')
     self.assertEqual(fetched_entry.resource_common_name, 'Boardroom')
@@ -119,7 +119,7 @@ class CalendarResourceClientTest(unittest.TestCase):
     new_entry.resource_description = 'This conference room is in Mountain View'
     new_entry.resource_type = 'BR'
     updated_entry = self.client.update(new_entry)
-    self.assert_(isinstance(updated_entry,
+    self.assertTrue(isinstance(updated_entry,
         gdata.calendar_resource.data.CalendarResourceEntry))
     self.assertEqual(updated_entry.resource_id, 'CR-MTV-14-12-BR')
     self.assertEqual(updated_entry.resource_common_name, 'Executive Boardroom')

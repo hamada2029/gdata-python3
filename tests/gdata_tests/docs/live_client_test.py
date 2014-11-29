@@ -168,43 +168,43 @@ class ResourcesTest(DocsTestCase):
   def testGetAllResources(self):
     results = self.client.GetAllResources(
         '/feeds/default/private/full?showfolders=true')
-    self.assert_(all(isinstance(item, gdata.docs.data.Resource) \
+    self.assertTrue(all(isinstance(item, gdata.docs.data.Resource) \
         for item in results))
     self.assertEqual(len(results), 1)
 
   def testGetResources(self):
     feed = self.client.GetResources(
         '/feeds/default/private/full?showfolders=true', limit=1)
-    self.assert_(isinstance(feed, gdata.docs.data.ResourceFeed))
+    self.assertTrue(isinstance(feed, gdata.docs.data.ResourceFeed))
     self.assertEqual(len(feed.entry), 1)
 
   def testGetResource(self):
     entry = self.client.GetResource(self.resource)
-    self.assert_(isinstance(entry, gdata.docs.data.Resource))
-    self.assert_(entry.id.text is not None)
-    self.assert_(entry.title.text is not None)
-    self.assert_(entry.resource_id.text is not None)
-    self.assert_(entry.title.text is not None)
+    self.assertTrue(isinstance(entry, gdata.docs.data.Resource))
+    self.assertTrue(entry.id.text is not None)
+    self.assertTrue(entry.title.text is not None)
+    self.assertTrue(entry.resource_id.text is not None)
+    self.assertTrue(entry.title.text is not None)
     entry = self.client.GetResourceById(self.resource.resource_id.text)
-    self.assert_(isinstance(entry, gdata.docs.data.Resource))
-    self.assert_(entry.id.text is not None)
-    self.assert_(entry.title.text is not None)
-    self.assert_(entry.resource_id.text is not None)
-    self.assert_(entry.title.text is not None)
+    self.assertTrue(isinstance(entry, gdata.docs.data.Resource))
+    self.assertTrue(entry.id.text is not None)
+    self.assertTrue(entry.title.text is not None)
+    self.assertTrue(entry.resource_id.text is not None)
+    self.assertTrue(entry.title.text is not None)
     entry = self.client.GetResourceById(
         self.resource.resource_id.text.split(':')[1])
-    self.assert_(isinstance(entry, gdata.docs.data.Resource))
-    self.assert_(entry.id.text is not None)
-    self.assert_(entry.title.text is not None)
-    self.assert_(entry.resource_id.text is not None)
-    self.assert_(entry.title.text is not None)
+    self.assertTrue(isinstance(entry, gdata.docs.data.Resource))
+    self.assertTrue(entry.id.text is not None)
+    self.assertTrue(entry.title.text is not None)
+    self.assertTrue(entry.resource_id.text is not None)
+    self.assertTrue(entry.title.text is not None)
     entry = self.client.GetResourceBySelfLink(
         self.resource.GetSelfLink().href)
-    self.assert_(isinstance(entry, gdata.docs.data.Resource))
-    self.assert_(entry.id.text is not None)
-    self.assert_(entry.title.text is not None)
-    self.assert_(entry.resource_id.text is not None)
-    self.assert_(entry.title.text is not None)
+    self.assertTrue(isinstance(entry, gdata.docs.data.Resource))
+    self.assertTrue(entry.id.text is not None)
+    self.assertTrue(entry.title.text is not None)
+    self.assertTrue(entry.resource_id.text is not None)
+    self.assertTrue(entry.title.text is not None)
 
   def testMoveResource(self):
     entry = gdata.docs.data.Resource(
@@ -290,17 +290,17 @@ class ResourcesTest(DocsTestCase):
 class AclTest(DocsTestCase):
   def testGetAcl(self):
     acl_feed = self.client.GetResourceAcl(self.resource)
-    self.assert_(isinstance(acl_feed, gdata.docs.data.AclFeed))
+    self.assertTrue(isinstance(acl_feed, gdata.docs.data.AclFeed))
     self.assertEqual(len(acl_feed.entry), 1)
-    self.assert_(isinstance(acl_feed.entry[0], gdata.docs.data.AclEntry))
-    self.assert_(acl_feed.entry[0].scope is not None)
-    self.assert_(acl_feed.entry[0].role is not None)
+    self.assertTrue(isinstance(acl_feed.entry[0], gdata.docs.data.AclEntry))
+    self.assertTrue(acl_feed.entry[0].scope is not None)
+    self.assertTrue(acl_feed.entry[0].role is not None)
 
   def testGetAclEntry(self):
     acl_feed = self.client.GetResourceAcl(self.resource)
     acl_entry = acl_feed.entry[0]
     same_acl_entry = self.client.GetAclEntry(acl_entry)
-    self.assert_(isinstance(same_acl_entry, gdata.docs.data.AclEntry))
+    self.assertTrue(isinstance(same_acl_entry, gdata.docs.data.AclEntry))
     self.assertEqual(acl_entry.GetSelfLink().href,
                      same_acl_entry.GetSelfLink().href)
     self.assertEqual(acl_entry.title.text, same_acl_entry.title.text)
@@ -316,9 +316,9 @@ class AclTest(DocsTestCase):
     self.assertEqual(acl_entry_to_add.with_key.role.value,
                      new_acl_entry.with_key.role.value)
     acl_feed = self.client.GetResourceAcl(self.resource)
-    self.assert_(isinstance(acl_feed, gdata.docs.data.AclFeed))
-    self.assert_(isinstance(acl_feed.entry[0], gdata.docs.data.AclEntry))
-    self.assert_(isinstance(acl_feed.entry[1], gdata.docs.data.AclEntry))
+    self.assertTrue(isinstance(acl_feed, gdata.docs.data.AclFeed))
+    self.assertTrue(isinstance(acl_feed.entry[0], gdata.docs.data.AclEntry))
+    self.assertTrue(isinstance(acl_feed.entry[1], gdata.docs.data.AclEntry))
 
   def testUpdateAclEntry(self):
     acl_entry_to_add = gdata.docs.data.AclEntry.GetInstance(
@@ -349,17 +349,17 @@ class AclTest(DocsTestCase):
     new_acl_entry = self.client.AddAclEntry(self.resource, acl_entry_to_add)
     acl_feed = self.client.GetResourceAcl(self.resource)
 
-    self.assert_(isinstance(acl_feed, gdata.docs.data.AclFeed))
+    self.assertTrue(isinstance(acl_feed, gdata.docs.data.AclFeed))
     self.assertEqual(len(acl_feed.entry), 2)
-    self.assert_(isinstance(acl_feed.entry[0], gdata.docs.data.AclEntry))
-    self.assert_(isinstance(acl_feed.entry[1], gdata.docs.data.AclEntry))
+    self.assertTrue(isinstance(acl_feed.entry[0], gdata.docs.data.AclEntry))
+    self.assertTrue(isinstance(acl_feed.entry[1], gdata.docs.data.AclEntry))
 
     self.client.DeleteAclEntry(new_acl_entry)
 
     acl_feed = self.client.GetResourceAcl(self.resource)
-    self.assert_(isinstance(acl_feed, gdata.docs.data.AclFeed))
+    self.assertTrue(isinstance(acl_feed, gdata.docs.data.AclFeed))
     self.assertEqual(len(acl_feed.entry), 1)
-    self.assert_(isinstance(acl_feed.entry[0], gdata.docs.data.AclEntry))
+    self.assertTrue(isinstance(acl_feed.entry[0], gdata.docs.data.AclEntry))
 
 
 class RevisionsTest(DocsTestCase):
@@ -367,8 +367,8 @@ class RevisionsTest(DocsTestCase):
     # There are no revisions of collections
     if self.resource_type != 'collection':
       revisions = self.client.GetRevisions(self.resource)
-      self.assert_(isinstance(revisions, gdata.docs.data.RevisionFeed))
-      self.assert_(isinstance(revisions.entry[0], gdata.docs.data.Revision))
+      self.assertTrue(isinstance(revisions, gdata.docs.data.RevisionFeed))
+      self.assertTrue(isinstance(revisions.entry[0], gdata.docs.data.Revision))
       # Currently, there is a bug where new presentations have 2 revisions.
       if self.resource_type != 'presentation':
         self.assertEqual(len(revisions.entry), 1)
@@ -410,14 +410,14 @@ class RevisionsTest(DocsTestCase):
 
     if self.resource_type != 'collection':
       revisions = self.client.GetRevisions(entry)
-      self.assert_(isinstance(revisions, gdata.docs.data.RevisionFeed))
+      self.assertTrue(isinstance(revisions, gdata.docs.data.RevisionFeed))
       if self.resource_type == 'presentation':
         self.assertEqual(len(revisions.entry), 3)
-        self.assert_(isinstance(revisions.entry[2], gdata.docs.data.Revision))
+        self.assertTrue(isinstance(revisions.entry[2], gdata.docs.data.Revision))
       else:
         self.assertEqual(len(revisions.entry), 2)
-      self.assert_(isinstance(revisions.entry[0], gdata.docs.data.Revision))
-      self.assert_(isinstance(revisions.entry[1], gdata.docs.data.Revision))
+      self.assertTrue(isinstance(revisions.entry[0], gdata.docs.data.Revision))
+      self.assertTrue(isinstance(revisions.entry[1], gdata.docs.data.Revision))
 
   def testPublishRevision(self):
     if self.resource_type in ['file', 'pdf', 'collection']:
@@ -434,7 +434,7 @@ class RevisionsTest(DocsTestCase):
     if self.resource_type == 'presentation':
       revisions = self.client.GetRevisions(entry)
       revision = revisions.entry[2]
-    self.assert_(isinstance(revision, gdata.docs.data.Revision))
+    self.assertTrue(isinstance(revision, gdata.docs.data.Revision))
     self.assertEqual(revision.publish.value, 'true')
     self.assertEqual(revision.publish_auto.value, 'false')
 
@@ -457,7 +457,7 @@ class RevisionsTest(DocsTestCase):
           revisions.entry[1], publish_auto=True, publish_outside_domain=True)
       if self.resource_type == 'spreadsheet':
         revision = client.GetRevisions(entry).entry[1]
-    self.assert_(isinstance(revision, gdata.docs.data.Revision))
+    self.assertTrue(isinstance(revision, gdata.docs.data.Revision))
     self.assertEqual(revision.publish.value, 'true')
     self.assertEqual(revision.publish_auto.value, 'true')
     self.assertEqual(revision.publish_outside_domain.value, 'true')
@@ -486,8 +486,8 @@ class RevisionsTest(DocsTestCase):
     revisions = self.client.GetRevisions(entry)
     self.assertEqual(len(revisions.entry), 2)
     self.client.DeleteRevision(revisions.entry[1])
-    self.assert_(isinstance(revisions, gdata.docs.data.RevisionFeed))
-    self.assert_(isinstance(revisions.entry[0], gdata.docs.data.Revision))
+    self.assertTrue(isinstance(revisions, gdata.docs.data.RevisionFeed))
+    self.assertTrue(isinstance(revisions.entry[0], gdata.docs.data.Revision))
     revisions = self.client.GetRevisions(entry)
     self.assertEqual(len(revisions.entry), 1)
 
@@ -498,14 +498,14 @@ class ChangesTest(DocsTestCase):
     # being used already has a number of changes
 
     changes = self.client.GetChanges(max_results=5)
-    self.assert_(isinstance(changes, gdata.docs.data.ChangeFeed))
-    self.assert_(len(changes.entry) <= 5)
-    self.assert_(isinstance(changes.entry[0], gdata.docs.data.Change))
+    self.assertTrue(isinstance(changes, gdata.docs.data.ChangeFeed))
+    self.assertTrue(len(changes.entry) <= 5)
+    self.assertTrue(isinstance(changes.entry[0], gdata.docs.data.Change))
     self._update()
     changes = self.client.GetChanges(changes.entry[0].changestamp.value, 5)
-    self.assert_(isinstance(changes, gdata.docs.data.ChangeFeed))
-    self.assert_(len(changes.entry) <= 5)
-    self.assert_(isinstance(changes.entry[0], gdata.docs.data.Change))
+    self.assertTrue(isinstance(changes, gdata.docs.data.ChangeFeed))
+    self.assertTrue(len(changes.entry) <= 5)
+    self.assertTrue(isinstance(changes.entry[0], gdata.docs.data.Change))
 
   def testDeleteResourceCreatesNewChange(self):
     """Ensure that deleting a resource causes a new change entry."""
@@ -515,7 +515,7 @@ class ChangesTest(DocsTestCase):
     self._delete(self.resource)
     time.sleep(10)
     changes = self.client.GetChanges(max_results=1)
-    self.assert_(latest < changes.entry[0].changestamp.value)
+    self.assertTrue(latest < changes.entry[0].changestamp.value)
 
 
 class MetadataTest(DocsTestCase):
@@ -536,7 +536,7 @@ class MetadataTest(DocsTestCase):
 
   def testMetadata(self):
     metadata = self.client.GetMetadata()
-    self.assert_(isinstance(metadata, gdata.docs.data.Metadata))
+    self.assertTrue(isinstance(metadata, gdata.docs.data.Metadata))
     self.assertNotEqual(int(metadata.quota_bytes_total.text), 0)
     self.assertEqual(int(metadata.quota_bytes_used.text), 0)
     self.assertEqual(int(metadata.quota_bytes_used_in_trash.text), 0)
@@ -548,7 +548,7 @@ class MetadataTest(DocsTestCase):
 
 def suite():
   suite = unittest.TestSuite()
-  for key, value in RESOURCES.iteritems():
+  for key, value in RESOURCES.items():
     for case in [ResourcesTest, AclTest, RevisionsTest, ChangesTest]:
       tests = unittest.TestLoader().loadTestsFromTestCase(case)
       for test in tests:

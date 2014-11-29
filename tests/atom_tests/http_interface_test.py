@@ -20,7 +20,7 @@ __author__ = 'api.jscudder (Jeff Scudder)'
 
 import unittest
 import atom.http_interface
-import StringIO
+import io
 
 
 class HttpResponseTest(unittest.TestCase):
@@ -35,7 +35,7 @@ class HttpResponseTest(unittest.TestCase):
     self.assertEqual(resp.reason, 'OK')
     self.assertEqual(resp.status, 200)
     self.assertEqual(resp.getheader('Content-Length'), '9')
-    self.assert_(resp.getheader('Missing') is None)
+    self.assertTrue(resp.getheader('Missing') is None)
     self.assertEqual(resp.getheader('Missing', default='yes'), 'yes')
 
 

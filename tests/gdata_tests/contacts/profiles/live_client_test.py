@@ -56,7 +56,7 @@ class ProfileTest(unittest.TestCase):
     conf.configure_cache(self.client, 'test_profiles_feed')
 
     feed = self.client.get_profiles_feed()
-    self.assert_(isinstance(feed, gdata.contacts.data.ProfilesFeed))
+    self.assertTrue(isinstance(feed, gdata.contacts.data.ProfilesFeed))
 
   def test_profiles_query(self):
     if not conf.options.get_value('runlive') == 'true':
@@ -66,8 +66,8 @@ class ProfileTest(unittest.TestCase):
 
     query = gdata.contacts.client.ProfilesQuery(max_results=1)
     feed = self.client.get_profiles_feed(q=query)
-    self.assert_(isinstance(feed, gdata.contacts.data.ProfilesFeed))
-    self.assert_(len(feed.entry) == 1)
+    self.assertTrue(isinstance(feed, gdata.contacts.data.ProfilesFeed))
+    self.assertTrue(len(feed.entry) == 1)
 
     # Needs at least 2 profiles in the feed to test the start-key
     # query param.
@@ -79,13 +79,13 @@ class ProfileTest(unittest.TestCase):
       if 'start-key' in uri.query:
         query.start_key = uri.query['start-key']
         feed = self.client.get_profiles_feed(q=query)
-        self.assert_(isinstance(feed, gdata.contacts.data.ProfilesFeed))
-        self.assert_(len(feed.entry) == 1)
-        self.assert_(feed.GetSelfLink().href == next.href)
+        self.assertTrue(isinstance(feed, gdata.contacts.data.ProfilesFeed))
+        self.assertTrue(len(feed.entry) == 1)
+        self.assertTrue(feed.GetSelfLink().href == next.href)
         # Compare with a feed retrieved with the next link.
         next_feed = self.client.get_profiles_feed(uri=next.href)
-        self.assert_(len(next_feed.entry) == 1)
-        self.assert_(next_feed.entry[0].id.text == feed.entry[0].id.text)
+        self.assertTrue(len(next_feed.entry) == 1)
+        self.assertTrue(next_feed.entry[0].id.text == feed.entry[0].id.text)
 
 def suite():
   return conf.build_suite([ProfileTest])

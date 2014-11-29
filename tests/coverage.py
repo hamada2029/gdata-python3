@@ -46,6 +46,7 @@ import os
 import re
 import string
 import sys
+import atexit
 import types
 
 
@@ -110,16 +111,16 @@ class coverage:
     def __init__(self):
         global the_coverage
         if the_coverage:
-            raise self.error, "Only one coverage object allowed."
+            raise self.error("Only one coverage object allowed.")
         self.cache = os.environ.get(self.cache_env, self.cache_default)
         self.restore()
         self.analysis_cache = {}
 
     def help(self, error=None):
         if error:
-            print error
-            print
-        print __doc__
+            print(error)
+            print()
+        print(__doc__)
         sys.exit(1)
 
     def command_line(self):
@@ -135,14 +136,14 @@ class coverage:
             '-r': 'report',
             '-x': 'execute',
             }
-        short_opts = string.join(map(lambda o: o[1:], optmap.keys()), '')
-        long_opts = optmap.values()
+        short_opts = string.join([o[1:] for o in list(optmap.keys())], '')
+        long_opts = list(optmap.values())
         options, args = getopt.getopt(sys.argv[1:], short_opts,
                                       long_opts)
         for o, a in options:
-            if optmap.has_key(o):
+            if o in optmap:
                 settings[optmap[o]] = 1
-            elif optmap.has_key(o + ':'):
+            elif o + ':' in optmap:
                 settings[optmap[o + ':']] = a
             elif o[2:] in long_opts:
                 settings[o[2:]] = 1
@@ -179,9 +180,9 @@ class coverage:
             # script, change sys.path so that it matches what the script
             # would have found if it had been run normally.
             sys.path[0] = os.path.dirname(sys.argv[0])
-            execfile(sys.argv[0], __main__.__dict__)
+            exec(compile(open(sys.argv[0]).read(), sys.argv[0], 'exec'), __main__.__dict__)
         if not args:
-            args = self.cexecuted.keys()
+            args = list(self.cexecuted.keys())
         ignore_errors = settings.get('ignore-errors')
         show_missing = settings.get('show-missing')
         directory = settings.get('directory=')
@@ -227,7 +228,7 @@ class coverage:
             import marshal
             cexecuted = marshal.load(cache)
             cache.close()
-            if isinstance(cexecuted, types.DictType):
+            if isinstance(cexecuted, dict):
                 self.cexecuted = cexecuted
         except:
             pass
@@ -237,7 +238,7 @@ class coverage:
     # normalized case).  See [GDR 2001-12-04b, 3.3].
 
     def canonical_filename(self, filename):
-        if not self.canonical_filename_cache.has_key(filename):
+        if filename not in self.canonical_filename_cache:
             f = filename
             if os.path.isabs(f) and not os.path.exists(f):
                 f = os.path.basename(f)
@@ -257,9 +258,9 @@ class coverage:
 
     def canonicalize_filenames(self):
         global c
-        for filename, lineno in c.keys():
+        for filename, lineno in list(c.keys()):
             f = self.canonical_filename(filename)
-            if not self.cexecuted.has_key(f):
+            if f not in self.cexecuted:
                 self.cexecuted[f] = {}
             self.cexecuted[f][lineno] = 1
         c = {}
@@ -269,7 +270,7 @@ class coverage:
     def morf_filename(self, morf):
         if isinstance(morf, types.ModuleType):
             if not hasattr(morf, '__file__'):
-                raise self.error, "Module has no __file__ attribute."
+                raise self.error("Module has no __file__ attribute.")
             file = morf.__file__
         else:
             file = morf
@@ -282,24 +283,24 @@ class coverage:
     # in the source code.
 
     def analyze_morf(self, morf):
-        if self.analysis_cache.has_key(morf):
+        if morf in self.analysis_cache:
             return self.analysis_cache[morf]
         filename = self.morf_filename(morf)
         ext = os.path.splitext(filename)[1]
         if ext == '.pyc':
             if not os.path.exists(filename[0:-1]):
-                raise self.error, ("No source for compiled code '%s'."
+                raise self.error("No source for compiled code '%s'."
                                    % filename)
             filename = filename[0:-1]
         elif ext != '.py':
-            raise self.error, "File '%s' not Python source." % filename
+            raise self.error("File '%s' not Python source." % filename)
         source = open(filename, 'r')
         import parser
         tree = parser.suite(source.read()).totuple(1)
         source.close()
         statements = {}
         self.find_statements(tree, statements)
-        lines = statements.keys()
+        lines = list(statements.keys())
         lines.sort()
         result = filename, lines
         self.analysis_cache[morf] = result
@@ -372,16 +373,16 @@ class coverage:
             else:
                 return "%d-%d" % (start, end)
         import string
-        return string.join(map(stringify, pairs), ", ")
+        return string.join(list(map(stringify, pairs)), ", ")
 
     def analysis(self, morf):
         filename, statements = self.analyze_morf(morf)
         self.canonicalize_filenames()
-        if not self.cexecuted.has_key(filename):
+        if filename not in self.cexecuted:
             self.cexecuted[filename] = {}
         missing = []
         for line in statements:
-            if not self.cexecuted[filename].has_key(line):
+            if line not in self.cexecuted[filename]:
                 missing.append(line)
         return (filename, statements, missing,
                 self.format_lines(statements, missing))
@@ -393,9 +394,9 @@ class coverage:
             return os.path.splitext(os.path.basename(morf))[0]
 
     def report(self, morfs, show_missing=1, ignore_errors=0):
-        if not isinstance(morfs, types.ListType):
+        if not isinstance(morfs, list):
             morfs = [morfs]
-        max_name = max([5,] + map(len, map(self.morf_name, morfs)))
+        max_name = max([5,] + list(map(len, list(map(self.morf_name, morfs)))))
         fmt_name = "%%- %ds  " % max_name
         fmt_err = fmt_name + "%s: %s"
         header = fmt_name % "Name" + " Stmts   Exec  Cover"
@@ -403,8 +404,8 @@ class coverage:
         if show_missing:
             header = header + "   Missing"
             fmt_coverage = fmt_coverage + "   %s"
-        print header
-        print "-" * len(header)
+        print(header)
+        print("-" * len(header))
         total_statements = 0
         total_executed = 0
         for morf in morfs:
@@ -420,7 +421,7 @@ class coverage:
                 args = (name, n, m, pc)
                 if show_missing:
                     args = args + (readable,)
-                print fmt_coverage % args
+                print(fmt_coverage % args)
                 total_statements = total_statements + n
                 total_executed = total_executed + m
             except KeyboardInterrupt:
@@ -428,9 +429,9 @@ class coverage:
             except:
                 if not ignore_errors:
                     type, msg = sys.exc_info()[0:2]
-                    print fmt_err % (name, type, msg)
+                    print(fmt_err % (name, type, msg))
         if len(morfs) > 1:
-            print "-" * len(header)
+            print("-" * len(header))
             if total_statements > 0:
                 pc = 100.0 * total_executed / total_statements
             else:
@@ -438,7 +439,7 @@ class coverage:
             args = ("TOTAL", total_statements, total_executed, pc)
             if show_missing:
                 args = args + ("",)
-            print fmt_coverage % args
+            print(fmt_coverage % args)
 
     # annotate(morfs, ignore_errors).
 
@@ -503,11 +504,11 @@ class coverage:
 the_coverage = coverage()
 
 # Module functions call methods in the singleton object.
-def start(*args, **kw): return apply(the_coverage.start, args, kw)
-def stop(*args, **kw): return apply(the_coverage.stop, args, kw)
-def erase(*args, **kw): return apply(the_coverage.erase, args, kw)
-def analysis(*args, **kw): return apply(the_coverage.analysis, args, kw)
-def report(*args, **kw): return apply(the_coverage.report, args, kw)
+def start(*args, **kw): return the_coverage.start(*args, **kw)
+def stop(*args, **kw): return the_coverage.stop(*args, **kw)
+def erase(*args, **kw): return the_coverage.erase(*args, **kw)
+def analysis(*args, **kw): return the_coverage.analysis(*args, **kw)
+def report(*args, **kw): return the_coverage.report(*args, **kw)
 
 # Save coverage data when Python exits.  (The atexit module wasn't
 # introduced until Python 2.0, so use sys.exitfunc when it's not
@@ -516,7 +517,7 @@ try:
     import atexit
     atexit.register(the_coverage.save)
 except ImportError:
-    sys.exitfunc = the_coverage.save
+    atexit.register(the_coverage.save)
 
 # Command-line interface.
 if __name__ == '__main__':

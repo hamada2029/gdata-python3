@@ -103,40 +103,40 @@ class XmlElementTest(unittest.TestCase):
     class Versioned(atom.core.XmlElement):
       _qname = ('{http://example.com/1}foo', '{http://example.com/2}foo') 
 
-    self.assert_(
+    self.assertTrue(
         atom.core._get_qname(Unversioned, 1) == '{http://example.com}foo')
-    self.assert_(
+    self.assertTrue(
         atom.core._get_qname(Unversioned, 2) == '{http://example.com}foo')
-    self.assert_(
+    self.assertTrue(
         atom.core._get_qname(Versioned, 1) == '{http://example.com/1}foo')
-    self.assert_(
+    self.assertTrue(
         atom.core._get_qname(Versioned, 2) == '{http://example.com/2}foo')
 
   def testConstructor(self):
     e = Example()
-    self.assert_(e.child is None)
-    self.assert_(e.tag is None)
-    self.assert_(e.versioned_attr is None)
-    self.assert_(e.foos == [])
-    self.assert_(e.text is None)
+    self.assertTrue(e.child is None)
+    self.assertTrue(e.tag is None)
+    self.assertTrue(e.versioned_attr is None)
+    self.assertTrue(e.foos == [])
+    self.assertTrue(e.text is None)
         
   def testGetRules(self):
     rules1 = Example._get_rules(1)
-    self.assert_(rules1[0] == '{http://example.com}foo')
-    self.assert_(rules1[1]['{http://example.com/1}child'] == ('child', Child, 
+    self.assertTrue(rules1[0] == '{http://example.com}foo')
+    self.assertTrue(rules1[1]['{http://example.com/1}child'] == ('child', Child, 
         False))
-    self.assert_(rules1[1]['foo'] == ('foos', Foo, True))
-    self.assert_(rules1[2]['tag'] == 'tag')
-    self.assert_(rules1[2]['attr'] == 'versioned_attr')
+    self.assertTrue(rules1[1]['foo'] == ('foos', Foo, True))
+    self.assertTrue(rules1[2]['tag'] == 'tag')
+    self.assertTrue(rules1[2]['attr'] == 'versioned_attr')
     # Check to make sure we don't recalculate the rules.
-    self.assert_(rules1 == Example._get_rules(1))
+    self.assertTrue(rules1 == Example._get_rules(1))
     rules2 = Example._get_rules(2)
-    self.assert_(rules2[0] == '{http://example.com}foo')
-    self.assert_(rules2[1]['{http://example.com/2}child'] == ('child', Child, 
+    self.assertTrue(rules2[0] == '{http://example.com}foo')
+    self.assertTrue(rules2[1]['{http://example.com/2}child'] == ('child', Child, 
         False))
-    self.assert_(rules2[1]['foo'] == ('foos', Foo, True))
-    self.assert_(rules2[2]['tag'] == 'tag')
-    self.assert_(rules2[2]['{http://new_ns}attr'] == 'versioned_attr')
+    self.assertTrue(rules2[1]['foo'] == ('foos', Foo, True))
+    self.assertTrue(rules2[2]['tag'] == 'tag')
+    self.assertTrue(rules2[2]['{http://new_ns}attr'] == 'versioned_attr')
     
   def testGetElements(self):
     e = Example()
@@ -174,50 +174,50 @@ class XmlElementTest(unittest.TestCase):
         ['other1']) 
     
   def contains_expected_elements(self, elements, expected_texts):
-    self.assert_(len(elements) == len(expected_texts))
+    self.assertTrue(len(elements) == len(expected_texts))
     for element in elements:
-      self.assert_(element.text in expected_texts)
+      self.assertTrue(element.text in expected_texts)
 
   def testConstructorKwargs(self):
     e = Example('hello', child=Child('world'), versioned_attr='1')
-    self.assert_(e.text == 'hello')
-    self.assert_(e.child.text == 'world')
-    self.assert_(e.versioned_attr == '1')
-    self.assert_(e.foos == [])
-    self.assert_(e.tag is None)
+    self.assertTrue(e.text == 'hello')
+    self.assertTrue(e.child.text == 'world')
+    self.assertTrue(e.versioned_attr == '1')
+    self.assertTrue(e.foos == [])
+    self.assertTrue(e.tag is None)
 
     e = Example(foos=[Foo('1', ignored=1), Foo(text='2')], tag='ok')
-    self.assert_(e.text is None)
-    self.assert_(e.child is None)
-    self.assert_(e.versioned_attr is None)
-    self.assert_(len(e.foos) == 2)
-    self.assert_(e.foos[0].text == '1')
-    self.assert_(e.foos[1].text == '2')
-    self.assert_('ignored' not in e.foos[0].__dict__)
-    self.assert_(e.tag == 'ok')
+    self.assertTrue(e.text is None)
+    self.assertTrue(e.child is None)
+    self.assertTrue(e.versioned_attr is None)
+    self.assertTrue(len(e.foos) == 2)
+    self.assertTrue(e.foos[0].text == '1')
+    self.assertTrue(e.foos[1].text == '2')
+    self.assertTrue('ignored' not in e.foos[0].__dict__)
+    self.assertTrue(e.tag == 'ok')
   
   def testParseBasicXmlElement(self):
     element = atom.core.xml_element_from_string(SAMPLE_XML, 
         atom.core.XmlElement)
     inners = element.get_elements('inner')
-    self.assert_(len(inners) == 3)
-    self.assert_(inners[0].get_attributes('x')[0].value == '123')
-    self.assert_(inners[0].get_attributes('y') == [])
-    self.assert_(inners[1].get_attributes('x')[0].value == '234')
-    self.assert_(inners[1].get_attributes('y')[0].value == 'abc')
-    self.assert_(inners[2].get_attributes('x') == [])
+    self.assertTrue(len(inners) == 3)
+    self.assertTrue(inners[0].get_attributes('x')[0].value == '123')
+    self.assertTrue(inners[0].get_attributes('y') == [])
+    self.assertTrue(inners[1].get_attributes('x')[0].value == '234')
+    self.assertTrue(inners[1].get_attributes('y')[0].value == 'abc')
+    self.assertTrue(inners[2].get_attributes('x') == [])
     inners = element.get_elements('inner', 'http://example.com/xml/1')
-    self.assert_(len(inners) == 3)
+    self.assertTrue(len(inners) == 3)
     inners = element.get_elements(None, 'http://example.com/xml/1')
-    self.assert_(len(inners) == 4)
+    self.assertTrue(len(inners) == 4)
     inners = element.get_elements()
-    self.assert_(len(inners) == 4)
+    self.assertTrue(len(inners) == 4)
     inners = element.get_elements('other')
-    self.assert_(len(inners) == 1)
-    self.assert_(inners[0].get_attributes(
+    self.assertTrue(len(inners) == 1)
+    self.assertTrue(inners[0].get_attributes(
         'z', 'http://example.com/xml/2')[0].value == 'true')
     inners = element.get_elements('missing')
-    self.assert_(len(inners) == 0)
+    self.assertTrue(len(inners) == 0)
 
   def testBasicXmlElementPreservesMarkup(self):
     element = atom.core.xml_element_from_string(SAMPLE_XML,
@@ -228,9 +228,9 @@ class XmlElementTest(unittest.TestCase):
 
   def testSchemaParse(self):
     outer = atom.core.xml_element_from_string(SAMPLE_XML, Outer)
-    self.assert_(isinstance(outer.innards, list))
-    self.assert_(len(outer.innards) == 3)
-    self.assert_(outer.innards[0].my_x == '123')
+    self.assertTrue(isinstance(outer.innards, list))
+    self.assertTrue(len(outer.innards) == 3)
+    self.assertTrue(outer.innards[0].my_x == '123')
 
   def testSchemaParsePreservesMarkup(self):
     outer = atom.core.xml_element_from_string(SAMPLE_XML, Outer)
@@ -245,82 +245,82 @@ class XmlElementTest(unittest.TestCase):
       if 'y' in match.attrib and match.attrib['y'] == 'abc':
         if match.attrib['x'] == '234':
           found_x_and_y = True
-        self.assert_(match.attrib['x'] == '234')
+        self.assertTrue(match.attrib['x'] == '234')
       if 'x' in match.attrib and match.attrib['x'] == '123':
-        self.assert_('y' not in match.attrib)
+        self.assertTrue('y' not in match.attrib)
         found_x_123 = True
-    self.assert_(found_x_and_y)
-    self.assert_(found_x_123)
+    self.assertTrue(found_x_and_y)
+    self.assertTrue(found_x_123)
 
   def testGenericTagAndNamespace(self):
     element = atom.core.XmlElement(text='content')
     # Try setting tag then namespace.
     element.tag = 'foo'
-    self.assert_(element._qname == 'foo')
+    self.assertTrue(element._qname == 'foo')
     element.namespace = 'http://example.com/ns'
-    self.assert_(element._qname == '{http://example.com/ns}foo')
+    self.assertTrue(element._qname == '{http://example.com/ns}foo')
 
     element = atom.core.XmlElement()
     # Try setting namespace then tag.
     element.namespace = 'http://example.com/ns'
-    self.assert_(element._qname == '{http://example.com/ns}')
+    self.assertTrue(element._qname == '{http://example.com/ns}')
     element.tag = 'foo'
-    self.assert_(element._qname == '{http://example.com/ns}foo')
+    self.assertTrue(element._qname == '{http://example.com/ns}foo')
     
   def assert_trees_similar(self, a, b):
     """Compares two XML trees for approximate matching."""
     for child in a:
-      self.assert_(len(a.findall(child.tag)) == len(b.findall(child.tag)))
+      self.assertTrue(len(a.findall(child.tag)) == len(b.findall(child.tag)))
     for child in b:
-      self.assert_(len(a.findall(child.tag)) == len(b.findall(child.tag)))
-    self.assert_(len(a) == len(b))
-    self.assert_(a.text == b.text)
-    self.assert_(a.attrib == b.attrib)
+      self.assertTrue(len(a.findall(child.tag)) == len(b.findall(child.tag)))
+    self.assertTrue(len(a) == len(b))
+    self.assertTrue(a.text == b.text)
+    self.assertTrue(a.attrib == b.attrib)
 
 
 class UtilityFunctionTest(unittest.TestCase):
 
   def testMatchQnames(self):
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         'foo', 'http://example.com', '{http://example.com}foo'))
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         None, None, '{http://example.com}foo'))
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         None, None, 'foo'))
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         None, None, None))
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         None, None, '{http://example.com}'))
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         'foo', None, '{http://example.com}foo'))
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         None, 'http://example.com', '{http://example.com}foo'))
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         None, '', 'foo'))
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         'foo', '', 'foo'))
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         'foo', '', 'foo'))
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         'foo', 'http://google.com', '{http://example.com}foo') == False)
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         'foo', 'http://example.com', '{http://example.com}bar') == False)
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         'foo', 'http://example.com', '{http://google.com}foo') == False)
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         'bar', 'http://example.com', '{http://google.com}foo') == False)
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         'foo', None, '{http://example.com}bar') == False)
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         None, 'http://google.com', '{http://example.com}foo') == False)
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         None, '', '{http://example.com}foo') == False)
-    self.assert_(atom.core._qname_matches(
+    self.assertTrue(atom.core._qname_matches(
         'foo', '', 'bar') == False)
 
 
 class Chars(atom.core.XmlElement):
-  _qname = u'{http://example.com/}chars'
+  _qname = '{http://example.com/}chars'
   y = 'y'
   alpha = 'a'
 
@@ -328,7 +328,7 @@ class Chars(atom.core.XmlElement):
 class Strs(atom.core.XmlElement):
   _qname = '{http://example.com/}strs'
   chars = [Chars]
-  delta = u'd'
+  delta = 'd'
 
 
 def parse(string):
@@ -345,45 +345,45 @@ class CharacterEncodingTest(unittest.TestCase):
 
   def testUnicodeInputString(self):
     # Test parsing the inner text.
-    self.assertEqual(parse(u'<x>&#948;</x>').text, u'\u03b4')
-    self.assertEqual(parse(u'<x>\u03b4</x>').text, u'\u03b4')
+    self.assertEqual(parse('<x>&#948;</x>').text, '\u03b4')
+    self.assertEqual(parse('<x>\u03b4</x>').text, '\u03b4')
 
     # Test output valid XML.
-    self.assertEqual(parse(u'<x>&#948;</x>').to_string(), '<x>&#948;</x>')
-    self.assertEqual(parse(u'<x>\u03b4</x>').to_string(), '<x>&#948;</x>')
+    self.assertEqual(parse('<x>&#948;</x>').to_string(), '<x>&#948;</x>')
+    self.assertEqual(parse('<x>\u03b4</x>').to_string(), '<x>&#948;</x>')
 
     # Test setting the inner text and output valid XML.
-    e = create(u'x', u'\u03b4')
+    e = create('x', '\u03b4')
     self.assertEqual(e.to_string(), '<x>&#948;</x>')
-    self.assertEqual(e.text, u'\u03b4')
-    self.assert_(isinstance(e.text, unicode))
-    self.assertEqual(create(u'x', '\xce\xb4'.decode('utf-8')).to_string(),
+    self.assertEqual(e.text, '\u03b4')
+    self.assertTrue(isinstance(e.text, str))
+    self.assertEqual(create('x', '\xce\xb4'.decode('utf-8')).to_string(),
                      '<x>&#948;</x>')
 
   def testUnicodeTagsAndAttributes(self):
     # Begin with test to show underlying ElementTree behavior.
-    t = ElementTree.fromstring(u'<del\u03b4ta>test</del\u03b4ta>'.encode('utf-8'))
-    self.assertEqual(t.tag, u'del\u03b4ta')
-    self.assertEqual(parse(u'<\u03b4elta>test</\u03b4elta>')._qname,
-                     u'\u03b4elta')
+    t = ElementTree.fromstring('<del\u03b4ta>test</del\u03b4ta>'.encode('utf-8'))
+    self.assertEqual(t.tag, 'del\u03b4ta')
+    self.assertEqual(parse('<\u03b4elta>test</\u03b4elta>')._qname,
+                     '\u03b4elta')
     # Test unicode attribute names and values.
-    t = ElementTree.fromstring(u'<x \u03b4a="\u03b4b" />'.encode('utf-8'))
-    self.assertEqual(t.attrib, {u'\u03b4a': u'\u03b4b'})
-    self.assertEqual(parse(u'<x \u03b4a="\u03b4b" />').get_attributes(
-        u'\u03b4a')[0].value, u'\u03b4b')
+    t = ElementTree.fromstring('<x \u03b4a="\u03b4b" />'.encode('utf-8'))
+    self.assertEqual(t.attrib, {'\u03b4a': '\u03b4b'})
+    self.assertEqual(parse('<x \u03b4a="\u03b4b" />').get_attributes(
+        '\u03b4a')[0].value, '\u03b4b')
     x = create('x', None)
-    x._other_attributes[u'a'] = u'\u03b4elta'
-    self.assert_(x.to_string().startswith('<x a="&#948;elta"'))
+    x._other_attributes['a'] = '\u03b4elta'
+    self.assertTrue(x.to_string().startswith('<x a="&#948;elta"'))
 
   def testUtf8InputString(self):
     # Test parsing inner text.
-    self.assertEqual(parse('<x>&#948;</x>').text, u'\u03b4')
-    self.assertEqual(parse(u'<x>\u03b4</x>'.encode('utf-8')).text, u'\u03b4')
-    self.assertEqual(parse('<x>\xce\xb4</x>').text, u'\u03b4')
+    self.assertEqual(parse('<x>&#948;</x>').text, '\u03b4')
+    self.assertEqual(parse('<x>\u03b4</x>'.encode('utf-8')).text, '\u03b4')
+    self.assertEqual(parse('<x>\xce\xb4</x>').text, '\u03b4')
 
     # Test output valid XML.
     self.assertEqual(parse('<x>&#948;</x>').to_string(), '<x>&#948;</x>')
-    self.assertEqual(parse(u'<x>\u03b4</x>'.encode('utf-8')).to_string(),
+    self.assertEqual(parse('<x>\u03b4</x>'.encode('utf-8')).to_string(),
                      '<x>&#948;</x>')
     self.assertEqual(parse('<x>\xce\xb4</x>').to_string(), '<x>&#948;</x>')
 
@@ -392,47 +392,47 @@ class CharacterEncodingTest(unittest.TestCase):
     self.assertEqual(e.to_string(), '<x>&#948;</x>')
     # Don't change the encoding until the we convert to an XML string.
     self.assertEqual(e.text, '\xce\xb4')
-    self.assert_(isinstance(e.text, str))
-    self.assert_(isinstance(e.to_string(), str))
-    self.assertEqual(create('x', u'\u03b4'.encode('utf-8')).to_string(),
+    self.assertTrue(isinstance(e.text, str))
+    self.assertTrue(isinstance(e.to_string(), str))
+    self.assertEqual(create('x', '\u03b4'.encode('utf-8')).to_string(),
                      '<x>&#948;</x>')
     # Test attributes and values with UTF-8 inputs.
     self.assertEqual(parse('<x \xce\xb4a="\xce\xb4b" />').get_attributes(
-        u'\u03b4a')[0].value, u'\u03b4b')
+        '\u03b4a')[0].value, '\u03b4b')
 
   def testUtf8TagsAndAttributes(self):
     self.assertEqual(
-        parse(u'<\u03b4elta>test</\u03b4elta>'.encode('utf-8'))._qname,
-        u'\u03b4elta')
+        parse('<\u03b4elta>test</\u03b4elta>'.encode('utf-8'))._qname,
+        '\u03b4elta')
     self.assertEqual(parse('<\xce\xb4elta>test</\xce\xb4elta>')._qname,
-                     u'\u03b4elta')
+                     '\u03b4elta')
     # Test an element with UTF-8 in the attribute value.
     x = create('x', None)
-    x._other_attributes[u'a'] = '\xce\xb4'
-    self.assert_(x.to_string(encoding='UTF-8').startswith('<x a="&#948;"'))
-    self.assert_(x.to_string().startswith('<x a="&#948;"'))
+    x._other_attributes['a'] = '\xce\xb4'
+    self.assertTrue(x.to_string(encoding='UTF-8').startswith('<x a="&#948;"'))
+    self.assertTrue(x.to_string().startswith('<x a="&#948;"'))
 
   def testOtherEncodingOnInputString(self):
     BIG_ENDIAN = 0
     LITTLE_ENDIAN = 1
     # Test parsing inner text.
-    self.assertEqual(parse(u'<x>\u03b4</x>'.encode('utf-16')).text, u'\u03b4')
+    self.assertEqual(parse('<x>\u03b4</x>'.encode('utf-16')).text, '\u03b4')
 
     # Test output valid XML.
-    self.assertEqual(parse(u'<x>\u03b4</x>'.encode('utf-16')).to_string(),
+    self.assertEqual(parse('<x>\u03b4</x>'.encode('utf-16')).to_string(),
                      '<x>&#948;</x>')
 
     # Test setting the inner text and output valid XML.
-    e = create('x', u'\u03b4'.encode('utf-16'))
+    e = create('x', '\u03b4'.encode('utf-16'))
     self.assertEqual(e.to_string(encoding='utf-16'), '<x>&#948;</x>')
     # Don't change the encoding until the we convert to an XML string.
     # Allow either little-endian or big-endian byte orderings.
-    self.assert_(e.text in ['\xff\xfe\xb4\x03', '\xfe\xff\x03\xb4'])
+    self.assertTrue(e.text in ['\xff\xfe\xb4\x03', '\xfe\xff\x03\xb4'])
     endianness = LITTLE_ENDIAN
     if e.text == '\xfe\xff\x03\xb4':
       endianness = BIG_ENDIAN
-    self.assert_(isinstance(e.text, str))
-    self.assert_(isinstance(e.to_string(encoding='utf-16'), str))
+    self.assertTrue(isinstance(e.text, str))
+    self.assertTrue(isinstance(e.to_string(encoding='utf-16'), str))
     if endianness == LITTLE_ENDIAN:
       self.assertEqual(
           create('x', '\xff\xfe\xb4\x03').to_string(encoding='utf-16'),
@@ -444,12 +444,12 @@ class CharacterEncodingTest(unittest.TestCase):
 
   def testOtherEncodingInTagsAndAttributes(self):
     self.assertEqual(
-        parse(u'<\u03b4elta>test</\u03b4elta>'.encode('utf-16'))._qname,
-        u'\u03b4elta')
+        parse('<\u03b4elta>test</\u03b4elta>'.encode('utf-16'))._qname,
+        '\u03b4elta')
     # Test an element with UTF-16 in the attribute value.
     x = create('x', None)
-    x._other_attributes[u'a'] = u'\u03b4'.encode('utf-16')
-    self.assert_(x.to_string(encoding='UTF-16').startswith('<x a="&#948;"'))
+    x._other_attributes['a'] = '\u03b4'.encode('utf-16')
+    self.assertTrue(x.to_string(encoding='UTF-16').startswith('<x a="&#948;"'))
 
 
 def suite():

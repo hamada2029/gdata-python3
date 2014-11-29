@@ -66,7 +66,7 @@ class ContactsTest(unittest.TestCase):
         title=atom.data.Title(text='a test group'))
     created_group = self.client.create_group(new_group)
 
-    self.assert_(created_group.id.text)
+    self.assertTrue(created_group.id.text)
 
     # Add the contact to the new group.
     created.group_membership_info.append(
@@ -102,12 +102,12 @@ class ContactsTest(unittest.TestCase):
         self_link = link.get_attributes('href')[0].value
       elif link.get_attributes('rel')[0].value == 'edit':
         edit_link = link.get_attributes('href')[0].value
-    self.assert_(self_link is not None)
-    self.assert_(edit_link is not None)
+    self.assertTrue(self_link is not None)
+    self.assertTrue(edit_link is not None)
 
     etag = posted.get_attributes('etag')[0].value
-    self.assert_(etag is not None)
-    self.assert_(len(etag) > 0)
+    self.assertTrue(etag is not None)
+    self.assertTrue(len(etag) > 0)
 
     # Delete the test contact.
     http_request = atom.http_core.HttpRequest()

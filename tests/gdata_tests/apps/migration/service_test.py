@@ -52,7 +52,7 @@ class MigrationTest(unittest.TestCase):
                        mail_labels=['Test'])
 
   def testImportMultipleMails(self):
-    for i in xrange(1, 10):
+    for i in range(1, 10):
       self.ms.AddMailEntry(mail_message=MESSAGE % ('Test thread %d' % i,
                                                    'Test thread'),
                            mail_item_properties=['IS_UNREAD'],
@@ -64,8 +64,8 @@ class MigrationTest(unittest.TestCase):
 if __name__ == '__main__':
   print("Google Apps Email Migration Service Tests\n\n"
         "NOTE: Please run these tests only with a test user account.\n")
-  domain = raw_input('Google Apps domain: ')
-  admin_email = '%s@%s' % (raw_input('Administrator username: '), domain)
+  domain = input('Google Apps domain: ')
+  admin_email = '%s@%s' % (input('Administrator username: '), domain)
   admin_password = getpass.getpass('Administrator password: ')
-  username = raw_input('Test username: ')
+  username = input('Test username: ')
   unittest.main()

@@ -117,18 +117,18 @@ class OrganizationUnitProvisioningClientTest(unittest.TestCase):
                                           parent_org_unit_path='/',
                                           description=org_unit_description,
                                           block_inheritance=False)
-    self.assert_(isinstance(new_entry,
+    self.assertTrue(isinstance(new_entry,
                             gdata.apps.organization.data.OrgUnitEntry))
-    self.assertEquals(new_entry.org_unit_path, org_unit_path)
+    self.assertEqual(new_entry.org_unit_path, org_unit_path)
 
     entry = self.client.RetrieveOrgUnit(customer_id, org_unit_path)
-    self.assert_(isinstance(entry,
+    self.assertTrue(isinstance(entry,
                             gdata.apps.organization.data.OrgUnitEntry))
-    self.assertEquals(entry.org_unit_name, org_unit_name)
-    self.assertEquals(entry.org_unit_description, org_unit_description)
-    self.assertEquals(entry.parent_org_unit_path, '')
-    self.assertEquals(entry.org_unit_path, org_unit_path)
-    self.assertEquals(entry.org_unit_block_inheritance, 'false')
+    self.assertEqual(entry.org_unit_name, org_unit_name)
+    self.assertEqual(entry.org_unit_description, org_unit_description)
+    self.assertEqual(entry.parent_org_unit_path, '')
+    self.assertEqual(entry.org_unit_path, org_unit_path)
+    self.assertEqual(entry.org_unit_block_inheritance, 'false')
 
     self.client.DeleteOrgUnit(customer_id, org_unit_name)
 

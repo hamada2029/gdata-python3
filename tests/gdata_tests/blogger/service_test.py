@@ -49,18 +49,18 @@ class BloggerCrudTests(unittest.TestCase):
 
     posted = self.client.AddPost(new_entry, blog_id=test_blog_id)
 
-    self.assertEquals(posted.title.text, new_entry.title.text)
+    self.assertEqual(posted.title.text, new_entry.title.text)
     # Should be one category in the posted entry for the 'test' label.
-    self.assertEquals(len(posted.category), 1)
-    self.assert_(isinstance(posted, gdata.blogger.BlogPostEntry))
+    self.assertEqual(len(posted.category), 1)
+    self.assertTrue(isinstance(posted, gdata.blogger.BlogPostEntry))
 
     # Change the title and add more labels.
     posted.title.text = 'Updated'
     posted.AddLabel('second')
     updated = self.client.UpdatePost(entry=posted)
 
-    self.assertEquals(updated.title.text, 'Updated')
-    self.assertEquals(len(updated.category), 2)
+    self.assertEqual(updated.title.text, 'Updated')
+    self.assertEqual(len(updated.category), 2)
 
     # Cleanup and delete the draft blog post.
     self.client.DeletePost(entry=posted)
@@ -79,7 +79,7 @@ class BloggerCrudTests(unittest.TestCase):
     new_comment.content = atom.Content(text='Test comment')
     posted = self.client.AddComment(new_comment, blog_id=blog_id, 
         post_id=post_id)
-    self.assertEquals(posted.content.text, new_comment.content.text)
+    self.assertEqual(posted.content.text, new_comment.content.text)
 
     # Cleanup and delete the comment test blog post.
     self.client.DeletePost(entry=target_post)
@@ -98,10 +98,10 @@ class BloggerQueryTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
-  print ('NOTE: Please run these tests only with a test account. ' +
-         'The tests may delete or update your data.')
-  username = raw_input('Please enter your username: ')
+  print(('NOTE: Please run these tests only with a test account. ' +
+         'The tests may delete or update your data.'))
+  username = input('Please enter your username: ')
   password = getpass.getpass()
-  test_blog_id = raw_input('Please enter the blog id for the test blog: ')
+  test_blog_id = input('Please enter the blog id for the test blog: ')
   unittest.main()
 

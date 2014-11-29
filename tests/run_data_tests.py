@@ -2,35 +2,35 @@
 
 import sys
 import unittest
-import module_test_runner
+from . import module_test_runner
 import getopt
 import getpass
 # Modules whose tests we will run.
-import gdata_test
-import atom_test
-import atom_tests.http_interface_test
-import atom_tests.mock_http_test
-import atom_tests.token_store_test
-import atom_tests.url_test
-import atom_tests.core_test
-import gdata_tests.apps.emailsettings.data_test
-import gdata_tests.apps.multidomain.data_test
-import gdata_tests.apps_test
-import gdata_tests.auth_test
-import gdata_tests.books_test
-import gdata_tests.blogger_test
-import gdata_tests.calendar_test
-import gdata_tests.calendar_resource.data_test
-import gdata_tests.client_test
-import gdata_tests.codesearch_test
-import gdata_tests.contacts_test
-import gdata_tests.docs_test
-import gdata_tests.health_test
-import gdata_tests.photos_test
-import gdata_tests.spreadsheet_test
-import gdata_tests.youtube_test
-import gdata_tests.webmastertools_test
-import gdata_tests.oauth.data_test
+from . import gdata_test
+from . import atom_test
+from . import atom_tests.http_interface_test
+from . import atom_tests.mock_http_test
+from . import atom_tests.token_store_test
+from . import atom_tests.url_test
+from . import atom_tests.core_test
+from . import gdata_tests.apps.emailsettings.data_test
+from . import gdata_tests.apps.multidomain.data_test
+from . import gdata_tests.apps_test
+from . import gdata_tests.auth_test
+from . import gdata_tests.books_test
+from . import gdata_tests.blogger_test
+from . import gdata_tests.calendar_test
+from . import gdata_tests.calendar_resource.data_test
+from . import gdata_tests.client_test
+from . import gdata_tests.codesearch_test
+from . import gdata_tests.contacts_test
+from . import gdata_tests.docs_test
+from . import gdata_tests.health_test
+from . import gdata_tests.photos_test
+from . import gdata_tests.spreadsheet_test
+from . import gdata_tests.youtube_test
+from . import gdata_tests.webmastertools_test
+from . import gdata_tests.oauth.data_test
 
 
 def RunAllTests():

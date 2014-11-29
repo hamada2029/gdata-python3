@@ -2,26 +2,26 @@
 
 import sys
 import unittest
-import module_test_runner
+from . import module_test_runner
 import getopt
 import getpass
 
 # Modules whose tests we will run.
-import atom_tests.service_test
-import gdata_tests.service_test
-import gdata_tests.apps.service_test
-import gdata_tests.books.service_test
-import gdata_tests.calendar.service_test
-import gdata_tests.docs.service_test
-import gdata_tests.health.service_test
-import gdata_tests.spreadsheet.service_test
-import gdata_tests.spreadsheet.text_db_test
-import gdata_tests.photos.service_test
-import gdata_tests.contacts.service_test
-import gdata_tests.blogger.service_test
-import gdata_tests.youtube.service_test
-import gdata_tests.health.service_test
-import gdata_tests.contacts.profiles.service_test
+from . import atom_tests.service_test
+from . import gdata_tests.service_test
+from . import gdata_tests.apps.service_test
+from . import gdata_tests.books.service_test
+from . import gdata_tests.calendar.service_test
+from . import gdata_tests.docs.service_test
+from . import gdata_tests.health.service_test
+from . import gdata_tests.spreadsheet.service_test
+from . import gdata_tests.spreadsheet.text_db_test
+from . import gdata_tests.photos.service_test
+from . import gdata_tests.contacts.service_test
+from . import gdata_tests.blogger.service_test
+from . import gdata_tests.youtube.service_test
+from . import gdata_tests.health.service_test
+from . import gdata_tests.contacts.profiles.service_test
 
 
 def RunAllTests(username, password, spreadsheet_key, worksheet_key,
@@ -89,21 +89,21 @@ def GetValuesForTestSettingsAndRunAllTests():
     print ('Missing --user and --pw command line arguments, '  
            'prompting for credentials.')
   if username == '':
-    username = raw_input('Please enter your username: ')
+    username = input('Please enter your username: ')
   if password == '':
     password = getpass.getpass()
   if spreadsheet_key == '':
-    spreadsheet_key = raw_input(
+    spreadsheet_key = input(
         'Please enter the key for the test spreadsheet: ')
   if worksheet_key == '':
-    worksheet_key = raw_input(
+    worksheet_key = input(
         'Please enter the id for the worksheet to be edited: ')
   if apps_username == '':
-    apps_username = raw_input('Please enter your Google Apps admin username: ')
+    apps_username = input('Please enter your Google Apps admin username: ')
   if apps_password == '':
     apps_password = getpass.getpass()
   if apps_domain == '':
-    apps_domain = raw_input('Please enter your Google Apps domain: ')
+    apps_domain = input('Please enter your Google Apps domain: ')
   RunAllTests(username, password, spreadsheet_key, worksheet_key,
               apps_username, apps_password, apps_domain)
 

@@ -55,14 +55,14 @@ class SpreadsheetsClientTest(unittest.TestCase):
 
     spreadsheet_id = conf.options.get_value('spreadsheetid')
     original_worksheets = self.client.get_worksheets(spreadsheet_id)
-    self.assert_(isinstance(original_worksheets,
+    self.assertTrue(isinstance(original_worksheets,
                                gdata.spreadsheets.data.WorksheetsFeed))
     worksheet_count = int(original_worksheets.total_results.text)
 
     # Add a new worksheet to the spreadsheet.
     created = self.client.add_worksheet(
         spreadsheet_id, 'a test worksheet', 4, 8)
-    self.assert_(isinstance(created,
+    self.assertTrue(isinstance(created,
                                gdata.spreadsheets.data.WorksheetEntry))
     self.assertEqual(created.title.text, 'a test worksheet')
     self.assertEqual(created.row_count.text, '4')
@@ -93,7 +93,7 @@ class SpreadsheetsClientTest(unittest.TestCase):
     test_worksheet = self.client.add_worksheet(
         spreadsheet_id, 'worksheet x', rows=30, cols=3)
 
-    self.assert_(isinstance(tables, gdata.spreadsheets.data.TablesFeed))
+    self.assertTrue(isinstance(tables, gdata.spreadsheets.data.TablesFeed))
     initial_count = tables.total_results.text
 
     created_table = self.client.add_table(
@@ -112,10 +112,10 @@ class SpreadsheetsClientTest(unittest.TestCase):
     table_num = int(created_table.get_table_id())
     starting_records = self.client.get_records(spreadsheet_id, table_num)
     self.assertEqual(starting_records.total_results.text, '10')
-    self.assert_(starting_records.entry[0].field[0].text is None)
-    self.assert_(starting_records.entry[0].field[1].text is None)
-    self.assert_(starting_records.entry[1].field[0].text is None)
-    self.assert_(starting_records.entry[1].field[1].text is None)
+    self.assertTrue(starting_records.entry[0].field[0].text is None)
+    self.assertTrue(starting_records.entry[0].field[1].text is None)
+    self.assertTrue(starting_records.entry[1].field[0].text is None)
+    self.assertTrue(starting_records.entry[1].field[1].text is None)
 
     record1 = self.client.add_record(
         spreadsheet_id, table_num,
@@ -130,14 +130,14 @@ class SpreadsheetsClientTest(unittest.TestCase):
     self.assertEqual(updated_records.entry[10].value_for_index('A'), '2.99')
     self.assertEqual(updated_records.entry[10].value_for_name('Drink'),
                      'Soda')
-    self.assert_(updated_records.entry[11].value_for_name('Price') is None)
+    self.assertTrue(updated_records.entry[11].value_for_name('Price') is None)
     self.assertEqual(updated_records.entry[11].value_for_name('Drink'),
                      'Milk')
     self.assertEqual(updated_records.entry[12].value_for_name('Drink'),
                      'Water')
-    self.assert_(updated_records.entry[1].value_for_index('A') is None)
-    self.assert_(updated_records.entry[2].value_for_index('B') is None)
-    self.assert_(updated_records.entry[3].value_for_index('C') is None)
+    self.assertTrue(updated_records.entry[1].value_for_index('A') is None)
+    self.assertTrue(updated_records.entry[2].value_for_index('B') is None)
+    self.assertTrue(updated_records.entry[3].value_for_index('C') is None)
 
     # Cleanup the table.
     self.client.delete(created_table)
@@ -165,13 +165,13 @@ class SpreadsheetsClientTest(unittest.TestCase):
         spreadsheet_id, test_worksheet.get_worksheet_id(), 1, 1)
     cell_entry.cell.input_value = 'a test'
     result = self.client.update(cell_entry)
-    self.assertEquals(cell_entry.cell.input_value, result.cell.input_value)
+    self.assertEqual(cell_entry.cell.input_value, result.cell.input_value)
 
     # Verify that the value was set.
     cells = self.client.get_cells(
         spreadsheet_id, test_worksheet.get_worksheet_id())
-    self.assertEquals(len(cells.entry), 1)
-    self.assertEquals(cells.entry[0].cell.input_value, 'a test')
+    self.assertEqual(len(cells.entry), 1)
+    self.assertEqual(cells.entry[0].cell.input_value, 'a test')
 
     # Delete the test worksheet.
     self.client.delete(test_worksheet, force=True)
@@ -179,9 +179,9 @@ class SpreadsheetsClientTest(unittest.TestCase):
   def set_cell(self, spreadsheet_id, worksheet_id, row, column, value):
     cell_entry = self.client.get_cell(
         spreadsheet_id, worksheet_id, row, column)
-    self.assert_(cell_entry is not None)
+    self.assertTrue(cell_entry is not None)
     cell_entry.cell.input_value = value
-    self.assert_(self.client.update(cell_entry) is not None)
+    self.assertTrue(self.client.update(cell_entry) is not None)
 
   def test_batch_set_cells(self):
     if not conf.options.get_value('runlive') == 'true':
@@ -227,25 +227,25 @@ class SpreadsheetsClientTest(unittest.TestCase):
     entry = gdata.spreadsheets.data.ListEntry()
     entry.from_dict({'cola': 'alpha', 'colb': 'beta', 'colc': 'gamma'})
     added = self.client.add_list_entry(entry, spreadsheet_id, worksheet_id)
-    self.assert_(isinstance(added, gdata.spreadsheets.data.ListEntry))
-    self.assertEquals(added.get_value('cola'), 'alpha')
+    self.assertTrue(isinstance(added, gdata.spreadsheets.data.ListEntry))
+    self.assertEqual(added.get_value('cola'), 'alpha')
 
     # Update the row.
     added.from_dict({'cola': '1', 'colb': '2', 'colc': '3'})
     updated = self.client.update(added)
-    self.assert_(isinstance(updated, gdata.spreadsheets.data.ListEntry))
-    self.assertEquals(updated.get_value('cola'), '1')
+    self.assertTrue(isinstance(updated, gdata.spreadsheets.data.ListEntry))
+    self.assertEqual(updated.get_value('cola'), '1')
 
     # Check the number of rows.
     rows = self.client.get_list_feed(spreadsheet_id, worksheet_id)
-    self.assertEquals(len(rows.entry), 1)
+    self.assertEqual(len(rows.entry), 1)
 
     # Remove the row.
     self.client.delete(updated)
 
     # Check that it was removed.
     rows = self.client.get_list_feed(spreadsheet_id, worksheet_id)
-    self.assertEquals(len(rows.entry), 0)
+    self.assertEqual(len(rows.entry), 0)
 
     # Delete the test worksheet.
     self.client.delete(test_worksheet, force=True)

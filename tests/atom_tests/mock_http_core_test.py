@@ -23,7 +23,7 @@ __author__ = 'j.s@google.com (Jeff Scudder)'
 
 
 import unittest
-import StringIO
+import io
 import os.path
 import atom.mock_http_core
 import atom.http_core
@@ -38,22 +38,22 @@ class EchoClientTest(unittest.TestCase):
         uri=atom.http_core.Uri(host='www.jeffscudder.com', path='/'))
     request.add_body_part('hello world!', 'text/plain')
     response = client.request(request)
-    self.assert_(response.getheader('Echo-Host') == 'www.jeffscudder.com:None')
-    self.assert_(response.getheader('Echo-Uri') == '/')
-    self.assert_(response.getheader('Echo-Scheme') is None)
-    self.assert_(response.getheader('Echo-Method') == 'POST')
-    self.assert_(response.getheader('Content-Length') == str(len(
+    self.assertTrue(response.getheader('Echo-Host') == 'www.jeffscudder.com:None')
+    self.assertTrue(response.getheader('Echo-Uri') == '/')
+    self.assertTrue(response.getheader('Echo-Scheme') is None)
+    self.assertTrue(response.getheader('Echo-Method') == 'POST')
+    self.assertTrue(response.getheader('Content-Length') == str(len(
         'hello world!')))
-    self.assert_(response.getheader('Content-Type') == 'text/plain')
-    self.assert_(response.read() == 'hello world!')
+    self.assertTrue(response.getheader('Content-Type') == 'text/plain')
+    self.assertTrue(response.read() == 'hello world!')
 
     # Test a path of None should default to /
     request = atom.http_core.HttpRequest(method='POST', 
         uri=atom.http_core.Uri(host='www.jeffscudder.com', path=None))
     response = client.request(request)
-    self.assert_(response.getheader('Echo-Host') == 'www.jeffscudder.com:None')
-    self.assert_(response.getheader('Echo-Method') == 'POST')
-    self.assert_(response.getheader('Echo-Uri') == '/')
+    self.assertTrue(response.getheader('Echo-Host') == 'www.jeffscudder.com:None')
+    self.assertTrue(response.getheader('Echo-Method') == 'POST')
+    self.assertTrue(response.getheader('Echo-Uri') == '/')
     
     # Send a multipart request.
     request = atom.http_core.HttpRequest(method='POST',
@@ -62,16 +62,16 @@ class EchoClientTest(unittest.TestCase):
                                query={'test': 'true', 'happy': 'yes'}), 
         headers={'Authorization':'Test xyzzy', 'Testing':'True'})
     request.add_body_part('start', 'text/plain')
-    request.add_body_part(StringIO.StringIO('<html><body>hi</body></html>'),
+    request.add_body_part(io.StringIO('<html><body>hi</body></html>'),
                           'text/html', len('<html><body>hi</body></html>'))
     request.add_body_part('alert("Greetings!")', 'text/javascript')
     response = client.request(request)
-    self.assert_(response.getheader('Echo-Host') == 'www.jeffscudder.com:8080')
-    self.assert_(
+    self.assertTrue(response.getheader('Echo-Host') == 'www.jeffscudder.com:8080')
+    self.assertTrue(
         response.getheader('Echo-Uri') == '/multipart?test=true&happy=yes')
-    self.assert_(response.getheader('Echo-Scheme') == 'https')
-    self.assert_(response.getheader('Echo-Method') == 'POST')
-    self.assert_(response.getheader('Content-Type') == (
+    self.assertTrue(response.getheader('Echo-Scheme') == 'https')
+    self.assertTrue(response.getheader('Echo-Method') == 'POST')
+    self.assertTrue(response.getheader('Content-Type') == (
         'multipart/related; boundary="%s"' % (atom.http_core.MIME_BOUNDARY,)))
     expected_body = ('Media multipart posting'
                      '\r\n--%s\r\n'
@@ -86,8 +86,8 @@ class EchoClientTest(unittest.TestCase):
                      '\r\n--%s--') % (atom.http_core.MIME_BOUNDARY, 
         atom.http_core.MIME_BOUNDARY, atom.http_core.MIME_BOUNDARY, 
         atom.http_core.MIME_BOUNDARY,)
-    self.assert_(response.read() == expected_body)
-    self.assert_(response.getheader('Content-Length') == str(
+    self.assertTrue(response.read() == expected_body)
+    self.assertTrue(response.getheader('Content-Length') == str(
         len(expected_body)))
 
 
@@ -101,9 +101,9 @@ class MockHttpClientTest(unittest.TestCase):
     atom.http_core.parse_uri('http://www.google.com/').modify_request(request)
     self.client.add_response(request, 200, 'OK', body='Testing')
     response = self.client.request(request)
-    self.assert_(response.status == 200)
-    self.assert_(response.reason == 'OK')
-    self.assert_(response.read() == 'Testing')
+    self.assertTrue(response.status == 200)
+    self.assertTrue(response.reason == 'OK')
+    self.assertTrue(response.read() == 'Testing')
 
   def test_save_and_load_recordings(self):
     request = atom.http_core.HttpRequest(method='GET')
@@ -119,9 +119,9 @@ class MockHttpClientTest(unittest.TestCase):
       pass
     self.client._load_recordings('test_save_and_load_recordings')
     response = self.client.request(request)
-    self.assert_(response.status == 200)
-    self.assert_(response.reason == 'OK')
-    self.assert_(response.read() == 'Testing')
+    self.assertTrue(response.status == 200)
+    self.assertTrue(response.reason == 'OK')
+    self.assertTrue(response.read() == 'Testing')
 
   def test_use_recordings(self):
     request = atom.http_core.HttpRequest(method='GET')
@@ -131,32 +131,32 @@ class MockHttpClientTest(unittest.TestCase):
     response = self.client.request(request)
     if self.client.real_client:
       self.client._save_recordings('test_use_recordings')
-    self.assert_(response.status in (200, 302))
-    self.assert_(response.reason in ('OK', 'Found'))
-    self.assert_(response.getheader('server') == 'gws')
+    self.assertTrue(response.status in (200, 302))
+    self.assertTrue(response.reason in ('OK', 'Found'))
+    self.assertTrue(response.getheader('server') == 'gws')
     body = response.read()
-    self.assert_(body.startswith('<!doctype html>') or
+    self.assertTrue(body.startswith('<!doctype html>') or
                  body.startswith('<HTML>'))
 
   def test_match_request(self):
     x = atom.http_core.HttpRequest('http://example.com/', 'GET')
     y = atom.http_core.HttpRequest('http://example.com/', 'GET')
-    self.assert_(atom.mock_http_core._match_request(x, y))
+    self.assertTrue(atom.mock_http_core._match_request(x, y))
     y = atom.http_core.HttpRequest('http://example.com/', 'POST')
-    self.assert_(not atom.mock_http_core._match_request(x, y))
+    self.assertTrue(not atom.mock_http_core._match_request(x, y))
     y = atom.http_core.HttpRequest('http://example.com/1', 'GET')
-    self.assert_(not atom.mock_http_core._match_request(x, y))
+    self.assertTrue(not atom.mock_http_core._match_request(x, y))
     y = atom.http_core.HttpRequest('http://example.com/?gsessionid=1', 'GET')
-    self.assert_(not atom.mock_http_core._match_request(x, y))
+    self.assertTrue(not atom.mock_http_core._match_request(x, y))
     y = atom.http_core.HttpRequest('http://example.com/?start_index=1', 'GET')
-    self.assert_(atom.mock_http_core._match_request(x, y))
+    self.assertTrue(atom.mock_http_core._match_request(x, y))
     x = atom.http_core.HttpRequest('http://example.com/?gsessionid=1', 'GET')
     y = atom.http_core.HttpRequest('http://example.com/?gsessionid=1', 'GET')
-    self.assert_(atom.mock_http_core._match_request(x, y))
+    self.assertTrue(atom.mock_http_core._match_request(x, y))
     y = atom.http_core.HttpRequest('http://example.com/?gsessionid=2', 'GET')
-    self.assert_(not atom.mock_http_core._match_request(x, y))
+    self.assertTrue(not atom.mock_http_core._match_request(x, y))
     y = atom.http_core.HttpRequest('http://example.com/', 'GET')
-    self.assert_(not atom.mock_http_core._match_request(x, y))
+    self.assertTrue(not atom.mock_http_core._match_request(x, y))
 
   def test_use_named_sessions(self):
     self.client._delete_recordings('mock_http_test.test_use_named_sessions')
@@ -172,9 +172,9 @@ class MockHttpClientTest(unittest.TestCase):
     # Modify the recorded response to allow us to identify a cached result
     # from an echoed result. We need to be able to check to see if this
     # came from a recording.
-    self.assert_('Cache-Marker' not in self.client._recordings[0][1]._headers)
+    self.assertTrue('Cache-Marker' not in self.client._recordings[0][1]._headers)
     self.client._recordings[0][1]._headers['Cache-Marker'] = '1'
-    self.assert_('Cache-Marker' in self.client._recordings[0][1]._headers)
+    self.assertTrue('Cache-Marker' in self.client._recordings[0][1]._headers)
     # Save the recorded responses.
     self.client.close_session()
 

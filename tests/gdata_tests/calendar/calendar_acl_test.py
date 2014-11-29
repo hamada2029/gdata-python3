@@ -73,7 +73,7 @@ class CalendarServiceAclUnitTest(unittest.TestCase):
     try:
       self.cal_client.GetCalendarAclFeed(self._aclFeedUri)
       self.fail("Unauthenticated request should fail")
-    except gdata.service.RequestError, error:
+    except gdata.service.RequestError as error:
       self.assertEqual(error[0]['status'], 401)
       self.assertEqual(error[0]['reason'], "Authorization required")
 
@@ -88,7 +88,7 @@ class CalendarServiceAclUnitTest(unittest.TestCase):
     try:
       self.cal_client.GetCalendarAclEntry(self._aclEntryUri)
       self.fail("Unauthenticated request should fail");
-    except gdata.service.RequestError, error:
+    except gdata.service.RequestError as error:
       self.assertEqual(error[0]['status'], 401)
       self.assertEqual(error[0]['reason'], "Authorization required")
   
@@ -131,7 +131,7 @@ class CalendarServiceAclUnitTest(unittest.TestCase):
     # Delete the event
     self.cal_client.DeleteAclEntry(returned_rule.GetEditLink().href)
     aclFeed = self.cal_client.GetCalendarAclFeed(self._aclFeedUri)
-    self.assertEquals(original_rule_count, len(aclFeed.entry))
+    self.assertEqual(original_rule_count, len(aclFeed.entry))
 
   def testUpdateAclChangeScopeValue(self):
     """Fiendishly try to insert a test ACL rule and attempt to change the scope value (i.e. username).
@@ -147,7 +147,7 @@ class CalendarServiceAclUnitTest(unittest.TestCase):
     updated_rule.scope.value = "user_%s@gmail.com" % (self._getRandomNumber())
     try:
       returned_rule = self.cal_client.UpdateAclEntry(returned_rule.GetEditLink().href, updated_rule)
-    except gdata.service.RequestError, error:
+    except gdata.service.RequestError as error:
       self.assertEqual(error[0]['status'], 403)
       self.assertEqual(error[0]['reason'], "Forbidden")
 
@@ -168,7 +168,7 @@ class CalendarServiceAclUnitTest(unittest.TestCase):
     updated_rule.scope.type = "domain"
     try:
       returned_rule = self.cal_client.UpdateAclEntry(returned_rule.GetEditLink().href, updated_rule)
-    except gdata.service.RequestError, error:
+    except gdata.service.RequestError as error:
       self.assertEqual(error[0]['status'], 403)
       self.assertEqual(error[0]['reason'], "Forbidden")
 
@@ -193,9 +193,9 @@ class CalendarServiceAclUnitTest(unittest.TestCase):
     self.cal_client.DeleteAclEntry(updated_rule.GetEditLink().href)
     
 if __name__ == '__main__':
-  print ('NOTE: Please run these tests only with a test account. ' +
-      'The tests may delete or update your data.')
-  username = raw_input('Please enter your username: ')
+  print(('NOTE: Please run these tests only with a test account. ' +
+      'The tests may delete or update your data.'))
+  username = input('Please enter your username: ')
   password = getpass.getpass()
   unittest.main()
 

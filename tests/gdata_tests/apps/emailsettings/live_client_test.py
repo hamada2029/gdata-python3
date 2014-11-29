@@ -76,7 +76,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         name='status updates')
 
-    self.assert_(isinstance(new_label,
+    self.assertTrue(isinstance(new_label,
         gdata.apps.emailsettings.data.EmailSettingsLabel))
     self.assertEqual(new_label.name, 'status updates')
 
@@ -96,7 +96,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         from_address='alice@gmail.com',
         has_the_word='project proposal', mark_as_read=True)
 
-    self.assert_(isinstance(new_filter,
+    self.assertTrue(isinstance(new_filter,
         gdata.apps.emailsettings.data.EmailSettingsFilter))
     self.assertEqual(new_filter.from_address, 'alice@gmail.com')
     self.assertEqual(new_filter.has_the_word, 'project proposal')
@@ -107,7 +107,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         to_address='announcements@example.com',
         label="announcements")
 
-    self.assert_(isinstance(new_filter,
+    self.assertTrue(isinstance(new_filter,
         gdata.apps.emailsettings.data.EmailSettingsFilter))
     self.assertEqual(new_filter.to_address, 'announcements@example.com')
     self.assertEqual(new_filter.label, 'announcements')
@@ -119,7 +119,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         has_attachments=True,
         archive=True)
 
-    self.assert_(isinstance(new_filter,
+    self.assertTrue(isinstance(new_filter,
         gdata.apps.emailsettings.data.EmailSettingsFilter))
     self.assertEqual(new_filter.subject, 'urgent')
     self.assertEqual(new_filter.does_not_have_the_word, 'spam')
@@ -139,7 +139,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         reply_to='abc@gmail.com',
         make_default=True)
 
-    self.assert_(isinstance(new_sendas,
+    self.assertTrue(isinstance(new_sendas,
         gdata.apps.emailsettings.data.EmailSettingsSendAsAlias))
     self.assertEqual(new_sendas.name, 'Sales')
     self.assertEqual(new_sendas.address,
@@ -158,7 +158,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         enable=True)
 
-    self.assert_(isinstance(new_webclip,
+    self.assertTrue(isinstance(new_webclip,
         gdata.apps.emailsettings.data.EmailSettingsWebClip))
     self.assertEqual(new_webclip.enable, 'True')
 
@@ -166,7 +166,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         enable=False)
 
-    self.assert_(isinstance(new_webclip,
+    self.assertTrue(isinstance(new_webclip,
         gdata.apps.emailsettings.data.EmailSettingsWebClip))
     self.assertEqual(new_webclip.enable, 'False')
 
@@ -183,7 +183,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         forward_to=conf.options.get_value('appsusername'),
         action='KEEP')
 
-    self.assert_(isinstance(new_forwarding,
+    self.assertTrue(isinstance(new_forwarding,
         gdata.apps.emailsettings.data.EmailSettingsForwarding))
     self.assertEqual(new_forwarding.enable, 'True')
     self.assertEqual(new_forwarding.forward_to,
@@ -194,7 +194,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         enable=False)
 
-    self.assert_(isinstance(new_forwarding,
+    self.assertTrue(isinstance(new_forwarding,
         gdata.apps.emailsettings.data.EmailSettingsForwarding))
     self.assertEqual(new_forwarding.enable, 'False')
 
@@ -209,7 +209,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         enable=True, enable_for='MAIL_FROM_NOW_ON', action='KEEP')
 
-    self.assert_(isinstance(new_pop,
+    self.assertTrue(isinstance(new_pop,
         gdata.apps.emailsettings.data.EmailSettingsPop))
     self.assertEqual(new_pop.enable, 'True')
     self.assertEqual(new_pop.enable_for, 'MAIL_FROM_NOW_ON')
@@ -219,7 +219,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         enable=False)
 
-    self.assert_(isinstance(new_pop,
+    self.assertTrue(isinstance(new_pop,
         gdata.apps.emailsettings.data.EmailSettingsPop))
     self.assertEqual(new_pop.enable, 'False')
 
@@ -234,7 +234,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         enable=True)
 
-    self.assert_(isinstance(new_imap,
+    self.assertTrue(isinstance(new_imap,
         gdata.apps.emailsettings.data.EmailSettingsImap))
     self.assertEqual(new_imap.enable, 'True')
 
@@ -242,7 +242,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         enable=False)
 
-    self.assert_(isinstance(new_imap,
+    self.assertTrue(isinstance(new_imap,
         gdata.apps.emailsettings.data.EmailSettingsImap))
     self.assertEqual(new_imap.enable, 'False')
 
@@ -260,7 +260,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         start_date='2011-12-05', end_date='2011-12-06',
         contacts_only=True, domain_only=False)
 
-    self.assert_(isinstance(new_vacation,
+    self.assertTrue(isinstance(new_vacation,
         gdata.apps.emailsettings.data.EmailSettingsVacationResponder))
     self.assertEqual(new_vacation.enable, 'True')
     self.assertEqual(new_vacation.subject, 'Out of office')
@@ -274,7 +274,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         enable=False)
 
-    self.assert_(isinstance(new_vacation,
+    self.assertTrue(isinstance(new_vacation,
         gdata.apps.emailsettings.data.EmailSettingsVacationResponder))
     self.assertEqual(new_vacation.enable, 'False')
 
@@ -289,7 +289,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         signature='Regards, Joe')
 
-    self.assert_(isinstance(new_signature,
+    self.assertTrue(isinstance(new_signature,
         gdata.apps.emailsettings.data.EmailSettingsSignature))
     self.assertEqual(new_signature.signature_value, 'Regards, Joe')
 
@@ -297,7 +297,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         signature='')
 
-    self.assert_(isinstance(new_signature,
+    self.assertTrue(isinstance(new_signature,
         gdata.apps.emailsettings.data.EmailSettingsSignature))
     self.assertEqual(new_signature.signature_value, '')
 
@@ -312,7 +312,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         language='es')
 
-    self.assert_(isinstance(new_language,
+    self.assertTrue(isinstance(new_language,
         gdata.apps.emailsettings.data.EmailSettingsLanguage))
     self.assertEqual(new_language.language_tag, 'es')
 
@@ -327,7 +327,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         page_size=25, arrows=True)
 
-    self.assert_(isinstance(new_general,
+    self.assertTrue(isinstance(new_general,
         gdata.apps.emailsettings.data.EmailSettingsGeneral))
     self.assertEqual(new_general.page_size, '25')
     self.assertEqual(new_general.arrows, 'True')
@@ -336,7 +336,7 @@ class EmailSettingsClientTest(unittest.TestCase):
         username=conf.options.get_value('targetusername'),
         shortcuts=False, snippets=True, use_unicode=False)
 
-    self.assert_(isinstance(new_general,
+    self.assertTrue(isinstance(new_general,
         gdata.apps.emailsettings.data.EmailSettingsGeneral))
     self.assertEqual(new_general.shortcuts, 'False')
     self.assertEqual(new_general.snippets, 'True')

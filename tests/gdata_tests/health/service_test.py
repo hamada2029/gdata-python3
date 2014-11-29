@@ -33,14 +33,14 @@ class HealthQueryProfileListTest(unittest.TestCase):
     self.profile_list_feed = self.health.GetProfileListFeed()
 
   def testGetProfileListFeed(self):
-    self.assert_(isinstance(self.profile_list_feed,
+    self.assertTrue(isinstance(self.profile_list_feed,
                             gdata.health.ProfileListFeed))
     self.assertEqual(self.profile_list_feed.id.text,
                      'https://www.google.com/health/feeds/profile/list')
     first_entry = self.profile_list_feed.entry[0]
-    self.assert_(isinstance(first_entry, gdata.health.ProfileListEntry))
-    self.assert_(first_entry.GetProfileId() is not None)
-    self.assert_(first_entry.GetProfileName() is not None)
+    self.assertTrue(isinstance(first_entry, gdata.health.ProfileListEntry))
+    self.assertTrue(first_entry.GetProfileId() is not None)
+    self.assertTrue(first_entry.GetProfileName() is not None)
 
     query = gdata.health.service.HealthProfileListQuery()
     profile_list = self.health.GetProfileListFeed(query)
@@ -58,14 +58,14 @@ class H9QueryProfileListTest(unittest.TestCase):
     self.profile_list_feed = self.h9.GetProfileListFeed()
 
   def testGetProfileListFeed(self):
-    self.assert_(isinstance(self.profile_list_feed,
+    self.assertTrue(isinstance(self.profile_list_feed,
                             gdata.health.ProfileListFeed))
     self.assertEqual(self.profile_list_feed.id.text,
                      'https://www.google.com/h9/feeds/profile/list')
     first_entry = self.profile_list_feed.entry[0]
-    self.assert_(isinstance(first_entry, gdata.health.ProfileListEntry))
-    self.assert_(first_entry.GetProfileId() is not None)
-    self.assert_(first_entry.GetProfileName() is not None)
+    self.assertTrue(isinstance(first_entry, gdata.health.ProfileListEntry))
+    self.assertTrue(first_entry.GetProfileId() is not None)
+    self.assertTrue(first_entry.GetProfileName() is not None)
 
     query = gdata.health.service.HealthProfileListQuery()
     profile_list = self.h9.GetProfileListFeed(query)
@@ -85,15 +85,15 @@ class HealthQueryProfileTest(unittest.TestCase):
 
   def testGetProfileFeed(self):
     feed = self.health.GetProfileFeed(profile_id=self.profile_id)
-    self.assert_(isinstance(feed, gdata.health.ProfileFeed))
-    self.assert_(isinstance(feed.entry[0].ccr, gdata.health.Ccr))
+    self.assertTrue(isinstance(feed, gdata.health.ProfileFeed))
+    self.assertTrue(isinstance(feed.entry[0].ccr, gdata.health.Ccr))
 
   def testGetProfileFeedByQuery(self):
     query = gdata.health.service.HealthProfileQuery(
         projection='ui', profile_id=self.profile_id)
     feed = self.health.GetProfileFeed(query=query)
-    self.assert_(isinstance(feed, gdata.health.ProfileFeed))
-    self.assert_(feed.entry[0].ccr is not None)
+    self.assertTrue(isinstance(feed, gdata.health.ProfileFeed))
+    self.assertTrue(feed.entry[0].ccr is not None)
 
   def testGetProfileDigestFeed(self):
     query = gdata.health.service.HealthProfileQuery(
@@ -109,11 +109,11 @@ class HealthQueryProfileTest(unittest.TestCase):
     feed = self.health.GetProfileFeed(query=query)
     self.assertEqual(len(feed.entry), 1)
     if feed.entry[0].ccr.GetMedications() is not None:
-      self.assert_(feed.entry[0].ccr.GetMedications()[0] is not None)
-    self.assert_(feed.entry[0].ccr.GetConditions()[0] is not None)
-    self.assert_(feed.entry[0].ccr.GetAllergies() is None)
-    self.assert_(feed.entry[0].ccr.GetAlerts() is None)
-    self.assert_(feed.entry[0].ccr.GetResults() is None)
+      self.assertTrue(feed.entry[0].ccr.GetMedications()[0] is not None)
+    self.assertTrue(feed.entry[0].ccr.GetConditions()[0] is not None)
+    self.assertTrue(feed.entry[0].ccr.GetAllergies() is None)
+    self.assertTrue(feed.entry[0].ccr.GetAlerts() is None)
+    self.assertTrue(feed.entry[0].ccr.GetResults() is None)
 
 
 class H9QueryProfileTest(unittest.TestCase):
@@ -126,15 +126,15 @@ class H9QueryProfileTest(unittest.TestCase):
 
   def testGetProfileFeed(self):
     feed = self.h9.GetProfileFeed(profile_id=self.profile_id)
-    self.assert_(isinstance(feed, gdata.health.ProfileFeed))
-    self.assert_(feed.entry[0].ccr is not None)
+    self.assertTrue(isinstance(feed, gdata.health.ProfileFeed))
+    self.assertTrue(feed.entry[0].ccr is not None)
 
   def testGetProfileFeedByQuery(self):
     query = gdata.health.service.HealthProfileQuery(
         service='h9', projection='ui', profile_id=self.profile_id)
     feed = self.h9.GetProfileFeed(query=query)
-    self.assert_(isinstance(feed, gdata.health.ProfileFeed))
-    self.assert_(feed.entry[0].ccr is not None)
+    self.assertTrue(isinstance(feed, gdata.health.ProfileFeed))
+    self.assertTrue(feed.entry[0].ccr is not None)
 
 
 class HealthNoticeTest(unittest.TestCase):
@@ -190,6 +190,6 @@ class H9NoticeTest(unittest.TestCase):
 if __name__ == '__main__':
   print ('Health API Tests\nNOTE: Please run these tests only with a test '
          'account. The tests may delete or update your data.')
-  username = raw_input('Please enter your username: ')
+  username = input('Please enter your username: ')
   password = getpass.getpass()
   unittest.main()

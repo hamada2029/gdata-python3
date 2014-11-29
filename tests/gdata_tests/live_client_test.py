@@ -62,8 +62,8 @@ class BloggerTest(unittest.TestCase):
     http_request.add_body_part(str(blog_post), 'application/atom+xml')
 
     def entry_from_string_wrapper(response):
-      self.assert_(response.getheader('content-type') is not None)
-      self.assert_(response.getheader('gdata-version') is not None)
+      self.assertTrue(response.getheader('content-type') is not None)
+      self.assertTrue(response.getheader('gdata-version') is not None)
       return atom.EntryFromString(response.read())
 
     entry = self.client.request('POST', 
@@ -137,8 +137,8 @@ class BloggerTest(unittest.TestCase):
         found_tags[0] = True
       elif category.get_attributes('term')[0].value == 'Mr. Darcy':
         found_tags[1] = True
-    self.assert_(found_tags[0])
-    self.assert_(found_tags[1])
+    self.assertTrue(found_tags[0])
+    self.assertTrue(found_tags[1])
 
     # Find the blog post on the blog.
     self_link = None
@@ -148,8 +148,8 @@ class BloggerTest(unittest.TestCase):
         self_link = link.get_attributes('href')[0].value
       elif link.get_attributes('rel')[0].value == 'edit':
         edit_link = link.get_attributes('href')[0].value
-    self.assert_(self_link is not None)
-    self.assert_(edit_link is not None)
+    self.assertTrue(self_link is not None)
+    self.assertTrue(edit_link is not None)
 
     queried = self.client.request('GET', self_link, 
         converter=element_from_string)
@@ -157,7 +157,7 @@ class BloggerTest(unittest.TestCase):
 
     # Test queries using ETags.
     entry = self.client.get_entry(self_link)
-    self.assert_(entry.etag is not None)
+    self.assertTrue(entry.etag is not None)
     self.assertRaises(gdata.client.NotModified, self.client.get_entry,
                       self_link, etag=entry.etag)
 
@@ -205,12 +205,12 @@ class ContactsTest(unittest.TestCase):
         self_link = link.get_attributes('href')[0].value
       elif link.get_attributes('rel')[0].value == 'edit':
         edit_link = link.get_attributes('href')[0].value
-    self.assert_(self_link is not None)
-    self.assert_(edit_link is not None)
+    self.assertTrue(self_link is not None)
+    self.assertTrue(edit_link is not None)
 
     etag = posted.get_attributes('etag')[0].value
-    self.assert_(etag is not None)
-    self.assert_(len(etag) > 0)
+    self.assertTrue(etag is not None)
+    self.assertTrue(len(etag) > 0)
 
     # Delete the test contact.
     http_request = atom.http_core.HttpRequest()
@@ -250,14 +250,14 @@ class VersionTwoClientContactsTest(unittest.TestCase):
     # Create the test contact.
     posted = self.client.post(entry,
         'https://www.google.com/m8/feeds/contacts/default/full')
-    self.assert_(isinstance(posted, gdata.data.GDEntry))
+    self.assertTrue(isinstance(posted, gdata.data.GDEntry))
     self.assertEqual(posted.get_elements('title')[0].text, 'Test')
     self.assertEqual(posted.get_elements('email')[0].get_attributes(
         'address')[0].value, 'test@example.com')
 
     posted.get_elements('title')[0].text = 'Doug'
     edited = self.client.update(posted)
-    self.assert_(isinstance(edited, gdata.data.GDEntry))
+    self.assertTrue(isinstance(edited, gdata.data.GDEntry))
     self.assertEqual(edited.get_elements('title')[0].text, 'Doug')
     self.assertEqual(edited.get_elements('email')[0].get_attributes(
         'address')[0].value, 'test@example.com')
@@ -266,10 +266,10 @@ class VersionTwoClientContactsTest(unittest.TestCase):
     self.client.delete(edited)
 
   def notest_crud_over_https_proxy(self):
-    import urllib
+    import urllib.request, urllib.parse, urllib.error
     PROXY_ADDR = '98.192.125.23'
     try:
-      response = urllib.urlopen('http://' + PROXY_ADDR)
+      response = urllib.request.urlopen('http://' + PROXY_ADDR)
     except IOError:
       return
     # Only bother running the test if the proxy is up

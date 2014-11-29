@@ -33,8 +33,8 @@ class ProfileEntryTest(unittest.TestCase):
   def testToAndFromStringWithData(self):
     entry = gdata.health.ProfileEntryFromString(str(self.profile_entry))
 
-    self.assert_(isinstance(entry, gdata.health.ProfileEntry))
-    self.assert_(isinstance(entry.ccr, gdata.health.Ccr))
+    self.assertTrue(isinstance(entry, gdata.health.ProfileEntry))
+    self.assertTrue(isinstance(entry.ccr, gdata.health.Ccr))
     self.assertEqual(len(entry.ccr.GetMedications()), 3)
     self.assertEqual(len(entry.ccr.GetImmunizations()), 1)
     self.assertEqual(len(entry.ccr.GetAlerts()), 2)
@@ -85,7 +85,7 @@ class ProfileListEntryTest(unittest.TestCase):
         test_data.HEALTH_PROFILE_LIST_ENTRY)
 
   def testToAndFromString(self):
-    self.assert_(isinstance(self.entry, gdata.health.ProfileListEntry))
+    self.assertTrue(isinstance(self.entry, gdata.health.ProfileListEntry))
     self.assertEqual(self.entry.GetProfileId(), 'vndCn5sdfwdEIY')
     self.assertEqual(self.entry.GetProfileName(), 'profile name')
 
@@ -97,16 +97,16 @@ class ProfileFeedTest(unittest.TestCase):
         test_data.HEALTH_PROFILE_FEED)
 
   def testToAndFromString(self):
-    self.assert_(len(self.feed.entry) == 15)
+    self.assertTrue(len(self.feed.entry) == 15)
     for an_entry in self.feed.entry:
-      self.assert_(isinstance(an_entry, gdata.health.ProfileEntry))
+      self.assertTrue(isinstance(an_entry, gdata.health.ProfileEntry))
     new_profile_feed = gdata.health.ProfileFeedFromString(str(self.feed))
     for an_entry in new_profile_feed.entry:
-      self.assert_(isinstance(an_entry, gdata.health.ProfileEntry))
+      self.assertTrue(isinstance(an_entry, gdata.health.ProfileEntry))
 
   def testConvertActualData(self):
     for an_entry in self.feed.entry:
-      self.assert_(an_entry.ccr is not None)
+      self.assertTrue(an_entry.ccr is not None)
 
 
 class HealthProfileQueryTest(unittest.TestCase):

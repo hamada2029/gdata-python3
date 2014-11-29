@@ -53,12 +53,12 @@ class DocumentListFeedTest(unittest.TestCase):
         test_data.DOCUMENT_LIST_FEED)
 
   def testToAndFromString(self):
-    self.assert_(len(self.dl_feed.entry) == 2)
+    self.assertTrue(len(self.dl_feed.entry) == 2)
     for an_entry in self.dl_feed.entry:
-      self.assert_(isinstance(an_entry, gdata.docs.DocumentListEntry))
+      self.assertTrue(isinstance(an_entry, gdata.docs.DocumentListEntry))
     new_dl_feed = gdata.docs.DocumentListFeedFromString(str(self.dl_feed))
     for an_entry in new_dl_feed.entry:
-      self.assert_(isinstance(an_entry, gdata.docs.DocumentListEntry))
+      self.assertTrue(isinstance(an_entry, gdata.docs.DocumentListEntry))
 
   def testConvertActualData(self):
     for an_entry in self.dl_feed.entry:
@@ -78,10 +78,10 @@ class DocumentListFeedTest(unittest.TestCase):
   def testLinkFinderFindsLinks(self):
     for entry in self.dl_feed.entry:
       # All Document List entries should have a self link
-      self.assert_(entry.GetSelfLink() is not None)
+      self.assertTrue(entry.GetSelfLink() is not None)
       # All Document List entries should have an HTML link
-      self.assert_(entry.GetHtmlLink() is not None)
-      self.assert_(entry.feedLink.href is not None)
+      self.assertTrue(entry.GetHtmlLink() is not None)
+      self.assertTrue(entry.feedLink.href is not None)
 
 
 class DocumentListAclEntryTest(unittest.TestCase):
@@ -92,18 +92,18 @@ class DocumentListAclEntryTest(unittest.TestCase):
 
 
   def testToAndFromString(self):
-    self.assert_(isinstance(self.acl_entry, gdata.docs.DocumentListAclEntry))
-    self.assert_(isinstance(self.acl_entry.role, gdata.docs.Role))
-    self.assert_(isinstance(self.acl_entry.scope, gdata.docs.Scope))
+    self.assertTrue(isinstance(self.acl_entry, gdata.docs.DocumentListAclEntry))
+    self.assertTrue(isinstance(self.acl_entry.role, gdata.docs.Role))
+    self.assertTrue(isinstance(self.acl_entry.scope, gdata.docs.Scope))
     self.assertEqual(self.acl_entry.scope.value, 'user@gmail.com')
     self.assertEqual(self.acl_entry.scope.type, 'user')
     self.assertEqual(self.acl_entry.role.value, 'writer')
 
     acl_entry_str = str(self.acl_entry)
     new_acl_entry = gdata.docs.DocumentListAclEntryFromString(acl_entry_str)
-    self.assert_(isinstance(new_acl_entry, gdata.docs.DocumentListAclEntry))
-    self.assert_(isinstance(new_acl_entry.role, gdata.docs.Role))
-    self.assert_(isinstance(new_acl_entry.scope, gdata.docs.Scope))
+    self.assertTrue(isinstance(new_acl_entry, gdata.docs.DocumentListAclEntry))
+    self.assertTrue(isinstance(new_acl_entry.role, gdata.docs.Role))
+    self.assertTrue(isinstance(new_acl_entry.scope, gdata.docs.Scope))
     self.assertEqual(new_acl_entry.scope.value, self.acl_entry.scope.value)
     self.assertEqual(new_acl_entry.scope.type, self.acl_entry.scope.type)
     self.assertEqual(new_acl_entry.role.value, self.acl_entry.role.value)
@@ -115,9 +115,9 @@ class DocumentListAclEntryTest(unittest.TestCase):
     acl_entry = gdata.docs.DocumentListAclEntry(category=[cat])
     acl_entry.scope = gdata.docs.Scope(value='user@gmail.com', type='user')
     acl_entry.role = gdata.docs.Role(value='writer')
-    self.assert_(isinstance(acl_entry, gdata.docs.DocumentListAclEntry))
-    self.assert_(isinstance(acl_entry.role, gdata.docs.Role))
-    self.assert_(isinstance(acl_entry.scope, gdata.docs.Scope))
+    self.assertTrue(isinstance(acl_entry, gdata.docs.DocumentListAclEntry))
+    self.assertTrue(isinstance(acl_entry.role, gdata.docs.Role))
+    self.assertTrue(isinstance(acl_entry.scope, gdata.docs.Scope))
     self.assertEqual(acl_entry.scope.value, 'user@gmail.com')
     self.assertEqual(acl_entry.scope.type, 'user')
     self.assertEqual(acl_entry.role.value, 'writer')
@@ -130,29 +130,29 @@ class DocumentListAclFeedTest(unittest.TestCase):
 
   def testToAndFromString(self):
     for entry in self.feed.entry:
-      self.assert_(isinstance(entry, gdata.docs.DocumentListAclEntry))
+      self.assertTrue(isinstance(entry, gdata.docs.DocumentListAclEntry))
 
     feed = gdata.docs.DocumentListAclFeedFromString(str(self.feed))
     for entry in feed.entry:
-      self.assert_(isinstance(entry, gdata.docs.DocumentListAclEntry))
+      self.assertTrue(isinstance(entry, gdata.docs.DocumentListAclEntry))
 
   def testConvertActualData(self):
     entries = self.feed.entry
-    self.assert_(len(entries) == 2)
+    self.assertTrue(len(entries) == 2)
     self.assertEqual(entries[0].title.text,
                      'Document Permission - user@gmail.com')
     self.assertEqual(entries[0].role.value, 'owner')
     self.assertEqual(entries[0].scope.type, 'user')
     self.assertEqual(entries[0].scope.value, 'user@gmail.com')
-    self.assert_(entries[0].GetSelfLink() is not None)
-    self.assert_(entries[0].GetEditLink() is not None)
+    self.assertTrue(entries[0].GetSelfLink() is not None)
+    self.assertTrue(entries[0].GetEditLink() is not None)
     self.assertEqual(entries[1].title.text,
                      'Document Permission - user2@google.com')
     self.assertEqual(entries[1].role.value, 'writer')
     self.assertEqual(entries[1].scope.type, 'domain')
     self.assertEqual(entries[1].scope.value, 'google.com')
-    self.assert_(entries[1].GetSelfLink() is not None)
-    self.assert_(entries[1].GetEditLink() is not None)
+    self.assertTrue(entries[1].GetSelfLink() is not None)
+    self.assertTrue(entries[1].GetEditLink() is not None)
 
 if __name__ == '__main__':
   unittest.main()
