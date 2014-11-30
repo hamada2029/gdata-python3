@@ -49,13 +49,13 @@ class CalendarResourceSample(object):
     Args:
       resource_properties: A dictionary of calendar resource properties
     """
-    print 'Creating a new calendar resource with id %s...' % (
-        resource_properties['resource_id'])
-    print self.client.CreateResource(
+    print(('Creating a new calendar resource with id %s...' % (
+        resource_properties['resource_id'])))
+    print((self.client.CreateResource(
         resource_id=resource_properties['resource_id'],
         resource_common_name=resource_properties['resource_name'],
         resource_description=resource_properties['resource_description'],
-        resource_type=resource_properties['resource_type'])
+        resource_type=resource_properties['resource_type'])))
 
   def get(self, resource_id=None):
     """Retrieves the calendar resource with the given resource_id
@@ -64,11 +64,11 @@ class CalendarResourceSample(object):
       resource_id: The optional calendar resource identifier
     """
     if resource_id:
-      print 'Retrieving the calendar resource with id %s...' % (resource_id)
-      print self.client.GetResource(resource_id=resource_id)
+      print(('Retrieving the calendar resource with id %s...' % (resource_id)))
+      print((self.client.GetResource(resource_id=resource_id)))
     else:
-      print 'Retrieving all calendar resources...'
-      print self.client.GetResourceFeed()
+      print('Retrieving all calendar resources...')
+      print((self.client.GetResourceFeed()))
 
   def update(self, resource_properties):
     """Updates the calendar resource with the given resource_properties
@@ -76,13 +76,13 @@ class CalendarResourceSample(object):
     Args:
       resource_properties: A dictionary of calendar resource properties
     """
-    print 'Updating the calendar resource with id %s...' % (
-        resource_properties['resource_id'])
-    print self.client.UpdateResource(
+    print(('Updating the calendar resource with id %s...' % (
+        resource_properties['resource_id'])))
+    print((self.client.UpdateResource(
         resource_id=resource_properties['resource_id'],
         resource_common_name=resource_properties['resource_name'],
         resource_description=resource_properties['resource_description'],
-        resource_type=resource_properties['resource_type'])
+        resource_type=resource_properties['resource_type'])))
 
   def delete(self, resource_id):
     """Deletes the calendar resource with the given resource_id
@@ -90,9 +90,9 @@ class CalendarResourceSample(object):
     Args:
       resource_id: The unique calendar resource identifier
     """
-    print 'Deleting the calendar resource with id %s...' % (resource_id)
+    print(('Deleting the calendar resource with id %s...' % (resource_id)))
     self.client.DeleteResource(resource_id)
-    print 'Calendar resource successfully deleted.'
+    print('Calendar resource successfully deleted.')
 
 
 def main():
@@ -103,9 +103,9 @@ def main():
   do_continue = 'y'
   print("Google Apps Calendar Resource API Sample\n\n")
   while not domain:
-    domain = raw_input('Google Apps domain: ')
+    domain = eval(input('Google Apps domain: '))
   while not admin_email:
-    admin_email = '%s@%s' % (raw_input('Administrator username: '), domain)
+    admin_email = '%s@%s' % (eval(input('Administrator username: ')), domain)
   while not admin_password:
     admin_password = getpass.getpass('Administrator password: ')
 
@@ -121,7 +121,7 @@ def call_service(sample):
   operation = None
 
   while operation not in ['c', 'C', 'g', 'G', 'u', 'U', 'd', 'D', 'q', 'Q']:
-    operation = raw_input('Do [c=create|g=get|u=update|d=delete|q=quit]: ')
+    operation = eval(input('Do [c=create|g=get|u=update|d=delete|q=quit]: '))
 
   operation = operation.lower()
 
@@ -141,7 +141,7 @@ def call_service(sample):
 
   do_continue = None
   while do_continue not in ['', 'y', 'Y', 'n', 'N']:
-    do_continue = raw_input('Want to continue (Y/n): ')
+    do_continue = eval(input('Want to continue (Y/n): '))
 
   if do_continue == '':
     do_continue = 'y'
@@ -157,21 +157,21 @@ def get_input(operation):
   resource_type = None
 
   if operation == 'g':
-    resource_id = raw_input('Resource id (leave blank to get all resources): ')
+    resource_id = eval(input('Resource id (leave blank to get all resources): '))
   else:
     while not resource_id:
-      resource_id = raw_input('Resource id: ')
+      resource_id = eval(input('Resource id: '))
 
   if operation == 'c':
-    resource_name = raw_input('Resource common name (recommended): ')
-    resource_description = raw_input('Resource description (recommended): ')
-    resource_type = raw_input('Resource type (recommended): ')
+    resource_name = eval(input('Resource common name (recommended): '))
+    resource_description = eval(input('Resource description (recommended): '))
+    resource_type = eval(input('Resource type (recommended): '))
   elif operation == 'u':
-    resource_name = raw_input(
-        'New resource common name (leave blank if no change): ')
-    resource_description = raw_input(
-        'New resource description (leave blank if no change): ')
-    resource_type = raw_input('New resource type (leave blank if no change): ')
+    resource_name = eval(input(
+        'New resource common name (leave blank if no change): '))
+    resource_description = eval(input(
+        'New resource description (leave blank if no change): '))
+    resource_type = eval(input('New resource type (leave blank if no change): '))
 
   resource_properties = {'resource_id': resource_id,
                          'resource_name': resource_name,

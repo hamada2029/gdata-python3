@@ -98,11 +98,11 @@ class BirthdaySample:
     """
     for i, entry in enumerate(feed.entry):
       if isinstance(feed, gdata.spreadsheet.SpreadsheetsCellsFeed):
-        print '%s %s\n' % (entry.title.text, entry.content.text)
+        print(('%s %s\n' % (entry.title.text, entry.content.text)))
       elif isinstance(feed, gdata.spreadsheet.SpreadsheetsListFeed):
-        print '%s %s %s\n' % (i, entry.title.text, entry.content.text)
+        print(('%s %s %s\n' % (i, entry.title.text, entry.content.text)))
       else:
-        print '%s %s\n' % (i, entry.title.text)
+        print(('%s %s\n' % (i, entry.title.text)))
 
   def _PromptForSpreadsheet(self):
     """ Prompts user to select spreadsheet.
@@ -119,7 +119,7 @@ class BirthdaySample:
 
     feed = self.s_client.GetSpreadsheetsFeed()
     self._PrintFeed(feed)
-    input = raw_input('\nSelection: ')
+    input = eval(input('\nSelection: '))
     
     # extract and return the spreadsheet ID
     return feed.entry[string.atoi(input)].id.text.rsplit('/', 1)[1]
@@ -139,7 +139,7 @@ class BirthdaySample:
 
     feed = self.s_client.GetWorksheetsFeed(key)
     self._PrintFeed(feed)
-    input = raw_input('\nSelection: ')
+    input = eval(input('\nSelection: '))
 
     # extract and return the worksheet ID
     return feed.entry[string.atoi(input)].id.text.rsplit('/', 1)[1]
@@ -267,7 +267,7 @@ class BirthdaySample:
     # Need to find at least one instance of name, birthday, photourl
     # editurl 
     if len(feed.entry) > 0:
-      for name, custom in feed.entry[0].custom.iteritems():
+      for name, custom in list(feed.entry[0].custom.items()):
         if custom.column == self.NAME:
           found_name = True
         elif custom.column == self.BIRTHDAY:
@@ -278,9 +278,9 @@ class BirthdaySample:
           found_editurl = True
 
     if not found_name and found_birthday and found_photourl and found_editurl:
-      print  ("ERROR - Unexpected number of column headers. Should have: %s,"
+      print(("ERROR - Unexpected number of column headers. Should have: %s,"
              " %s, %s, and %s." % (self.NAME, self.BIRTHDAY, self.PHOTO_URL, 
-             self.EDIT_URL)) 
+             self.EDIT_URL))) 
       sys.exit(1)
 
     # For every row in the spreadsheet, grab all the data and either insert
@@ -293,7 +293,7 @@ class BirthdaySample:
       d = {} 
       input_valid = True
       
-      for name, custom in entry.custom.iteritems():
+      for name, custom in list(entry.custom.items()):
         d[custom.column] = custom.text
 
       month = int(d[self.BIRTHDAY].split("/")[0]) 
@@ -315,23 +315,23 @@ class BirthdaySample:
             d[self.BIRTHDAY], d[self.PHOTO_URL])
         event = self._InsertBirthdayWebContentEvent(event)
         event = self._AddReminder(event, self.REMINDER)
-	print "Added %s's birthday!" % d[self.NAME]
+	print(("Added %s's birthday!" % d[self.NAME]))
       elif input_valid: # Event already exists
         edit_link = d[self.EDIT_URL]
         event = self._CreateBirthdayWebContentEvent(d[self.NAME], 
             d[self.BIRTHDAY], d[self.PHOTO_URL])          
         event = self.c_client.UpdateEvent(edit_link, event)
         event = self._AddReminder(event, self.REMINDER)
-        print "Updated %s's birthday!" % d[self.NAME]
+        print(("Updated %s's birthday!" % d[self.NAME]))
       
       if input_valid:
         d[self.EDIT_URL] = event.GetEditLink().href
         self.s_client.UpdateRow(entry, d)
       else:
-        print "Warning - Skipping row, missing valid input." 
+        print("Warning - Skipping row, missing valid input.") 
 
 def main():
-  email = raw_input("Please enter your email: ")
+  email = eval(input("Please enter your email: "))
   password = getpass.getpass("Please enter your password: ")
   
   sample = BirthdaySample(email, password)

@@ -67,9 +67,9 @@ class PopSettings(object):
     self.provisioning_client = gdata.apps.client.AppsClient(domain=self.domain)
     request_token = self.email_settings_client.GetOAuthToken(
         SCOPES, None, self.consumer_key, consumer_secret=self.consumer_secret)
-    print request_token.GenerateAuthorizationUrl()
-    raw_input('Manually go to the above URL and authenticate.'
-              'Press Return after authorization.')
+    print((request_token.GenerateAuthorizationUrl()))
+    eval(input('Manually go to the above URL and authenticate.'
+              'Press Return after authorization.'))
     access_token = self.email_settings_client.GetAccessToken(request_token)
     self.email_settings_client.auth_token = access_token
     self.provisioning_client.auth_token = access_token
@@ -99,7 +99,7 @@ def main():
     opts, args = getopt.getopt(sys.argv[1:], '', ['consumer_key=',
                                                   'consumer_secret=',
                                                   'domain='])
-  except getopt.error, msg:
+  except getopt.error as msg:
     PrintUsageString()
     sys.exit(1)
 
@@ -115,7 +115,7 @@ def main():
       domain = arg
 
   if not (consumer_key and consumer_secret and domain):
-    print 'Requires exactly three flags.'
+    print('Requires exactly three flags.')
     PrintUsageString()
     sys.exit(1)
 
@@ -124,14 +124,14 @@ def main():
   try:
     pop_settings.Authorize()
     pop_settings.UpdateDomainUsersPopSettings()
-  except gdata.client.RequestError, e:
+  except gdata.client.RequestError as e:
     if e.status == 403:
       raise PopSettingsException('Invalid Domain')
     elif e.status == 400:
       raise PopSettingsException('Invalid consumer credentials')
     elif e.status == 503:
       raise PopSettingsException('Server busy')
-    else e.status == 500:
+    elif e.status == 500:
       raise PopSettingsException('Internal server error')
     else:
       raise PopSettingsException('Unknown error')

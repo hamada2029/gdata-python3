@@ -19,8 +19,8 @@ import getpass
 from gdata.contentforshopping.client import ContentForShoppingClient
 
 # Gather merchant information
-account_id = raw_input('Merchant Account ID? ').strip()
-email = raw_input('Google Email Address? ').strip()
+account_id = input('Merchant Account ID? ').strip()
+email = input('Google Email Address? ').strip()
 
 # Create a client
 client = ContentForShoppingClient(account_id)
@@ -32,8 +32,8 @@ client.client_login(email, getpass.getpass('Google Password? '),
 # Get the products list from the products feed
 product_feed = client.get_products()
 
-print 'Listing: %s result(s)' % product_feed.total_results.text
+print(('Listing: %s result(s)' % product_feed.total_results.text))
 
 # Each product is an element in the feed's entry (a list)
 for product in product_feed.entry:
-  print '- %s: %s' % (product.title.text, product.content.text)
+  print(('- %s: %s' % (product.title.text, product.content.text)))

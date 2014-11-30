@@ -26,14 +26,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
-import Cookie
+import http.cookies
 from time import strftime
 
 from django.utils import simplejson
 
 # settings
 try:
-    import settings_default
+    from . import settings_default
     import settings
 
     if settings.__name__.rsplit('.', 1)[0] != settings_default.__name__.rsplit('.', 1)[0]:
@@ -72,11 +72,11 @@ class Flash(object):
         """
         Load the flash message and clear the cookie.
         """
-        print self.no_cache_headers()
+        print((self.no_cache_headers()))
        # load cookie
         if cookie is None:
             browser_cookie = os.environ.get('HTTP_COOKIE', '')
-            self.cookie = Cookie.SimpleCookie()
+            self.cookie = http.cookies.SimpleCookie()
             self.cookie.load(browser_cookie)
         else:
             self.cookie = cookie
@@ -96,7 +96,7 @@ class Flash(object):
             self.cookie[COOKIE_NAME] = ''
             self.cookie[COOKIE_NAME]['path'] = '/'
             self.cookie[COOKIE_NAME]['expires'] = 0
-            print self.cookie[COOKIE_NAME]
+            print((self.cookie[COOKIE_NAME]))
         else:
             # default 'msg' attribute to None
             self.__dict__['msg'] = None
@@ -111,7 +111,7 @@ class Flash(object):
             self.__dict__['msg'] = value
             self.__dict__['cookie'][COOKIE_NAME] = simplejson.dumps(value)
             self.__dict__['cookie'][COOKIE_NAME]['path'] = '/'
-            print self.cookie
+            print((self.cookie))
         else:
             raise ValueError('You can only set the "msg" attribute.')
 
@@ -122,9 +122,9 @@ class Flash(object):
 
         Returns a unicode string of headers.
         """
-        return u"".join([u"Expires: Tue, 03 Jul 2001 06:00:00 GMT",
+        return "".join(["Expires: Tue, 03 Jul 2001 06:00:00 GMT",
             strftime("Last-Modified: %a, %d %b %y %H:%M:%S %Z").decode("utf-8"),
-            u"Cache-Control: no-store, no-cache, must-revalidate, max-age=0",
-            u"Cache-Control: post-check=0, pre-check=0",
-            u"Pragma: no-cache",
+            "Cache-Control: no-store, no-cache, must-revalidate, max-age=0",
+            "Cache-Control: post-check=0, pre-check=0",
+            "Pragma: no-cache",
         ])

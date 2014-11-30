@@ -1,4 +1,4 @@
-import Cookie
+import http.cookies
 import os
 
 from common.appengine_utilities import sessions
@@ -37,15 +37,15 @@ class SessionMiddleware(object):
     def set_test_cookie(self):
         string_cookie = os.environ.get('HTTP_COOKIE', '')
 
-        self.cookie = Cookie.SimpleCookie()
+        self.cookie = http.cookies.SimpleCookie()
         self.cookie.load(string_cookie)
         self.cookie[self.TEST_COOKIE_NAME] = self.TEST_COOKIE_VALUE
-        print self.cookie
+        print((self.cookie))
 
     def test_cookie_worked(self):
         string_cookie = os.environ.get('HTTP_COOKIE', '')
 
-        self.cookie = Cookie.SimpleCookie()
+        self.cookie = http.cookies.SimpleCookie()
         self.cookie.load(string_cookie)
 
         return self.cookie.get(self.TEST_COOKIE_NAME)
@@ -53,7 +53,7 @@ class SessionMiddleware(object):
     def delete_test_cookie(self):
         string_cookie = os.environ.get('HTTP_COOKIE', '')
 
-        self.cookie = Cookie.SimpleCookie()
+        self.cookie = http.cookies.SimpleCookie()
         self.cookie.load(string_cookie)
         self.cookie[self.TEST_COOKIE_NAME] = ''
         self.cookie[self.TEST_COOKIE_NAME]['path'] = '/'

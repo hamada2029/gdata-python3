@@ -125,10 +125,10 @@ def main():
 
   manager = ProfilesManager(consumer_key, consumer_secret, admin_email)
   result = manager.UnshareProfiles()
-  print 'Success: %s - Error: %s' % (result.success_count, result.error_count)
+  print(('Success: %s - Error: %s' % (result.success_count, result.error_count)))
   for entry in result.error_entries:
-    print ' > Failed to update %s: (%s) %s' % (
-        entry.id.text, entry.batch_status.code, entry.batch_status.reason)
+    print((' > Failed to update %s: (%s) %s' % (
+        entry.id.text, entry.batch_status.code, entry.batch_status.reason)))
   sys.exit(result.error_count)
 
 

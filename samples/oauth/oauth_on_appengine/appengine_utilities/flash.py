@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import sys
-import Cookie
+import http.cookies
 import pickle
 from time import strftime
 
@@ -68,7 +68,7 @@ class Flash(object):
        # load cookie
         if cookie is None:
             browser_cookie = os.environ.get('HTTP_COOKIE', '')
-            self.cookie = Cookie.SimpleCookie()
+            self.cookie = http.cookies.SimpleCookie()
             self.cookie.load(browser_cookie)
         else:
             self.cookie = cookie
@@ -88,7 +88,7 @@ class Flash(object):
             self.cookie[COOKIE_NAME] = ''
             self.cookie[COOKIE_NAME]['path'] = '/'
             self.cookie[COOKIE_NAME]['expires'] = 0
-            print self.cookie[COOKIE_NAME]
+            print((self.cookie[COOKIE_NAME]))
         else:
             # default 'msg' attribute to None
             self.__dict__['msg'] = None
@@ -103,7 +103,7 @@ class Flash(object):
             self.__dict__['msg'] = value
             self.__dict__['cookie'][COOKIE_NAME] = simplejson.dumps(value)
             self.__dict__['cookie'][COOKIE_NAME]['path'] = '/'
-            print self.cookie
+            print((self.cookie))
         else:
             raise ValueError('You can only set the "msg" attribute.')
 
@@ -112,8 +112,8 @@ class Flash(object):
         Adds headers, avoiding any page caching in the browser. Useful for highly
         dynamic sites.
         """
-        print "Expires: Tue, 03 Jul 2001 06:00:00 GMT"
-        print strftime("Last-Modified: %a, %d %b %y %H:%M:%S %Z")
-        print "Cache-Control: no-store, no-cache, must-revalidate, max-age=0"
-        print "Cache-Control: post-check=0, pre-check=0"
-        print "Pragma: no-cache"
+        print("Expires: Tue, 03 Jul 2001 06:00:00 GMT")
+        print((strftime("Last-Modified: %a, %d %b %y %H:%M:%S %Z")))
+        print("Cache-Control: no-store, no-cache, must-revalidate, max-age=0")
+        print("Cache-Control: post-check=0, pre-check=0")
+        print("Pragma: no-cache")

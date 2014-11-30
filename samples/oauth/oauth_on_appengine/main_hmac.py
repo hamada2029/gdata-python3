@@ -173,7 +173,7 @@ class FetchData(OAuthDance):
                      'lastViewed': last_viewed
                     })
       self.response.out.write(simplejson.dumps(json))
-    except gdata.service.RequestError, error:
+    except gdata.service.RequestError as error:
       OAuthDance.post(self)
 
 class RevokeToken(webapp.RequestHandler):

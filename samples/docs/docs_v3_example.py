@@ -52,7 +52,7 @@ def CreateClient():
 
 def PrintResource(resource):
   """Display a resource to Standard Out."""
-  print resource.resource_id.text, resource.GetResourceType()
+  print((resource.resource_id.text, resource.GetResourceType()))
 
 
 def PrintFeed(feed):
@@ -90,7 +90,7 @@ def GetResourceSample():
   client = CreateClient()
   for e1 in client.GetResources(limit=5).entry:
     e2 = client.GetResource(e1)
-    print 'Refetched: ', e2.title.text, e2.resource_id.text
+    print(('Refetched: ', e2.title.text, e2.resource_id.text))
 
 
 def GetMetadataSample():
@@ -98,21 +98,21 @@ def GetMetadataSample():
   client = CreateClient()
   # Fetch the metadata entry and display bits of it
   metadata = client.GetMetadata()
-  print 'Quota'
-  print '  Total:', metadata.quota_bytes_total.text
-  print '  Used:', metadata.quota_bytes_used.text
-  print '  Trashed:', metadata.quota_bytes_used_in_trash.text
-  print 'Import / Export'
+  print('Quota')
+  print(('  Total:', metadata.quota_bytes_total.text))
+  print(('  Used:', metadata.quota_bytes_used.text))
+  print(('  Trashed:', metadata.quota_bytes_used_in_trash.text))
+  print('Import / Export')
   for input_format in metadata.import_formats:
-    print '  Import:', input_format.source, 'to', input_format.target
+    print(('  Import:', input_format.source, 'to', input_format.target))
   for export_format in metadata.export_formats:
-    print '  Export:', export_format.source, 'to', export_format.target
-  print 'Features'
+    print(('  Export:', export_format.source, 'to', export_format.target))
+  print('Features')
   for feature in metadata.features:
-    print '  Feature:', feature.name.text
-  print 'Upload Sizes'
+    print(('  Feature:', feature.name.text))
+  print('Upload Sizes')
   for upload_size in metadata.max_upload_sizes:
-    print '  Kind:', upload_size.kind, upload_size.text
+    print(('  Kind:', upload_size.kind, upload_size.text))
 
 
 def GetChangesSample():
@@ -120,7 +120,7 @@ def GetChangesSample():
   client = CreateClient()
   changes = client.GetChanges()
   for change in changes.entry:
-    print change.title.text, change.changestamp.value
+    print((change.title.text, change.changestamp.value))
 
 
 def GetResourceAclSample():
@@ -129,7 +129,7 @@ def GetResourceAclSample():
   for resource in client.GetResources(limit=5).entry:
     acl_feed = client.GetResourceAcl(resource)
     for acl in acl_feed.entry:
-      print acl.role.value, acl.scope.type, acl.scope.value
+      print((acl.role.value, acl.scope.type, acl.scope.value))
 
 
 def CreateEmptyResourceSample():
@@ -137,7 +137,7 @@ def CreateEmptyResourceSample():
   client = CreateClient()
   document = gdata.docs.data.Resource(type='document', title='My Sample Doc')
   document = client.CreateResource(document)
-  print 'Created:', document.title.text, document.resource_id.text
+  print(('Created:', document.title.text, document.resource_id.text))
 
 
 def CreateCollectionSample():
@@ -145,7 +145,7 @@ def CreateCollectionSample():
   client = CreateClient()
   col = gdata.docs.data.Resource(type='folder', title='My Sample Folder')
   col = client.CreateResource(col)
-  print 'Created collection:', col.title.text, col.resource_id.text
+  print(('Created collection:', col.title.text, col.resource_id.text))
 
 
 def CreateResourceInCollectionSample():
@@ -153,10 +153,10 @@ def CreateResourceInCollectionSample():
   client = CreateClient()
   col = gdata.docs.data.Resource(type='folder', title='My Sample Folder')
   col = client.CreateResource(col)
-  print 'Created collection:', col.title.text, col.resource_id.text
+  print(('Created collection:', col.title.text, col.resource_id.text))
   doc = gdata.docs.data.Resource(type='document', title='My Sample Doc')
   doc = client.CreateResource(doc, collection=col)
-  print 'Created:', doc.title.text, doc.resource_id.text
+  print(('Created:', doc.title.text, doc.resource_id.text))
 
 
 def UploadResourceSample():
@@ -168,13 +168,13 @@ def UploadResourceSample():
       'This is a simple Word document.')
   # This is a convenient MS Word doc that we know exists
   path = _GetDataFilePath('test.0.doc')
-  print 'Selected file at: %s' % path
+  print(('Selected file at: %s' % path))
   # Create a MediaSource, pointing to the file
   media = gdata.data.MediaSource()
   media.SetFileHandle(path, 'application/msword')
   # Pass the MediaSource when creating the new Resource
   doc = client.CreateResource(doc, media=media)
-  print 'Created, and uploaded:', doc.title.text, doc.resource_id.text
+  print(('Created, and uploaded:', doc.title.text, doc.resource_id.text))
 
 
 def UploadUnconvertedFileSample():
@@ -187,7 +187,7 @@ def UploadUnconvertedFileSample():
   # Pass the convert=false parameter
   create_uri = gdata.docs.client.RESOURCE_UPLOAD_URI + '?convert=false'
   doc = client.CreateResource(doc, create_uri=create_uri, media=media)
-  print 'Created, and uploaded:', doc.title.text, doc.resource_id.text
+  print(('Created, and uploaded:', doc.title.text, doc.resource_id.text))
 
 
 def DeleteResourceSample():
@@ -251,7 +251,7 @@ def GetRevisionsSample():
   for entry in client.GetResources(limit=55).entry:
     revisions = client.GetRevisions(entry)
     for revision in revisions.entry:
-      print revision.publish, revision.GetPublishLink()
+      print((revision.publish, revision.GetPublishLink()))
 
 
 if __name__ == '__main__':

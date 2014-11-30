@@ -15,7 +15,7 @@
 # limitations under the License.
 
 
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 import gdata.webmastertools.service
 import gdata.service
@@ -30,7 +30,7 @@ import getpass
 username = ''
 password = ''
 
-username = raw_input('Please enter your username: ')
+username = eval(input('Please enter your username: '))
 password = getpass.getpass()
 
 client = gdata.webmastertools.service.GWebmasterToolsService(
@@ -47,24 +47,24 @@ def safeElementText(element):
   return ''
 
 
-print 'Logging in'
+print('Logging in')
 client.ProgrammaticLogin()
 
-print
-print 'Adding site: %s' % EXAMPLE_SITE
+print()
+print(('Adding site: %s' % EXAMPLE_SITE))
 entry = client.AddSite(EXAMPLE_SITE)
 
-print
-print "%-25s %25s %25s" % ('Site', 'Last Updated', 'Last Crawled')
-print '='*80
-print "%-25s %25s %25s" % (
+print()
+print(("%-25s %25s %25s" % ('Site', 'Last Updated', 'Last Crawled')))
+print(('='*80))
+print(("%-25s %25s %25s" % (
   entry.title.text.replace('http://', '')[:25], entry.updated.text[:25],
-  safeElementText(entry.crawled)[:25])
-print "  Preferred: %-23s Indexed: %5s        GeoLoc: %10s" % (
+  safeElementText(entry.crawled)[:25])))
+print(("  Preferred: %-23s Indexed: %5s        GeoLoc: %10s" % (
   safeElementText(entry.preferred_domain)[:30], entry.indexed.text[:5],
-  safeElementText(entry.geolocation)[:10])
-print "  Crawl rate: %-10s            Verified: %5s" % (
-  safeElementText(entry.crawl_rate)[:10], entry.verified.text[:5])
+  safeElementText(entry.geolocation)[:10])))
+print(("  Crawl rate: %-10s            Verified: %5s" % (
+  safeElementText(entry.crawl_rate)[:10], entry.verified.text[:5])))
 
 # Verifying a site. This sample won't do this since we don't own example.com
 #client.VerifySite(EXAMPLE_SITE, 'htmlpage')
@@ -75,16 +75,16 @@ print "  Crawl rate: %-10s            Verified: %5s" % (
 #client.UpdatePreferredDomain(EXAMPLE_SITE, 'preferwww')
 #client.UpdateEnhancedImageSearch(EXAMPLE_SITE, 'true')
 
-print
-print 'Adding sitemap: %s' % EXAMPLE_SITEMAP
+print()
+print(('Adding sitemap: %s' % EXAMPLE_SITEMAP))
 entry = client.AddSitemap(EXAMPLE_SITE, EXAMPLE_SITEMAP)
 
-print entry.title.text.replace('http://', '')[:80]
-print "  Last Updated   : %29s              Status: %10s" % (
-    entry.updated.text[:29], entry.sitemap_status.text[:10])
-print "  Last Downloaded: %29s           URL Count: %10s" % (
+print((entry.title.text.replace('http://', '')[:80]))
+print(("  Last Updated   : %29s              Status: %10s" % (
+    entry.updated.text[:29], entry.sitemap_status.text[:10])))
+print(("  Last Downloaded: %29s           URL Count: %10s" % (
     safeElementText(entry.sitemap_last_downloaded)[:29],
-    safeElementText(entry.sitemap_url_count)[:10])
+    safeElementText(entry.sitemap_url_count)[:10])))
 
 # Add a mobile sitemap
 #entry = client.AddMobileSitemap(EXAMPLE_SITE, 'http://.../sitemap-mobile-example.xml', 'XHTML')
@@ -93,11 +93,11 @@ print "  Last Downloaded: %29s           URL Count: %10s" % (
 # See also http://google.com/support/webmasters/bin/answer.py?answer=42738
 #entry = client.AddNewsSitemap(EXAMPLE_SITE, 'http://.../sitemap-news-example.xml', 'Label')
 
-print
-print 'Deleting sitemap: %s' % EXAMPLE_SITEMAP
+print()
+print(('Deleting sitemap: %s' % EXAMPLE_SITEMAP))
 client.DeleteSitemap(EXAMPLE_SITE, EXAMPLE_SITEMAP)
 
-print
-print 'Deleting site: %s' % EXAMPLE_SITE
+print()
+print(('Deleting site: %s' % EXAMPLE_SITE))
 client.DeleteSite(EXAMPLE_SITE)
-print
+print()

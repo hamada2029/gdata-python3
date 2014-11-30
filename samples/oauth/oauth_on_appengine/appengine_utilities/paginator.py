@@ -26,7 +26,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from google.appengine.ext import db
-from cache import Cache
+from .cache import Cache
+import collections
 
 class Paginator(object):
     """
@@ -66,7 +67,7 @@ class Paginator(object):
             raise ValueError('You must pass a model to query')
 
         # a valid model object will have a gql method.
-        if callable(model.gql) == False:
+        if isinstance(model.gql, collections.Callable) == False:
             raise TypeError('model must be a valid model object.')
 
         # cache check
@@ -75,7 +76,7 @@ class Paginator(object):
             cache_string = cache_string + q_filter + "_" + q_filters[q_filter] + "_"
         cache_string = cache_string + "index"
         c = Cache()
-        if c.has_key(cache_string):
+        if cache_string in c:
             return c[cache_string]
 
         # build query

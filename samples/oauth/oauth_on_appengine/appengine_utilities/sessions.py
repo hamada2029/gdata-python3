@@ -32,7 +32,7 @@ import time
 import datetime
 import random
 import md5
-import Cookie
+import http.cookies
 import pickle
 import __main__
 from time import strftime
@@ -45,7 +45,7 @@ from google.appengine.api import memcache
 #django simplejson import, used for flash
 from django.utils import simplejson
 
-from rotmodel import ROTModel
+from .rotmodel import ROTModel
 
 # settings, if you have these set elsewhere, such as your django settings file,
 # you'll need to adjust the values to pull from there.
@@ -302,11 +302,11 @@ class _DatastoreWriter(object):
         # datestore write trumps cookie. If there is a cookie value
         # with this keyname, delete it so we don't have conflicting
         # entries.
-        if session.cookie_vals.has_key(keyname):
+        if keyname in session.cookie_vals:
             del(session.cookie_vals[keyname])
             session.output_cookie[session.cookie_name + '_data'] = \
                 simplejson.dumps(session.cookie_vals)
-            print session.output_cookie.output()
+            print((session.output_cookie.output()))
 
         sessdata = session._get(keyname=keyname)
         if sessdata is None:
@@ -340,7 +340,7 @@ class _CookieWriter(object):
         session.cache[keyname] = value
         session.output_cookie[session.cookie_name + '_data'] = \
             simplejson.dumps(session.cookie_vals)
-        print session.output_cookie.output()
+        print((session.output_cookie.output()))
 
 class Session(object):
     """
@@ -421,8 +421,8 @@ class Session(object):
         # Check the cookie and, if necessary, create a new one.
         self.cache = {}
         string_cookie = os.environ.get('HTTP_COOKIE', '')
-        self.cookie = Cookie.SimpleCookie()
-        self.output_cookie = Cookie.SimpleCookie()
+        self.cookie = http.cookies.SimpleCookie()
+        self.output_cookie = http.cookies.SimpleCookie()
         self.cookie.load(string_cookie)
         try:
             self.cookie_vals = \
@@ -502,15 +502,15 @@ class Session(object):
                     self.session.put()
 
         if self.set_cookie_expires:
-            if not self.output_cookie.has_key(cookie_name + '_data'):
+            if cookie_name + '_data' not in self.output_cookie:
                 self.output_cookie[cookie_name + '_data'] = ""
             self.output_cookie[cookie_name + '_data']['expires'] = \
                 self.session_expire_time
-        print self.output_cookie.output()
+        print((self.output_cookie.output()))
 
         # fire up a Flash object if integration is enabled
         if self.integrate_flash:
-            import flash
+            from . import flash
             self.flash = flash.Flash(cookie=self.cookie)
 
         # randomly delete old stale sessions in the datastore (see
@@ -588,7 +588,7 @@ class Session(object):
         elif keyname in ('sid', 'flash'):
             raise ValueError(keyname + ' is a reserved keyname.')
 
-        if type(keyname) != type([str, unicode]):
+        if type(keyname) != type([str, str]):
             return str(keyname)
         return keyname
 
@@ -617,7 +617,7 @@ class Session(object):
         self.cache = {}
         self.output_cookie[self.cookie_name + '_data'] = \
             simplejson.dumps(self.cookie_vals)
-        print self.output_cookie.output()
+        print((self.output_cookie.output()))
         """
         OLD
         if hasattr(self, "session"):
@@ -778,7 +778,7 @@ class Session(object):
             bad_key = False
             self.output_cookie[self.cookie_name + '_data'] = \
                 simplejson.dumps(self.cookie_vals)
-            print self.output_cookie.output()
+            print((self.output_cookie.output()))
         if bad_key:
             raise KeyError(str(keyname))
         if keyname in self.cache:
@@ -872,11 +872,11 @@ class Session(object):
         Adds headers, avoiding any page caching in the browser. Useful for highly
         dynamic sites.
         """
-        print "Expires: Tue, 03 Jul 2001 06:00:00 GMT"
-        print strftime("Last-Modified: %a, %d %b %y %H:%M:%S %Z")
-        print "Cache-Control: no-store, no-cache, must-revalidate, max-age=0"
-        print "Cache-Control: post-check=0, pre-check=0"
-        print "Pragma: no-cache"
+        print("Expires: Tue, 03 Jul 2001 06:00:00 GMT")
+        print((strftime("Last-Modified: %a, %d %b %y %H:%M:%S %Z")))
+        print("Cache-Control: no-store, no-cache, must-revalidate, max-age=0")
+        print("Cache-Control: post-check=0, pre-check=0")
+        print("Pragma: no-cache")
 
     def clear(self):
         """
@@ -892,7 +892,7 @@ class Session(object):
         self.cookie_vals = {}
         self.output_cookie[self.cookie_name + '_data'] = \
             simplejson.dumps(self.cookie_vals)
-        print self.output_cookie.output()
+        print((self.output_cookie.output()))
 
     def has_key(self, keyname):
         """
@@ -983,9 +983,9 @@ class Session(object):
         """
 
         string_cookie = os.environ.get('HTTP_COOKIE', '')
-        cookie = Cookie.SimpleCookie()
+        cookie = http.cookies.SimpleCookie()
         cookie.load(string_cookie)
-        if cookie.has_key(cookie_name):
+        if cookie_name in cookie:
             query = _AppEngineUtilities_Session.all()
             query.filter('sid', cookie[cookie_name].value)
             results = query.fetch(1)
@@ -993,8 +993,8 @@ class Session(object):
                 return True
             else:
                 if delete_invalid:
-                    output_cookie = Cookie.SimpleCookie()
+                    output_cookie = http.cookies.SimpleCookie()
                     output_cookie[cookie_name] = cookie[cookie_name]
                     output_cookie[cookie_name]['expires'] = 0
-                    print output_cookie.output()
+                    print((output_cookie.output()))
         return False

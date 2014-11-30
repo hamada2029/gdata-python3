@@ -38,7 +38,7 @@ from google.appengine.api import memcache
 
 # settings
 try:
-    import settings_default
+    from . import settings_default
     import settings
 
     if settings.__name__.rsplit('.', 1)[0] != settings_default.__name__.rsplit('.', 1)[0]:

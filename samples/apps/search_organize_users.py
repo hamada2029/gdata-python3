@@ -58,10 +58,10 @@ class SearchAndOrganizeUsers(object):
         client_id=self.client_id, client_secret=self.client_secret,
         scope=SCOPES, user_agent=USER_AGENT)
     uri = self.token.generate_authorize_url()
-    print 'Please visit this URL to authorize the application:'
-    print uri
+    print('Please visit this URL to authorize the application:')
+    print(uri)
     # Get the verification code from the standard input.
-    code = raw_input('What is the verification code? ').strip()
+    code = input('What is the verification code? ').strip()
     self.token.get_access_token(code)
     self.user_client = AppsClient(domain=self.domain, auth_token=self.token)
     self.org_client = OrganizationUnitProvisioningClient(
@@ -86,18 +86,18 @@ class SearchAndOrganizeUsers(object):
         matched_users.append(user_email)
     # Maximum BATCH_SIZE users can be moved at one time
     # Split users into batches of BATCH_SIZE and move in batches
-    for i in xrange(0, len(matched_users), BATCH_SIZE):
+    for i in range(0, len(matched_users), BATCH_SIZE):
       batch_to_move = matched_users[i: i + BATCH_SIZE]
       self.org_client.MoveUserToOrgUnit(customer_id,
           org_unit_path, batch_to_move)
-    print 'Number of users moved = %d' % len(matched_users)
+    print(('Number of users moved = %d' % len(matched_users)))
 
   def Run(self, org_unit_path, regex):
     self.AuthorizeClient()
     customer_id_entry = self.org_client.RetrieveCustomerId()
     customer_id = customer_id_entry.customer_id
     pattern = re.compile(regex)
-    print 'Moving Users with the pattern %s' % regex
+    print(('Moving Users with the pattern %s' % regex))
     self.OrganizeUsers(customer_id, org_unit_path, pattern)
 
 

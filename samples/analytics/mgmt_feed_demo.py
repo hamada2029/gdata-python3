@@ -107,15 +107,15 @@ class ManagementFeedDemo(object):
     account_query = gdata.analytics.client.AccountQuery()
     results = self.my_client.GetManagementFeed(account_query)
 
-    print '-------- Account Feed Data --------'
+    print('-------- Account Feed Data --------')
     if not results.entry:
-      print 'no entries found'
+      print('no entries found')
     else:
       for entry in results.entry:
-        print 'Account Name    = ' + entry.GetProperty('ga:accountName').value
-        print 'Account ID      = ' + entry.GetProperty('ga:accountId').value
-        print 'Child Feed Link = ' + entry.GetChildLink('analytics#webproperties').href
-        print
+        print(('Account Name    = ' + entry.GetProperty('ga:accountName').value))
+        print(('Account ID      = ' + entry.GetProperty('ga:accountId').value))
+        print(('Child Feed Link = ' + entry.GetChildLink('analytics#webproperties').href))
+        print()
 
   def PrintWebPropertyFeed(self):
     """Requests and prints the important data in the Web Property Feed."""
@@ -124,15 +124,15 @@ class ManagementFeedDemo(object):
         acct_id=ACCOUNT_ID)
     results = self.my_client.GetManagementFeed(web_property_query)
 
-    print '-------- Web Property Feed Data --------'
+    print('-------- Web Property Feed Data --------')
     if not results.entry:
-      print 'no entries found'
+      print('no entries found')
     else:
       for entry in results.entry:
-        print 'Account ID      = ' + entry.GetProperty('ga:accountId').value
-        print 'Web Property ID = ' + entry.GetProperty('ga:webPropertyId').value
-        print 'Child Feed Link = ' + entry.GetChildLink('analytics#profiles').href
-        print
+        print(('Account ID      = ' + entry.GetProperty('ga:accountId').value))
+        print(('Web Property ID = ' + entry.GetProperty('ga:webPropertyId').value))
+        print(('Child Feed Link = ' + entry.GetChildLink('analytics#profiles').href))
+        print()
 
   def PrintProfileFeed(self):
     """Requests and prints the important data in the Profile Feed.
@@ -146,19 +146,19 @@ class ManagementFeedDemo(object):
         acct_id=ACCOUNT_ID, web_prop_id=WEB_PROPERTY_ID)
     results = self.my_client.GetManagementFeed(profile_query)
 
-    print '-------- Profile Feed Data --------'
+    print('-------- Profile Feed Data --------')
     if not results.entry:
-      print 'no entries found'
+      print('no entries found')
     else:
       for entry in results.entry:
-        print 'Account ID      = ' + entry.GetProperty('ga:accountId').value
-        print 'Web Property ID = ' + entry.GetProperty('ga:webPropertyId').value
-        print 'Profile ID      = ' + entry.GetProperty('ga:profileId').value
-        print 'Currency        = ' + entry.GetProperty('ga:currency').value
-        print 'Timezone        = ' + entry.GetProperty('ga:timezone').value
-        print 'TableId         = ' + entry.GetProperty('dxp:tableId').value
-        print 'Child Feed Link = ' + entry.GetChildLink('analytics#goals').href
-        print
+        print(('Account ID      = ' + entry.GetProperty('ga:accountId').value))
+        print(('Web Property ID = ' + entry.GetProperty('ga:webPropertyId').value))
+        print(('Profile ID      = ' + entry.GetProperty('ga:profileId').value))
+        print(('Currency        = ' + entry.GetProperty('ga:currency').value))
+        print(('Timezone        = ' + entry.GetProperty('ga:timezone').value))
+        print(('TableId         = ' + entry.GetProperty('dxp:tableId').value))
+        print(('Child Feed Link = ' + entry.GetChildLink('analytics#goals').href))
+        print()
 
   def PrintGoalFeed(self):
     """Requests and prints the important data in the Goal Feed.
@@ -172,15 +172,15 @@ class ManagementFeedDemo(object):
         acct_id=ACCOUNT_ID, web_prop_id=WEB_PROPERTY_ID, profile_id=PROFILE_ID)
     results = self.my_client.GetManagementFeed(goal_query)
 
-    print '-------- Goal Feed Data --------'
+    print('-------- Goal Feed Data --------')
     if not results.entry:
-      print 'no entries found'
+      print('no entries found')
     else:
       for entry in results.entry:
-        print 'Goal Number = ' + entry.goal.number
-        print 'Goal Name   = ' + entry.goal.name
-        print 'Goal Value  = ' + entry.goal.value
-        print 'Goal Active = ' + entry.goal.active
+        print(('Goal Number = ' + entry.goal.number))
+        print(('Goal Name   = ' + entry.goal.name))
+        print(('Goal Value  = ' + entry.goal.value))
+        print(('Goal Active = ' + entry.goal.active))
 
         if entry.goal.destination:
           self.PrintDestinationGoal(entry.goal.destination)
@@ -195,19 +195,19 @@ class ManagementFeedDemo(object):
       destination: gdata.data.Destination The destination goal configuration.
     """
 
-    print '\t----- Destination Goal -----'
-    print '\tExpression      = ' + destination.expression
-    print '\tMatch Type      = ' + destination.match_type
-    print '\tStep 1 Required = ' + destination.step1_required
-    print '\tCase Sensitive  = ' + destination.case_sensitive
+    print('\t----- Destination Goal -----')
+    print(('\tExpression      = ' + destination.expression))
+    print(('\tMatch Type      = ' + destination.match_type))
+    print(('\tStep 1 Required = ' + destination.step1_required))
+    print(('\tCase Sensitive  = ' + destination.case_sensitive))
 
     if destination.step:
-      print '\t\t----- Destination Goal Steps -----'
+      print('\t\t----- Destination Goal Steps -----')
       for step in destination.step:
-        print '\t\tStep Number = ' + step.number
-        print '\t\tStep Name   = ' + step.name
-        print '\t\tStep Path   = ' + step.path
-        print
+        print(('\t\tStep Number = ' + step.number))
+        print(('\t\tStep Name   = ' + step.name))
+        print(('\t\tStep Path   = ' + step.path))
+        print()
 
   def PrintEngagementGoal(self, engagement):
     """Prints the important information for engagement goals.
@@ -216,11 +216,11 @@ class ManagementFeedDemo(object):
       engagement: gdata.data.Engagement The engagement goal configuration.
     """
 
-    print '\t----- Engagement Goal -----'
-    print '\tGoal Type       = ' + engagement.type
-    print '\tGoal Engagement = ' + engagement.comparison
-    print '\tGoal Threshold  = ' + engagement.threshold_value
-    print
+    print('\t----- Engagement Goal -----')
+    print(('\tGoal Type       = ' + engagement.type))
+    print(('\tGoal Engagement = ' + engagement.comparison))
+    print(('\tGoal Threshold  = ' + engagement.threshold_value))
+    print()
 
   def PrintSegmentFeed(self):
     """Requests and prints the important data in the Profile Feed."""
@@ -228,15 +228,15 @@ class ManagementFeedDemo(object):
     adv_seg_query = gdata.analytics.client.AdvSegQuery()
     results = self.my_client.GetManagementFeed(adv_seg_query)
 
-    print '-------- Advanced Segment Feed Data --------'
+    print('-------- Advanced Segment Feed Data --------')
     if not results.entry:
-      print 'no entries found'
+      print('no entries found')
     else:
       for entry in results.entry:
-        print 'Segment ID          = ' + entry.segment.id
-        print 'Segment Name        = ' + entry.segment.name
-        print 'Segment Definition  = ' + entry.segment.definition.text
-        print
+        print(('Segment ID          = ' + entry.segment.id))
+        print(('Segment Name        = ' + entry.segment.name))
+        print(('Segment Definition  = ' + entry.segment.definition.text))
+        print()
 
 if __name__ == '__main__':
   main()

@@ -142,8 +142,8 @@ class OrgUnitAddressBook(object):
       try:
         site_entry = self.sites_client.CreateSite(site_title,
                           description=description, theme=theme)
-      except gdata.client.RequestError, error:
-        print error
+      except gdata.client.RequestError as error:
+        print(error)
     self.sites_client.site = site_name
     return site_entry
 
@@ -308,14 +308,14 @@ class OrgUnitAddressBook(object):
   def Run(self):
     """Controls the entire flow of the sites making process"""
     
-    print 'Starting the process. This may take few minutes.'
-    print 'Creating user pages...'
+    print('Starting the process. This may take few minutes.')
+    print('Creating user pages...')
     self._CreateUserPages()
-    print 'User pages created'
-    print 'Creating Organization Unit Pages'
+    print('User pages created')
+    print('Creating Organization Unit Pages')
     self._CreateOrgUnitPages()
-    print 'Your website is ready, visit it at: %s' % (self._GetSiteURI(
-                                                      ORG_SITE_TITLE))
+    print(('Your website is ready, visit it at: %s' % (self._GetSiteURI(
+                                                      ORG_SITE_TITLE))))
 
 
 def main():
@@ -323,7 +323,7 @@ def main():
   # Parse command line options
   try:
     opts, args = getopt.getopt(sys.argv[1:], '', ['email=', 'pw=', 'domain='])
-  except getopt.error, msg:
+  except getopt.error as msg:
     print ('python org_unit_sites.py --email [emailaddress] --pw [password]'
            ' --domain [domain]')
     sys.exit(2)
@@ -341,23 +341,23 @@ def main():
       domain = arg
 
   while not email:
-    email = raw_input('Please enter admin email address (admin@example.com): ')
+    email = eval(input('Please enter admin email address (admin@example.com): '))
   while not password:
     sys.stdout.write('Admin Password: ')
     password = getpass.getpass()
     if not password:
-      print 'Password cannot be blank.'
+      print('Password cannot be blank.')
   while not domain:
     username, domain = email.split('@', 1)
-    choice = raw_input('You have not given us the domain name. ' +
-                        'Is it %s? (y/n)' % (domain))
+    choice = eval(input('You have not given us the domain name. ' +
+                        'Is it %s? (y/n)' % (domain)))
     if choice == 'n':
-      domain = raw_input('Please enter domain name (domain.com): ')
+      domain = eval(input('Please enter domain name (domain.com): '))
 
   try:
     org_unit_address_book = OrgUnitAddressBook(email, password, domain)
   except gdata.service.BadAuthentication:
-    print 'Invalid user credentials given.'
+    print('Invalid user credentials given.')
     return
 
   org_unit_address_book.Run()

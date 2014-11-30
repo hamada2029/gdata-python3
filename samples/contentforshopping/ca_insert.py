@@ -20,8 +20,8 @@ from gdata.contentforshopping.client import ContentForShoppingClient
 from gdata.contentforshopping.data import ClientAccount, AdultContent
 
 # Gather merchant information
-account_id = raw_input('Merchant Account ID? ').strip()
-email = raw_input('Google Email Address? ').strip()
+account_id = input('Merchant Account ID? ').strip()
+email = input('Google Email Address? ').strip()
 
 # Create a client
 client = ContentForShoppingClient(account_id)
@@ -38,4 +38,4 @@ for i in range(10):
   # Insert the client account
   client.insert_client_account(client_account)
   # Display something to the user
-  print i + 1, '/', 10
+  print((i + 1, '/', 10))

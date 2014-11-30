@@ -66,7 +66,7 @@ class ProfilesSample(object):
       successive calls to this method.
     """
     if not feed.entry:
-      print '\nNo entries in feed.\n'
+      print('\nNo entries in feed.\n')
       return 0
     for entry in feed.entry:
       self.PrintEntry(entry)
@@ -78,39 +78,39 @@ class ProfilesSample(object):
     Args:
       entry: A gdata.contacts.ProfilesEntry
     """
-    print '\n%s' % (entry.title.text)    
+    print(('\n%s' % (entry.title.text)))    
     for email in entry.email:
       if email.primary == 'true':
-        print 'Email: %s (primary)' % (email.address)
+        print(('Email: %s (primary)' % (email.address)))
       else:
-        print 'Email: %s' % (email.address)
+        print(('Email: %s' % (email.address)))
     if entry.nickname:
-      print 'Nickname: %s' % (entry.nickname.text)
+      print(('Nickname: %s' % (entry.nickname.text)))
     if entry.occupation:
-      print 'Occupation: %s' % (entry.occupation.text)
+      print(('Occupation: %s' % (entry.occupation.text)))
     if entry.gender:
-      print 'Gender: %s' % (entry.gender.value)
+      print(('Gender: %s' % (entry.gender.value)))
     if entry.birthday:
-      print 'Birthday: %s' % (entry.birthday.when)
+      print(('Birthday: %s' % (entry.birthday.when)))
     for relation in entry.relation:
-      print 'Relation: %s %s' % (relation.rel, relation.text)
+      print(('Relation: %s %s' % (relation.rel, relation.text)))
     for user_defined_field in entry.user_defined_field:
-      print 'UserDefinedField: %s %s' % (user_defined_field.key,
-                                         user_defined_field.value)
+      print(('UserDefinedField: %s %s' % (user_defined_field.key,
+                                         user_defined_field.value)))
     for website in entry.website:
-      print 'Website: %s %s' % (website.href, website.rel)
+      print(('Website: %s %s' % (website.href, website.rel)))
     for phone_number in entry.phone_number:
-      print 'Phone Number: %s' % phone_number.text
+      print(('Phone Number: %s' % phone_number.text))
     for organization in entry.organization:
-      print 'Organization:'
+      print('Organization:')
       if organization.org_name:
-        print ' Name: %s' % (organization.org_name.text)
+        print((' Name: %s' % (organization.org_name.text)))
       if organization.org_title:
-        print ' Title: %s' % (organization.org_title.text)
+        print((' Title: %s' % (organization.org_title.text)))
       if organization.org_department:
-        print ' Department: %s' % (organization.org_department.text)
+        print((' Department: %s' % (organization.org_department.text)))
       if organization.org_job_description:
-        print ' Job Desc: %s' % (organization.org_job_description.text)
+        print((' Job Desc: %s' % (organization.org_job_description.text)))
 
   def PrintPaginatedFeed(self, feed, print_method):
     """Print all pages of a paginated feed.
@@ -149,7 +149,7 @@ class ProfilesSample(object):
       the current operation should terminate.
     """
     while True:
-      key_input = raw_input('Continue [Y/n]? ')
+      key_input = eval(input('Continue [Y/n]? '))
       if key_input is 'N' or key_input is 'n':
         return False
       elif key_input is 'Y' or key_input is 'y' or key_input is '':
@@ -161,13 +161,13 @@ class ProfilesSample(object):
     self.PrintPaginatedFeed(feed, self.PrintFeed)
 
   def SelectProfile(self):
-    username = raw_input('Please enter your username for the profile: ')
+    username = eval(input('Please enter your username for the profile: '))
     entry_uri = self.gd_client.GetFeedUri('profiles')+'/'+username
     try:
       entry = self.gd_client.GetProfile(entry_uri)
       self.PrintEntry(entry)
     except gdata.service.RequestError:
-      print 'Invalid username for the profile.'
+      print('Invalid username for the profile.')
 
   def PrintMenu(self):
     """Displays a menu of options for the user to choose from."""
@@ -186,16 +186,16 @@ class ProfilesSample(object):
       The integer of the menu item chosen by the user.
     """
     while True:
-      key_input = raw_input('> ')
+      key_input = eval(input('> '))
 
       try:
         num = int(key_input)
       except ValueError:
-        print 'Invalid choice. Please choose a value between 1 and', maximum
+        print(('Invalid choice. Please choose a value between 1 and', maximum))
         continue
 
       if num > maximum or num < 1:
-        print 'Invalid choice. Please choose a value between 1 and', maximum
+        print(('Invalid choice. Please choose a value between 1 and', maximum))
       else:
         return num
 
@@ -213,7 +213,7 @@ class ProfilesSample(object):
           return
 
     except KeyboardInterrupt:
-      print '\nGoodbye.'
+      print('\nGoodbye.')
       return
 
 
@@ -222,9 +222,9 @@ def main():
   # Parse command line options
   try:
     opts, args = getopt.getopt(sys.argv[1:], '', ['user=', 'pw=', 'domain='])
-  except getopt.error, msg:
-    print 'python profiles_example.py --user [username] --pw [password]'
-    print ' --domain [domain]'
+  except getopt.error as msg:
+    print('python profiles_example.py --user [username] --pw [password]')
+    print(' --domain [domain]')
     sys.exit(2)
 
   user = ''
@@ -241,19 +241,19 @@ def main():
       domain = arg
 
   while not user:
-    print 'NOTE: Please run these tests only with a test account.'
-    user = raw_input('Please enter your email: ')
+    print('NOTE: Please run these tests only with a test account.')
+    user = eval(input('Please enter your email: '))
   while not pw:
     pw = getpass.getpass('Please enter password: ')
     if not pw:
-      print 'Password cannot be blank.'
+      print('Password cannot be blank.')
   while not domain:
-    domain = raw_input('Please enter your Apps domain: ')
+    domain = eval(input('Please enter your Apps domain: '))
 
   try:
     sample = ProfilesSample(user, pw, domain)
   except gdata.service.BadAuthentication:
-    print 'Invalid user credentials given.'
+    print('Invalid user credentials given.')
     return
 
   sample.Run()

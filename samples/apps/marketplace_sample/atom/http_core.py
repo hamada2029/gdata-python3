@@ -23,10 +23,9 @@ __author__ = 'j.s@google.com (Jeff Scudder)'
 
 
 import os
-import StringIO
-import urlparse
-import urllib
-import httplib
+import io
+import urllib.request, urllib.parse, urllib.error
+from . import client
 ssl = None
 try:
   import ssl
@@ -97,7 +96,7 @@ class HttpRequest(object):
     self._body_parts = []
     if method is not None:
       self.method = method
-    if isinstance(uri, (str, unicode)):
+    if isinstance(uri, str):
       uri = Uri.parse_uri(uri)
     self.uri = uri or Uri()
 
@@ -184,7 +183,7 @@ class HttpRequest(object):
       mime_type: str The MIME type of the form data being sent. Defaults
                  to 'application/x-www-form-urlencoded'.
     """
-    body = urllib.urlencode(form_data)
+    body = urllib.parse.urlencode(form_data)
     self.add_body_part(body, mime_type)
 
   AddFormInputs = add_form_inputs
@@ -206,12 +205,12 @@ class HttpRequest(object):
     """
     output =  'HTTP Request\n  method: %s\n  url: %s\n  headers:\n' % (
         self.method, str(self.uri))
-    for header, value in self.headers.iteritems():
+    for header, value in list(self.headers.items()):
       output += '    %s: %s\n' % (header, value)
     output += '  body sections:\n'
     i = 0
     for part in self._body_parts:
-      if isinstance(part, (str, unicode)):
+      if isinstance(part, str):
         output += '    %s: %s\n' % (i, part)
       else:
         output += '    %s: <file like object>\n' % i
@@ -260,9 +259,9 @@ class Uri(object):
 
   def _get_query_string(self):
     param_pairs = []
-    for key, value in self.query.iteritems():
-      param_pairs.append('='.join((urllib.quote_plus(key),
-          urllib.quote_plus(str(value)))))
+    for key, value in list(self.query.items()):
+      param_pairs.append('='.join((urllib.parse.quote_plus(key),
+          urllib.parse.quote_plus(str(value)))))
     return '&'.join(param_pairs)
 
   def _get_relative_path(self):
@@ -325,7 +324,7 @@ class Uri(object):
     This method can accept partial URIs, but it will leave missing
     members of the Uri unset.
     """
-    parts = urlparse.urlparse(uri_string)
+    parts = urllib.parse.urlparse(uri_string)
     uri = Uri()
     if parts[0]:
       uri.scheme = parts[0]
@@ -342,10 +341,10 @@ class Uri(object):
       for pair in param_pairs:
         pair_parts = pair.split('=')
         if len(pair_parts) > 1:
-          uri.query[urllib.unquote_plus(pair_parts[0])] = (
-              urllib.unquote_plus(pair_parts[1]))
+          uri.query[urllib.parse.unquote_plus(pair_parts[0])] = (
+              urllib.parse.unquote_plus(pair_parts[1]))
         elif len(pair_parts) == 1:
-          uri.query[urllib.unquote_plus(pair_parts[0])] = None
+          uri.query[urllib.parse.unquote_plus(pair_parts[0])] = None
     return uri
 
   parse_uri = staticmethod(parse_uri)
@@ -374,7 +373,7 @@ class HttpResponse(object):
       if hasattr(body, 'read'):
         self._body = body
       else:
-        self._body = StringIO.StringIO(body)
+        self._body = io.StringIO(body)
 
   def getheader(self, name, default=None):
     if name in self._headers:
@@ -403,7 +402,7 @@ def _dump_response(http_response):
       http_response.status, http_response.reason)
   headers = get_headers(http_response)
   if isinstance(headers, dict):
-    for header, value in headers.iteritems():
+    for header, value in list(headers.items()):
       output += '    %s: %s\n' % (header, value)
   else:
     for pair in headers:
@@ -432,14 +431,14 @@ class HttpClient(object):
     connection = None
     if uri.scheme == 'https':
       if not uri.port:
-        connection = httplib.HTTPSConnection(uri.host)
+        connection = http.client.HTTPSConnection(uri.host)
       else:
-        connection = httplib.HTTPSConnection(uri.host, int(uri.port))
+        connection = http.client.HTTPSConnection(uri.host, int(uri.port))
     else:
       if not uri.port:
-        connection = httplib.HTTPConnection(uri.host)
+        connection = http.client.HTTPConnection(uri.host)
       else:
-        connection = httplib.HTTPConnection(uri.host, int(uri.port))
+        connection = http.client.HTTPConnection(uri.host, int(uri.port))
     return connection
 
   def _http_request(self, method, uri, headers=None, body_parts=None):
@@ -454,7 +453,7 @@ class HttpClient(object):
                   which can be converted to strings using str. Each of these
                   will be sent in order as the body of the HTTP request.
     """
-    if isinstance(uri, (str, unicode)):
+    if isinstance(uri, str):
       uri = Uri.parse_uri(uri)
 
     connection = self._get_connection(uri, headers=headers)
@@ -484,12 +483,12 @@ class HttpClient(object):
         pass
 
     # Send the HTTP headers.
-    for header_name, value in headers.iteritems():
+    for header_name, value in list(headers.items()):
       connection.putheader(header_name, value)
     connection.endheaders()
 
     # If there is data, send it in the request.
-    if body_parts and filter(lambda x: x != '', body_parts):
+    if body_parts and [x for x in body_parts if x != '']:
       for part in body_parts:
         _send_data_part(part, connection)
 
@@ -498,7 +497,7 @@ class HttpClient(object):
 
 
 def _send_data_part(data, connection):
-  if isinstance(data, (str, unicode)):
+  if isinstance(data, str):
     # I might want to just allow str, not unicode.
     connection.send(data)
     return
@@ -566,9 +565,9 @@ class ProxiedHttpClient(HttpClient):
         sslobj = ssl.wrap_socket(p_sock, None, None)
       else:
         sock_ssl = socket.ssl(p_sock, None, Nonesock_)
-        sslobj = httplib.FakeSocket(p_sock, sock_ssl)
+        sslobj = http.client.FakeSocket(p_sock, sock_ssl)
       # Initalize httplib and replace with the proxy socket.
-      connection = httplib.HTTPConnection(proxy_uri.host)
+      connection = http.client.HTTPConnection(proxy_uri.host)
       connection.sock = sslobj
       return connection
     elif uri.scheme == 'http':
@@ -577,7 +576,7 @@ class ProxiedHttpClient(HttpClient):
         proxy_uri.port = '80'
       if proxy_auth:
         headers['Proxy-Authorization'] = proxy_auth.strip()
-      return httplib.HTTPConnection(proxy_uri.host, int(proxy_uri.port))
+      return http.client.HTTPConnection(proxy_uri.host, int(proxy_uri.port))
     return None
 
 

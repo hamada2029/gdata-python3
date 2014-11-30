@@ -59,9 +59,9 @@ class CalendarExample:
     on available attributes."""
 
     feed = self.cal_client.GetAllCalendarsFeed()
-    print 'Printing allcalendars: %s' % feed.title.text
-    for i, a_calendar in zip(xrange(len(feed.entry)), feed.entry):
-      print '\t%s. %s' % (i, a_calendar.title.text,)
+    print(('Printing allcalendars: %s' % feed.title.text))
+    for i, a_calendar in zip(list(range(len(feed.entry))), feed.entry):
+      print(('\t%s. %s' % (i, a_calendar.title.text,)))
 
   def _PrintOwnCalendars(self):
     """Retrieves the list of calendars to which the authenticated user
@@ -72,9 +72,9 @@ class CalendarExample:
     on available attributes."""
 
     feed = self.cal_client.GetOwnCalendarsFeed()
-    print 'Printing owncalendars: %s' % feed.title.text
-    for i, a_calendar in zip(xrange(len(feed.entry)), feed.entry):
-      print '\t%s. %s' % (i, a_calendar.title.text,)
+    print(('Printing owncalendars: %s' % feed.title.text))
+    for i, a_calendar in zip(list(range(len(feed.entry))), feed.entry):
+      print(('\t%s. %s' % (i, a_calendar.title.text,)))
 
   def _PrintAllEventsOnDefaultCalendar(self):
     """Retrieves all events on the primary calendar for the authenticated user.
@@ -86,14 +86,14 @@ class CalendarExample:
     results."""
 
     feed = self.cal_client.GetCalendarEventFeed()
-    print 'Events on Primary Calendar: %s' % (feed.title.text,)
-    for i, an_event in zip(xrange(len(feed.entry)), feed.entry):
-      print '\t%s. %s' % (i, an_event.title.text,)
-      for p, a_participant in zip(xrange(len(an_event.who)), an_event.who):
-        print '\t\t%s. %s' % (p, a_participant.email,)
-        print '\t\t\t%s' % (a_participant.value,)
+    print(('Events on Primary Calendar: %s' % (feed.title.text,)))
+    for i, an_event in zip(list(range(len(feed.entry))), feed.entry):
+      print(('\t%s. %s' % (i, an_event.title.text,)))
+      for p, a_participant in zip(list(range(len(an_event.who))), an_event.who):
+        print(('\t\t%s. %s' % (p, a_participant.email,)))
+        print(('\t\t\t%s' % (a_participant.value,)))
         if a_participant.attendee_status:
-          print '\t\t\t%s' % (a_participant.attendee_status.value,)
+          print(('\t\t\t%s' % (a_participant.attendee_status.value,)))
 
   def _FullTextQuery(self, text_query='Tennis'):
     """Retrieves events from the calendar which match the specified full-text
@@ -108,16 +108,16 @@ class CalendarExample:
     the Google Calendar API query paramters reference for more info:
     http://code.google.com/apis/calendar/reference.html#Parameters"""
 
-    print 'Full text query for events on Primary Calendar: \'%s\'' % (
-        text_query,)
+    print(('Full text query for events on Primary Calendar: \'%s\'' % (
+        text_query,)))
     query = gdata.calendar.client.CalendarEventQuery(text_query=text_query)
     feed = self.cal_client.GetCalendarEventFeed(q=query)
-    for i, an_event in zip(xrange(len(feed.entry)), feed.entry):
-      print '\t%s. %s' % (i, an_event.title.text,)
-      print '\t\t%s. %s' % (i, an_event.content.text,)
+    for i, an_event in zip(list(range(len(feed.entry))), feed.entry):
+      print(('\t%s. %s' % (i, an_event.title.text,)))
+      print(('\t\t%s. %s' % (i, an_event.content.text,)))
       for a_when in an_event.when:
-        print '\t\tStart time: %s' % (a_when.start,)
-        print '\t\tEnd time:   %s' % (a_when.end,)
+        print(('\t\tStart time: %s' % (a_when.start,)))
+        print(('\t\tEnd time:   %s' % (a_when.end,)))
 
   def _DateRangeQuery(self, start_date='2007-01-01', end_date='2007-07-01'):
     """Retrieves events from the server which occur during the specified date
@@ -125,22 +125,22 @@ class CalendarExample:
     used to retrieve the feed.  For more information on valid query parameters,
     see: http://code.google.com/apis/calendar/reference.html#Parameters"""
 
-    print 'Date range query for events on Primary Calendar: %s to %s' % (
-        start_date, end_date,)
+    print(('Date range query for events on Primary Calendar: %s to %s' % (
+        start_date, end_date,)))
     query = gdata.calendar.client.CalendarEventQuery(start_min=start_date, start_max=end_date)
     feed = self.cal_client.GetCalendarEventFeed(q=query)
-    for i, an_event in zip(xrange(len(feed.entry)), feed.entry):
-      print '\t%s. %s' % (i, an_event.title.text,)
+    for i, an_event in zip(list(range(len(feed.entry))), feed.entry):
+      print(('\t%s. %s' % (i, an_event.title.text,)))
       for a_when in an_event.when:
-        print '\t\tStart time: %s' % (a_when.start,)
-        print '\t\tEnd time:   %s' % (a_when.end,)
+        print(('\t\tStart time: %s' % (a_when.start,)))
+        print(('\t\tEnd time:   %s' % (a_when.end,)))
 
   def _InsertCalendar(self, title='Little League Schedule',
       description='This calendar contains practice and game times',
       time_zone='America/Los_Angeles', hidden=False, location='Oakland',
       color='#2952A3'):
     """Creates a new calendar using the specified data."""
-    print 'Creating new calendar with title "%s"' % title
+    print(('Creating new calendar with title "%s"' % title))
     calendar = gdata.calendar.data.CalendarEntry()
     calendar.title = atom.data.Title(text=title)
     calendar.summary = atom.data.Summary(text=description)
@@ -158,8 +158,8 @@ class CalendarExample:
 
   def _UpdateCalendar(self, calendar, title='New Title', color=None):
     """Updates the title and, optionally, the color of the supplied calendar"""
-    print 'Updating the calendar titled "%s" with the title "%s"' % (
-        calendar.title.text, title)
+    print(('Updating the calendar titled "%s" with the title "%s"' % (
+        calendar.title.text, title)))
     calendar.title = atom.data.Title(text=title)
     if color is not None:
       calendar.color = gdata.calendar.data.ColorProperty(value=color)
@@ -171,19 +171,19 @@ class CalendarExample:
     """Deletes all calendars.  Note: the primary calendar cannot be deleted"""
     feed = self.cal_client.GetOwnCalendarsFeed()
     for entry in feed.entry:
-      print 'Deleting calendar: %s' % entry.title.text
+      print(('Deleting calendar: %s' % entry.title.text))
       try:
         self.cal_client.Delete(entry.GetEditLink().href)
-      except gdata.client.RequestError, msg:
+      except gdata.client.RequestError as msg:
         if msg.body.startswith('Cannot remove primary calendar'):
-            print '\t%s' % msg.body
+            print(('\t%s' % msg.body))
         else:
-            print '\tUnexpected Error: %s' % msg.body
+            print(('\tUnexpected Error: %s' % msg.body))
 
   def _InsertSubscription(self,
       id='python.gcal.test%40gmail.com'):
     """Subscribes to the calendar with the specified ID."""
-    print 'Subscribing to the calendar with ID: %s' % id
+    print(('Subscribing to the calendar with ID: %s' % id))
     calendar = gdata.calendar.data.CalendarEntry()
     calendar.id = atom.data.Id(text=id)
     returned_calendar = self.cal_client.InsertCalendarSubscription(calendar)
@@ -193,7 +193,7 @@ class CalendarExample:
       id='python.gcal.test%40gmail.com',
       color=None, hidden=None, selected=None):
     """Updates the subscription to the calendar with the specified ID."""
-    print 'Updating the calendar subscription with ID: %s' % id
+    print(('Updating the calendar subscription with ID: %s' % id))
     calendar_url = (
       'http://www.google.com/calendar/feeds/default/allcalendars/full/%s' % id)
     calendar_entry = self.cal_client.GetCalendarEntry(calendar_url)
@@ -217,7 +217,7 @@ class CalendarExample:
   def _DeleteCalendarSubscription(self,
       id='python.gcal.test%40gmail.com'):
     """Deletes the subscription to the calendar with the specified ID."""
-    print 'Deleting the calendar subscription with ID: %s' % id
+    print(('Deleting the calendar subscription with ID: %s' % id))
     calendar_url = (
       'http://www.google.com/calendar/feeds/default/allcalendars/full/%s' % id)
     calendar_entry = self.cal_client.GetCalendarEntry(calendar_url)
@@ -268,9 +268,9 @@ class CalendarExample:
     new_event = self._InsertEvent(title, content, where, start_time, end_time,
         recurrence_data=None)
 
-    print 'New single event inserted: %s' % (new_event.id.text,)
-    print '\tEvent edit URL: %s' % (new_event.GetEditLink().href,)
-    print '\tEvent HTML URL: %s' % (new_event.GetHtmlLink().href,)
+    print(('New single event inserted: %s' % (new_event.id.text,)))
+    print(('\tEvent edit URL: %s' % (new_event.GetEditLink().href,)))
+    print(('\tEvent HTML URL: %s' % (new_event.GetHtmlLink().href,)))
 
     return new_event
 
@@ -294,9 +294,9 @@ class CalendarExample:
     new_event = self._InsertEvent(title, content, where,
         recurrence_data=recurrence_data, start_time=None, end_time=None)
 
-    print 'New recurring event inserted: %s' % (new_event.id.text,)
-    print '\tEvent edit URL: %s' % (new_event.GetEditLink().href,)
-    print '\tEvent HTML URL: %s' % (new_event.GetHtmlLink().href,)
+    print(('New recurring event inserted: %s' % (new_event.id.text,)))
+    print(('\tEvent edit URL: %s' % (new_event.GetEditLink().href,)))
+    print(('\tEvent HTML URL: %s' % (new_event.GetHtmlLink().href,)))
 
     return new_event
 
@@ -331,7 +331,7 @@ class CalendarExample:
     event = gdata.calendar.data.CalendarEventEntry()
     event.link.append(web_content_link)
 
-    print 'Inserting Simple Web Content Event'
+    print('Inserting Simple Web Content Event')
     new_event = self.cal_client.InsertEvent(event)
     return new_event
 
@@ -358,7 +358,7 @@ class CalendarExample:
     event = gdata.calendar.data.CalendarEventEntry()
     event.link.append(web_content_link)
 
-    print 'Inserting Web Content Gadget Event'
+    print('Inserting Web Content Gadget Event')
     new_event = self.cal_client.InsertEvent(event)
     return new_event
 
@@ -376,8 +376,8 @@ class CalendarExample:
 
     previous_title = event.title.text
     event.title.text = new_title
-    print 'Updating title of event from:\'%s\' to:\'%s\'' % (
-        previous_title, event.title.text,)
+    print(('Updating title of event from:\'%s\' to:\'%s\'' % (
+        previous_title, event.title.text,)))
     return self.cal_client.Update(event)
 
   def _AddReminder(self, event, minutes=10):
@@ -393,7 +393,7 @@ class CalendarExample:
       else:
         a_when.reminder.append(gdata.data.Reminder(minutes=str(minutes)))
 
-    print 'Adding %d minute reminder to event' % (minutes,)
+    print(('Adding %d minute reminder to event' % (minutes,)))
     return self.cal_client.Update(event)
 
   def _AddExtendedProperty(self, event,
@@ -406,7 +406,7 @@ class CalendarExample:
 
     event.extended_property.append(
         gdata.calendar.data.CalendarExtendedProperty(name=name, value=value))
-    print 'Adding extended property to event: \'%s\'=\'%s\'' % (name, value,)
+    print(('Adding extended property to event: \'%s\'=\'%s\'' % (name, value,)))
     return self.cal_client.Update(event)
 
   def _DeleteEvent(self, event):
@@ -422,11 +422,11 @@ class CalendarExample:
     feed returned in the response."""
 
     feed = self.cal_client.GetCalendarAclFeed()
-    print feed.title.text
-    for i, a_rule in zip(xrange(len(feed.entry)), feed.entry):
-      print '\t%s. %s' % (i, a_rule.title.text,)
-      print '\t\t Role: %s' % (a_rule.role.value,)
-      print '\t\t Scope %s - %s' % (a_rule.scope.type, a_rule.scope.value)
+    print((feed.title.text))
+    for i, a_rule in zip(list(range(len(feed.entry))), feed.entry):
+      print(('\t%s. %s' % (i, a_rule.title.text,)))
+      print(('\t\t Role: %s' % (a_rule.role.value,)))
+      print(('\t\t Scope %s - %s' % (a_rule.scope.type, a_rule.scope.value)))
 
   def _CreateAclRule(self, username):
     """Creates a ACL rule that grants the given user permission to view
@@ -434,7 +434,7 @@ class CalendarExample:
     to specify a title for the ACL entry.  The server will set this to be the
     value of the role specified (in this case "freebusy")."""
 
-    print 'Creating Acl rule for user: %s' % username
+    print(('Creating Acl rule for user: %s' % username))
     rule = gdata.calendar.data.CalendarAclEntry()
     rule.scope = gdata.acl.data.AclScope(value=username, type="user")
     roleValue = "http://schemas.google.com/gCal/2005#%s" % ("freebusy")
@@ -450,9 +450,9 @@ class CalendarExample:
     aclEntryUri = "http://www.google.com/calendar/feeds/"
     aclEntryUri += "default/acl/full/user:%s" % (username)
     entry = self.cal_client.GetCalendarAclEntry(aclEntryUri)
-    print '\t%s' % (entry.title.text,)
-    print '\t\t Role: %s' % (entry.role.value,)
-    print '\t\t Scope %s - %s' % (entry.scope.type, entry.scope.value)
+    print(('\t%s' % (entry.title.text,)))
+    print(('\t\t Role: %s' % (entry.role.value,)))
+    print(('\t\t Scope %s - %s' % (entry.scope.type, entry.scope.value)))
     return entry
 
   def _UpdateAclRule(self, entry):
@@ -460,7 +460,7 @@ class CalendarExample:
     entry.  Note that while the role of an ACL entry can be updated, the
     scope can not be modified."""
 
-    print 'Update Acl rule: %s' % (entry.GetEditLink().href)
+    print(('Update Acl rule: %s' % (entry.GetEditLink().href)))
     roleValue = "http://schemas.google.com/gCal/2005#%s" % ("read")
     entry.role = gdata.acl.data.AclRole(value=roleValue)
     returned_rule = self.cal_client.Update(entry)
@@ -475,7 +475,7 @@ class CalendarExample:
   def _batchRequest(self, updateEntry, deleteEntry):
     """Execute a batch request to create, update and delete an entry."""
 
-    print 'Executing batch request to insert, update and delete entries.'
+    print('Executing batch request to insert, update and delete entries.')
     # feed that holds all the batch rquest entries
     request_feed = gdata.calendar.data.CalendarEventFeed()
 
@@ -509,9 +509,9 @@ class CalendarExample:
 
     # iterate the response feed to get the operation status
     for entry in response_feed.entry:
-      print '\tbatch id: %s' % (entry.batch_id.text,)
-      print '\tstatus: %s' % (entry.batch_status.code,)
-      print '\treason: %s' % (entry.batch_status.reason,)
+      print(('\tbatch id: %s' % (entry.batch_id.text,)))
+      print(('\tstatus: %s' % (entry.batch_status.code,)))
+      print(('\treason: %s' % (entry.batch_status.reason,)))
       if entry.batch_id.text == 'insert-request':
         insertEntry = entry
       elif entry.batch_id.text == 'update-request':
@@ -567,15 +567,15 @@ class CalendarExample:
 
     # Delete entries if delete argument='true'
     if delete == 'true':
-      print 'Deleting created events'
+      print('Deleting created events')
       self.cal_client.Delete(see_u_ext_prop)
       self.cal_client.Delete(ree)
       self.cal_client.Delete(simple_web_content_event)
       self.cal_client.Delete(web_content_gadget_event)
       self.cal_client.Delete(quick_add_event)
-      print 'Deleting subscriptions'
+      print('Deleting subscriptions')
       self._DeleteCalendarSubscription()
-      print 'Deleting all calendars'
+      print('Deleting all calendars')
       self._DeleteAllCalendars()
 
 
@@ -587,9 +587,9 @@ def main():
   # parse command line options
   try:
     opts, args = getopt.getopt(sys.argv[1:], "", ["user=", "pw=", "delete="])
-  except getopt.error, msg:
-    print ('python calendarExample.py --user [username] --pw [password] ' +
-        '--delete [true|false] ')
+  except getopt.error as msg:
+    print(('python calendarExample.py --user [username] --pw [password] ' +
+        '--delete [true|false] '))
     sys.exit(2)
 
   user = ''
@@ -606,8 +606,8 @@ def main():
       delete = a
 
   if user == '' or pw == '':
-    print ('python calendarExample.py --user [username] --pw [password] ' +
-        '--delete [true|false] ')
+    print(('python calendarExample.py --user [username] --pw [password] ' +
+        '--delete [true|false] '))
     sys.exit(2)
 
   sample = CalendarExample(user, pw)

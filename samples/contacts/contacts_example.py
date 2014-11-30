@@ -62,25 +62,25 @@ class ContactsSample(object):
     
     """
     if not feed.entry:
-      print '\nNo entries in feed.\n'
+      print('\nNo entries in feed.\n')
       return 0
     for i, entry in enumerate(feed.entry):
-      print '\n%s %s' % (ctr+i+1, entry.title.text)
+      print(('\n%s %s' % (ctr+i+1, entry.title.text)))
       if entry.content:
-        print '    %s' % (entry.content.text)
+        print(('    %s' % (entry.content.text)))
       for email in entry.email:
         if email.primary and email.primary == 'true':
-          print '    %s' % (email.address)
+          print(('    %s' % (email.address)))
       # Show the contact groups that this contact is a member of.
       for group in entry.group_membership_info:
-        print '    Member of group: %s' % (group.href)
+        print(('    Member of group: %s' % (group.href)))
       # Display extended properties.
       for extended_property in entry.extended_property:
         if extended_property.value:
           value = extended_property.value
         else:
           value = extended_property.GetXmlBlob()
-        print '    Extended Property %s: %s' % (extended_property.name, value)
+        print(('    Extended Property %s: %s' % (extended_property.name, value)))
     return len(feed.entry) + ctr
 
   def PrintPaginatedFeed(self, feed, print_method):
@@ -125,7 +125,7 @@ class ContactsSample(object):
       the current operation should terminate.
     """
     while True:
-      input = raw_input("Continue [Y/n]? ")
+      input = eval(input("Continue [Y/n]? "))
       if input is 'N' or input is 'n':
         return False
       elif input is 'Y' or input is 'y' or input is '':
@@ -138,50 +138,50 @@ class ContactsSample(object):
 
   def PrintGroupsFeed(self, feed, ctr):
     if not feed.entry:
-      print '\nNo groups in feed.\n'
+      print('\nNo groups in feed.\n')
       return 0
     for i, entry in enumerate(feed.entry):
-      print '\n%s %s' % (ctr+i+1, entry.title.text)
+      print(('\n%s %s' % (ctr+i+1, entry.title.text)))
       if entry.content:
-        print '    %s' % (entry.content.text)
+        print(('    %s' % (entry.content.text)))
       # Display the group id which can be used to query the contacts feed.
-      print '    Group ID: %s' % entry.id.text
+      print(('    Group ID: %s' % entry.id.text))
       # Display extended properties.
       for extended_property in entry.extended_property:
         if extended_property.value:
           value = extended_property.value
         else:
           value = extended_property.GetXmlBlob()
-        print '    Extended Property %s: %s' % (extended_property.name, value)
+        print(('    Extended Property %s: %s' % (extended_property.name, value)))
     return len(feed.entry) + ctr
 
   def PrintContactsFeed(self, feed, ctr):
     if not feed.entry:
-      print '\nNo contacts in feed.\n'
+      print('\nNo contacts in feed.\n')
       return 0
     for i, entry in enumerate(feed.entry):
       if not entry.name is None:
         family_name = entry.name.family_name is None and " " or entry.name.family_name.text
         full_name = entry.name.full_name is None and " " or entry.name.full_name.text
         given_name = entry.name.given_name is None and " " or entry.name.given_name.text
-        print '\n%s %s: %s - %s' % (ctr+i+1, full_name, given_name, family_name)
+        print(('\n%s %s: %s - %s' % (ctr+i+1, full_name, given_name, family_name)))
       else:
-        print '\n%s %s (title)' % (ctr+i+1, entry.title.text)
+        print(('\n%s %s (title)' % (ctr+i+1, entry.title.text)))
       if entry.content:
-        print '    %s' % (entry.content.text)
+        print(('    %s' % (entry.content.text)))
       for p in entry.structured_postal_address:
-        print '    %s' % (p.formatted_address.text)
+        print(('    %s' % (p.formatted_address.text)))
       # Display the group id which can be used to query the contacts feed.
-      print '    Group ID: %s' % entry.id.text
+      print(('    Group ID: %s' % entry.id.text))
       # Display extended properties.
       for extended_property in entry.extended_property:
         if extended_property.value:
           value = extended_property.value
         else:
           value = extended_property.GetXmlBlob()
-        print '    Extended Property %s: %s' % (extended_property.name, value)
+        print(('    Extended Property %s: %s' % (extended_property.name, value)))
       for user_defined_field in entry.user_defined_field:
-        print '    User Defined Field %s: %s' % (user_defined_field.key, user_defined_field.value)
+        print(('    User Defined Field %s: %s' % (user_defined_field.key, user_defined_field.value)))
     return len(feed.entry) + ctr
 
   def ListAllGroups(self):
@@ -190,9 +190,9 @@ class ContactsSample(object):
 
   def CreateMenu(self):
     """Prompts that enable a user to create a contact."""
-    name = raw_input('Enter contact\'s name: ')
-    notes = raw_input('Enter notes for contact: ')
-    primary_email = raw_input('Enter primary email address: ')
+    name = eval(input('Enter contact\'s name: '))
+    notes = eval(input('Enter notes for contact: '))
+    primary_email = eval(input('Enter primary email address: '))
 
     new_contact = gdata.contacts.data.ContactEntry(name=gdata.data.Name(full_name=gdata.data.FullName(text=name)))
     new_contact.content = atom.data.Content(text=notes)
@@ -202,15 +202,15 @@ class ContactsSample(object):
     entry = self.gd_client.CreateContact(new_contact)
 
     if entry:
-      print 'Creation successful!'
-      print 'ID for the new contact:', entry.id.text
+      print('Creation successful!')
+      print(('ID for the new contact:', entry.id.text))
     else:
-      print 'Upload error.'
+      print('Upload error.')
 
   def QueryMenu(self):
     """Prompts for updated-min query parameters and displays results."""
-    updated_min = raw_input(
-        'Enter updated min (example: 2007-03-16T00:00:00): ')
+    updated_min = eval(input(
+        'Enter updated min (example: 2007-03-16T00:00:00): '))
     query = gdata.contacts.client.ContactsQuery()
     query.updated_min = updated_min
     feed = self.gd_client.GetContacts(q=query)
@@ -218,8 +218,8 @@ class ContactsSample(object):
 
   def QueryGroupsMenu(self):
     """Prompts for updated-min query parameters and displays results."""
-    updated_min = raw_input(
-        'Enter updated min (example: 2007-03-16T00:00:00): ')
+    updated_min = eval(input(
+        'Enter updated min (example: 2007-03-16T00:00:00): '))
     query = gdata.contacts.client.ContactsQuery(feed='/m8/feeds/groups/default/full')
     query.updated_min = updated_min
     feed = self.gd_client.GetGroups(q=query)
@@ -230,13 +230,13 @@ class ContactsSample(object):
     self.PrintFeed(feed)
     selection = 5000
     while selection > len(feed.entry)+1 or selection < 1:
-      selection = int(raw_input(
-          'Enter the number for the contact you would like to modify: '))
+      selection = int(eval(input(
+          'Enter the number for the contact you would like to modify: ')))
     return feed.entry[selection-1]
 
   def UpdateContactMenu(self):
     selected_entry = self._SelectContact()
-    new_name = raw_input('Enter a new name for the contact: ')
+    new_name = eval(input('Enter a new name for the contact: '))
     if not selected_entry.name:
       selected_entry.name = gdata.data.Name()
     selected_entry.name.full_name = gdata.data.FullName(text=new_name)
@@ -268,16 +268,16 @@ class ContactsSample(object):
       The integer of the menu item chosen by the user.
     """
     while True:
-      input = raw_input('> ')
+      input = eval(input('> '))
 
       try:
         num = int(input)
       except ValueError:
-        print 'Invalid choice. Please choose a value between 1 and', max
+        print(('Invalid choice. Please choose a value between 1 and', max))
         continue
       
       if num > max or num < 1:
-        print 'Invalid choice. Please choose a value between 1 and', max
+        print(('Invalid choice. Please choose a value between 1 and', max))
       else:
         return num
 
@@ -308,7 +308,7 @@ class ContactsSample(object):
           return
 
     except KeyboardInterrupt:
-      print '\nGoodbye.'
+      print('\nGoodbye.')
       return
 
 
@@ -317,8 +317,8 @@ def main():
   # Parse command line options
   try:
     opts, args = getopt.getopt(sys.argv[1:], '', ['user=', 'pw='])
-  except getopt.error, msg:
-    print 'python contacts_example.py --user [username] --pw [password]'
+  except getopt.error as msg:
+    print('python contacts_example.py --user [username] --pw [password]')
     sys.exit(2)
 
   user = ''
@@ -331,18 +331,18 @@ def main():
       pw = arg
 
   while not user:
-    print 'NOTE: Please run these tests only with a test account.'
-    user = raw_input('Please enter your username: ')
+    print('NOTE: Please run these tests only with a test account.')
+    user = eval(input('Please enter your username: '))
   while not pw:
     pw = getpass.getpass()
     if not pw:
-      print 'Password cannot be blank.'
+      print('Password cannot be blank.')
 
 
   try:
     sample = ContactsSample(user, pw)
   except gdata.client.BadAuthentication:
-    print 'Invalid user credentials given.'
+    print('Invalid user credentials given.')
     return
 
   sample.Run()

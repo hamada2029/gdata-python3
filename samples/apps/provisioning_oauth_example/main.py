@@ -74,7 +74,7 @@ class MainPage(webapp.RequestHandler):
       else:
         self.redirect('/login')
         return
-    except AppsForYourDomainException, e:
+    except AppsForYourDomainException as e:
       # Usually a Forbidden (403) when signed-in user isn't the admin.
       self.response.out.write(e.args[0].get('body'))
     else:

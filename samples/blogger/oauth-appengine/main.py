@@ -32,7 +32,7 @@ class MainHandler(OAuthHandler):
             'updated': entry.updated.text
           })
         template_values['blogs'] = blogs
-    except gdata.service.RequestError, error:
+    except gdata.service.RequestError as error:
       template_values['logged'] = False
 
     path = os.path.join(os.path.dirname(__file__), 'index.html')

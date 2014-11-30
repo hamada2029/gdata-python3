@@ -19,8 +19,8 @@ import getpass
 from gdata.contentforshopping.client import ContentForShoppingClient
 
 # Gather merchant information
-account_id = raw_input('Merchant Account ID? ').strip()
-email = raw_input('Google Email Address? ').strip()
+account_id = input('Merchant Account ID? ').strip()
+email = input('Google Email Address? ').strip()
 
 # Create a client
 client = ContentForShoppingClient(account_id)
@@ -34,4 +34,4 @@ client_account_feed = client.get_client_accounts()
 
 # Display the title and self link for each client account
 for client_account in client_account_feed.entry:
-  print client_account.title.text, client_account.GetSelfLink().href
+  print((client_account.title.text, client_account.GetSelfLink().href))

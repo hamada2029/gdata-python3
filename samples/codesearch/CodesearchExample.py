@@ -39,13 +39,13 @@ class CodesearchExample:
   def PrintCodeSnippets(self, query):
     """Prints the codesearch results for given query."""
     feed = self.service.GetSnippetsFeed(query)
-    print feed.title.text + " Results for '" +  query + "'"
-    print '============================================'
+    print((feed.title.text + " Results for '" +  query + "'"))
+    print('============================================')
     for entry in feed.entry:
-      print "" + entry.title.text
+      print(("" + entry.title.text))
       for match in entry.match:
-        print "\tline#" + match.line_number + ":" + match.text.replace('\n', '')
-    print
+        print(("\tline#" + match.line_number + ":" + match.text.replace('\n', '')))
+    print()
 
 
 def main():
@@ -55,7 +55,7 @@ def main():
   # parse command line options
   try:
     opts, args = getopt.getopt(sys.argv[1:], "", ["query="])
-  except getopt.error, msg:
+  except getopt.error as msg:
     print ('python CodesearchExample.py --query [query_text]')
     sys.exit(2)
 

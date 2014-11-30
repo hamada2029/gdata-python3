@@ -48,10 +48,10 @@ def GetAuthToken(client_id, client_secret):
       client_id=client_id, client_secret=client_secret,
       scope=SCOPE, user_agent=USER_AGENT)
   uri = token.generate_authorize_url()
-  print 'Please visit this URL to authorize the application:'
-  print uri
+  print('Please visit this URL to authorize the application:')
+  print(uri)
   # Get the verification code from the standard input.
-  code = raw_input('What is the verification code? ').strip()
+  code = input('What is the verification code? ').strip()
   token.get_access_token(code)
   return token
 
@@ -75,8 +75,8 @@ def ListAllMembers(group_client, group_id):
         members_list.extend(temp_list)
       else:
         members_list.append(member.member_id)
-  except gdata.client.RequestError, e:
-    print 'Request error: %s %s %s' % (e.status, e.reason, e.body)
+  except gdata.client.RequestError as e:
+    print(('Request error: %s %s %s' % (e.status, e.reason, e.body)))
   return members_list
 
 
@@ -107,8 +107,8 @@ def main():
 
   members_list = ListAllMembers(group_client, options.GROUP_ID)
   no_duplicate_members_list = list(set(members_list))
-  print 'User members of the group %s are: ' % options.GROUP_ID
-  print no_duplicate_members_list
+  print(('User members of the group %s are: ' % options.GROUP_ID))
+  print(no_duplicate_members_list)
 
 
 if __name__ == '__main__':

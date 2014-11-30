@@ -63,10 +63,10 @@ class OrgUnitProvisioning(object):
         client_id=self.client_id, client_secret=self.client_secret,
         scope=SCOPE, user_agent=USER_AGENT)
     uri = self.token.generate_authorize_url()
-    print 'Please visit this URL to authorize the application:'
-    print uri
+    print('Please visit this URL to authorize the application:')
+    print(uri)
     # Get the verification code from the standard input.
-    code = raw_input('What is the verification code? ').strip()
+    code = input('What is the verification code? ').strip()
     self.token.get_access_token(code)
     self.client = OrganizationUnitProvisioningClient(
         domain=self.domain, auth_token=self.token)
@@ -77,12 +77,12 @@ class OrgUnitProvisioning(object):
     Args:
       entry: [gdata.apps.organization.data.CustomerIdEntry]
     """
-    print '\nCustomer Id: %s' % (entry.customer_id)
-    print 'Org unit name: %s' % (entry.org_unit_name)
-    print 'Customer org unit name: %s' % (entry.customer_org_unit_name)
-    print 'Org unit description: %s' % (entry.org_unit_description)
-    print 'Customer org unit description: %s' % (
-        entry.customer_org_unit_description)
+    print(('\nCustomer Id: %s' % (entry.customer_id)))
+    print(('Org unit name: %s' % (entry.org_unit_name)))
+    print(('Customer org unit name: %s' % (entry.customer_org_unit_name)))
+    print(('Org unit description: %s' % (entry.org_unit_description)))
+    print(('Customer org unit description: %s' % (
+        entry.customer_org_unit_description)))
 
   def _PrintOrgUnitDetails(self, entry):
     """Prints the attributes for a OrgUnitEntry.
@@ -91,13 +91,13 @@ class OrgUnitProvisioning(object):
       entry: [gdata.apps.organization.data.OrgUnitEntry]
     """
     if entry:
-      print '\nOrg unit name: %s' % (entry.org_unit_name)
-      print 'Org unit path: %s' % (entry.org_unit_path)
-      print 'Parent org unit path: %s' % (entry.parent_org_unit_path)
-      print 'organization unit description: %s' % (entry.org_unit_description)
-      print 'Block inheritance flag: %s' % (entry.org_unit_block_inheritance)
+      print(('\nOrg unit name: %s' % (entry.org_unit_name)))
+      print(('Org unit path: %s' % (entry.org_unit_path)))
+      print(('Parent org unit path: %s' % (entry.parent_org_unit_path)))
+      print(('organization unit description: %s' % (entry.org_unit_description)))
+      print(('Block inheritance flag: %s' % (entry.org_unit_block_inheritance)))
     else:
-      print 'null entry'
+      print('null entry')
 
   def _PrintOrgUserDetails(self, entry):
     """Prints the attributes for a OrgUserEntry.
@@ -106,10 +106,10 @@ class OrgUnitProvisioning(object):
       entry: [gdata.apps.organization.data.OrgUserEntry]
     """
     if entry:
-      print 'Org user email: %s' % (entry.user_email)
-      print 'Org unit path: %s' % (entry.org_unit_path)
+      print(('Org user email: %s' % (entry.user_email)))
+      print(('Org unit path: %s' % (entry.org_unit_path)))
     else:
-      print 'null entry'
+      print('null entry')
 
   def _GetChoice(self, for_field):
     """Gets input for boolean fields.
@@ -120,8 +120,8 @@ class OrgUnitProvisioning(object):
     Returns:
       boolean input for the given field
     """
-    choice = raw_input(('(Optional) Enter a choice for %s\n'
-                        '1-True 2-False ') % (for_field))
+    choice = eval(input(('(Optional) Enter a choice for %s\n'
+                        '1-True 2-False ') % (for_field)))
     if choice == '1':
       return True
     return False
@@ -133,9 +133,9 @@ class OrgUnitProvisioning(object):
       string org_unit_path entered by the user
     """
 
-    org_unit_path = raw_input('Enter the org unit path ')
+    org_unit_path = eval(input('Enter the org unit path '))
     if org_unit_path is None:
-      print 'Organization path missing\n'
+      print('Organization path missing\n')
       return
     return org_unit_path
 
@@ -156,10 +156,10 @@ class OrgUnitProvisioning(object):
     Args:
       customer_id : string customer_id of organization
     """
-    name = raw_input('Enter a name for organization: ')
-    parent_org_unit_path = raw_input('(default "/")'
-        'Enter full path of the parentental tree: ')
-    description = raw_input('(Optional) Enter description of organization: ')
+    name = eval(input('Enter a name for organization: '))
+    parent_org_unit_path = eval(input('(default "/")'
+        'Enter full path of the parentental tree: '))
+    description = eval(input('(Optional) Enter description of organization: '))
     block_inheritance = self._GetChoice('(default: False) block_inheritance: ')
     if not parent_org_unit_path:
       parent_org_unit_path = '/'
@@ -169,9 +169,9 @@ class OrgUnitProvisioning(object):
           parent_org_unit_path=parent_org_unit_path,
           description=description, block_inheritance=block_inheritance)
       self._PrintOrgUnitDetails(orgunit_entry)
-      print 'Org unit Created'
-    except gdata.client.RequestError, e:
-      print e.reason, e.body
+      print('Org unit Created')
+    except gdata.client.RequestError as e:
+      print((e.reason, e.body))
       return
 
   def _UpdateOrgUnit(self, customer_id):
@@ -186,13 +186,13 @@ class OrgUnitProvisioning(object):
     try:
       org_unit_entry = self.client.RetrieveOrgUnit(customer_id=customer_id,
           org_unit_path=org_unit_path)
-      print self._PrintOrgUnitDetails(org_unit_entry)
+      print((self._PrintOrgUnitDetails(org_unit_entry)))
       attributes = {1: 'org_name', 2: 'parent_org_unit_path', 3: 'description',
                     4: 'block_inheritance'}
-      print attributes
+      print(attributes)
       while True:
-        attr = int(raw_input('\nEnter number(1-4) of attribute to be updated'))
-        updated_val = raw_input('Enter updated value ')
+        attr = int(eval(input('\nEnter number(1-4) of attribute to be updated')))
+        updated_val = eval(input('Enter updated value '))
         if attr == 1:
           org_unit_entry.org_unit_name = updated_val
         if attr == 2:
@@ -201,14 +201,14 @@ class OrgUnitProvisioning(object):
           org_unit_entry.org_unit_description = updated_val
         if attr == 4:
           org_unit_entry.login.org_unit_block_inheritance = updated_val
-        choice = raw_input('\nDo you want to update more attributes y/n')
+        choice = eval(input('\nDo you want to update more attributes y/n'))
         if choice != 'y':
           break
       self.client.UpdateOrgUnit(customer_id=customer_id,
           org_unit_path=org_unit_path, org_unit_entry=org_unit_entry)
-      print 'Updated Org unit'
-    except gdata.client.RequestError, e:
-      print e.reason, e.body
+      print('Updated Org unit')
+    except gdata.client.RequestError as e:
+      print((e.reason, e.body))
       return
 
   def _RetrieveOrgUnit(self, customer_id):
@@ -224,8 +224,8 @@ class OrgUnitProvisioning(object):
       response = self.client.RetrieveOrgUnit(customer_id=customer_id,
           org_unit_path=org_unit_path)
       self._PrintOrgUnitDetails(response)
-    except gdata.client.RequestError, e:
-      print e.reason, e.body
+    except gdata.client.RequestError as e:
+      print((e.reason, e.body))
       return
 
   def _RetrieveAllOrgUnits(self, customer_id):
@@ -238,8 +238,8 @@ class OrgUnitProvisioning(object):
       response = self.client.RetrieveAllOrgUnits(customer_id=customer_id)
       for entry in response.entry:
         self._PrintOrgUnitDetails(entry)
-    except gdata.client.RequestError, e:
-      print e.reason, e.body
+    except gdata.client.RequestError as e:
+      print((e.reason, e.body))
       return
 
   def _RetrieveSubOrgUnits(self, customer_id):
@@ -255,12 +255,12 @@ class OrgUnitProvisioning(object):
       response = self.client.RetrieveSubOrgUnits(customer_id=customer_id,
           org_unit_path=org_unit_path)
       if not response.entry:
-        print 'No Sub organization units'
+        print('No Sub organization units')
         return
       for entry in response.entry:
         self._PrintOrgUnitDetails(entry)
-    except gdata.client.RequestError, e:
-      print e.reason, e.body
+    except gdata.client.RequestError as e:
+      print((e.reason, e.body))
       return
 
   def _MoveUsers(self, customer_id):
@@ -274,21 +274,21 @@ class OrgUnitProvisioning(object):
       return
     users = []
     while True:
-      user = raw_input('Enter user email address ')
+      user = eval(input('Enter user email address '))
       if user:
         users.append(user)
       else:
         break
     if users is None:
-      print 'No users given to move'
+      print('No users given to move')
       return
     try:
       self.client.MoveUserToOrgUnit(customer_id=customer_id,
           org_unit_path=org_unit_path, users_to_move=users)
-      print 'Moved users'
-      print users
-    except gdata.client.RequestError, e:
-      print e.reason, e.body
+      print('Moved users')
+      print(users)
+    except gdata.client.RequestError as e:
+      print((e.reason, e.body))
       return
 
   def _DeleteOrgUnit(self, customer_id):
@@ -303,9 +303,9 @@ class OrgUnitProvisioning(object):
     try:
       self.client.DeleteOrgUnit(customer_id=customer_id,
           org_unit_path=org_unit_path)
-      print 'OrgUnit Deleted'
-    except gdata.client.RequestError, e:
-      print e.reason, e.body
+      print('OrgUnit Deleted')
+    except gdata.client.RequestError as e:
+      print((e.reason, e.body))
       return
 
   def _UpdateOrgUser(self, customer_id):
@@ -315,17 +315,17 @@ class OrgUnitProvisioning(object):
       customer_id : string customer_id of organization
     """
     org_unit_path = self._GetOrgUnitPath()
-    user_email = raw_input('Enter the email address')
+    user_email = eval(input('Enter the email address'))
     if None in (org_unit_path, user_email):
-      print 'Organization path and email are both required\n'
+      print('Organization path and email are both required\n')
       return
     try:
       org_user_entry = self.client.UpdateOrgUser(customer_id=customer_id,
           user_email=user_email, org_unit_path=org_unit_path)
-      print 'Updated org unit for user'
-      print self._PrintOrgUserDetails(org_user_entry)
-    except gdata.client.RequestError, e:
-      print e.reason, e.body
+      print('Updated org unit for user')
+      print((self._PrintOrgUserDetails(org_user_entry)))
+    except gdata.client.RequestError as e:
+      print((e.reason, e.body))
       return
 
   def _RetrieveOrgUser(self, customer_id):
@@ -334,16 +334,16 @@ class OrgUnitProvisioning(object):
     Args:
       customer_id : string customer_id of organization
     """
-    user_email = raw_input('Enter the email address ')
+    user_email = eval(input('Enter the email address '))
     if user_email is None:
-      print 'Email address missing\n'
+      print('Email address missing\n')
       return
     try:
       response = self.client.RetrieveOrgUser(customer_id=customer_id,
           user_email=user_email)
       self._PrintOrgUserDetails(response)
-    except gdata.client.RequestError, e:
-      print e.reason, e.body
+    except gdata.client.RequestError as e:
+      print((e.reason, e.body))
       return
 
   def _RetrieveOrgUnitUsers(self, customer_id):
@@ -359,12 +359,12 @@ class OrgUnitProvisioning(object):
       response = self.client.RetrieveOrgUnitUsers(customer_id=customer_id,
           org_unit_path=org_unit_path)
       if not response.entry:
-        print 'No users in this organization'
+        print('No users in this organization')
         return
       for entry in response.entry:
         self._PrintOrgUserDetails(entry)
-    except gdata.client.RequestError, e:
-      print e.reason, e.body
+    except gdata.client.RequestError as e:
+      print((e.reason, e.body))
       return
 
   def _RetrieveAllOrgUsers(self, customer_id):
@@ -377,8 +377,8 @@ class OrgUnitProvisioning(object):
       response = self.client.RetrieveAllOrgUsers(customer_id=customer_id)
       for entry in response.entry:
         self._PrintOrgUserDetails(entry)
-    except gdata.client.RequestError, e:
-      print e.reason, e.body
+    except gdata.client.RequestError as e:
+      print((e.reason, e.body))
       return
 
   def Run(self):
@@ -416,14 +416,14 @@ class OrgUnitProvisioning(object):
          'description': 'Retrieve all org users'}
     ]
     while True:
-      print '\nChoose an option:\n0 - to exit'
+      print('\nChoose an option:\n0 - to exit')
       for i in range (0, len(functions_list)):
-        print '%d - %s' % ((i+1), functions_list[i]['description'])
-      choice = int(raw_input())
+        print(('%d - %s' % ((i+1), functions_list[i]['description'])))
+      choice = int(eval(input()))
       if choice == 0:
         break
       if choice < 0 or choice > 11:
-        print 'Not a valid option!'
+        print('Not a valid option!')
         continue
       functions_list[choice-1]['function'](customer_id=customer_id)
 
@@ -440,7 +440,7 @@ def main():
                                                   'client_secret=',
                                                   'domain='])
   except getopt.error:
-    print 'Usage: %s' % usage
+    print(('Usage: %s' % usage))
     return
 
   client_id = None
@@ -456,14 +456,14 @@ def main():
       domain = arg
 
   if None in (client_id, client_secret, domain):
-    print 'Usage: %s' % usage
+    print(('Usage: %s' % usage))
     return
 
   try:
     orgunit_provisioning = OrgUnitProvisioning(
         client_id, client_secret, domain)
   except gdata.service.BadAuthentication:
-    print 'Invalid user credentials given.'
+    print('Invalid user credentials given.')
     return
 
   orgunit_provisioning.Run()

@@ -28,26 +28,26 @@ import getpass
 username = ''
 password = ''
 
-username = raw_input('Please enter your username: ')
+username = eval(input('Please enter your username: '))
 password = getpass.getpass()
 
 client = gdata.webmastertools.service.GWebmasterToolsService(
     email=username, 
     password=password, source='PythonWebmasterToolsSample-1')
 
-print 'Logging in'
+print('Logging in')
 client.ProgrammaticLogin()
 
-print 'Retrieving Sites feed'
+print('Retrieving Sites feed')
 feed = client.GetSitesFeed()
 
 # Format the feed
-print
-print 'You have %d site(s), last updated at %s' % (
-    len(feed.entry), feed.updated.text)
-print
-print "%-25s %25s %25s" % ('Site', 'Last Updated', 'Last Crawled')
-print '='*80
+print()
+print(('You have %d site(s), last updated at %s' % (
+    len(feed.entry), feed.updated.text)))
+print()
+print(("%-25s %25s %25s" % ('Site', 'Last Updated', 'Last Crawled')))
+print(('='*80))
 
 
 def safeElementText(element):
@@ -58,13 +58,13 @@ def safeElementText(element):
 
 # Format each site
 for entry in feed.entry:
-  print "%-25s %25s %25s" % (
+  print(("%-25s %25s %25s" % (
       entry.title.text.replace('http://', '')[:25], entry.updated.text[:25],
-      safeElementText(entry.crawled)[:25])
-  print "  Preferred: %-23s Indexed: %5s        GeoLoc: %10s" % (
+      safeElementText(entry.crawled)[:25])))
+  print(("  Preferred: %-23s Indexed: %5s        GeoLoc: %10s" % (
       safeElementText(entry.preferred_domain)[:30], entry.indexed.text[:5],
-      safeElementText(entry.geolocation)[:10])
-  print "  Crawl rate: %-10s            Verified: %5s" % (
-      safeElementText(entry.crawl_rate)[:10], entry.verified.text[:5])
+      safeElementText(entry.geolocation)[:10])))
+  print(("  Crawl rate: %-10s            Verified: %5s" % (
+      safeElementText(entry.crawl_rate)[:10], entry.verified.text[:5])))
 
-print
+print()

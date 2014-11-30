@@ -62,7 +62,7 @@ def main():
     (opts, args) = getopt.getopt(sys.argv[1:], '', ['email=', 'password=',
                                                     'domain='])
   except getopt.GetoptError:
-    print 'Error'
+    print('Error')
     Usage()
     sys.exit(1)
   opts = dict(opts)
@@ -100,15 +100,15 @@ def main():
       days = duration.days
       if days > 180:
         account_id = account_fields[2]
-        print 'This user is obsolete: %s' % account_id
+        print(('This user is obsolete: %s' % account_id))
         user_name = account_id.split('@')
-        delete_flag = raw_input('Do you want to delete the user (y/n)? ')
+        delete_flag = eval(input('Do you want to delete the user (y/n)? '))
         if delete_flag == 'y':
           try:
             client.DeleteUser(user_name[0])
-            print 'Deleted %s ' % account_id
-          except gdata.client.RequestError, e:
-            print 'Request Error %s %s %s' % (e.status, e.reason, e.body)
+            print(('Deleted %s ' % account_id))
+          except gdata.client.RequestError as e:
+            print(('Request Error %s %s %s' % (e.status, e.reason, e.body)))
 
 
 if __name__ == '__main__':

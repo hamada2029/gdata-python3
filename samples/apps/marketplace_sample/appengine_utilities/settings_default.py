@@ -77,5 +77,5 @@ rotmodel = {
     "RETRY_INTERVAL": .2,
 }
 if __name__ == "__main__":
-    print "Hello World";
+    print("Hello World");
 

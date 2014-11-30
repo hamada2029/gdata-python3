@@ -33,7 +33,7 @@ __author__ = 'e.bidelman@google.com (Eric Bidelman)'
 
 import os
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import gdata.auth
 import gdata.service
 
@@ -85,7 +85,7 @@ class HealthAuthSubHelper(object):
         request_url=self.H9_AUTHSUB_HANDLER,
         include_scopes_in_next=include_scopes_in_next)
     if extra_params:
-      auth_sub_url = '%s&%s' % (auth_sub_url, urllib.urlencode(extra_params))
+      auth_sub_url = '%s&%s' % (auth_sub_url, urllib.parse.urlencode(extra_params))
     return auth_sub_url
 
   def SetPrivateKey(self, filename):
@@ -107,7 +107,8 @@ class HealthAuthSubHelper(object):
       f = open(filename)
       rsa_private_key = f.read()
       f.close()
-    except IOError, (errno, strerror):
+    except IOError as xxx_todo_changeme:
+      (errno, strerror) = xxx_todo_changeme.args
       raise 'I/O error(%s): %s' % (errno, strerror)
     self.rsa_key = rsa_private_key
     return rsa_private_key
@@ -176,7 +177,7 @@ def index(req):
 
     # Query the Health Data API
     params = {'digest': 'true', 'strict': 'true'}
-    uri = '%s?%s' % (H9_PROFILE_FEED_URL, urllib.urlencode(params))
+    uri = '%s?%s' % (H9_PROFILE_FEED_URL, urllib.parse.urlencode(params))
     feed = client.GetFeed(uri)
 
     req.write('<h4>Listing medications</h4>')

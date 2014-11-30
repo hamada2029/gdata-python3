@@ -23,22 +23,22 @@ def Run(source_file):
   """Load a source file and run a sample from it."""
   source = open(source_file).read()
   global_dict = {'__file__': source_file}
-  exec source in global_dict
+  exec(source, global_dict)
   samples = [global_dict[k] for k in global_dict if k.endswith('Sample')]
   lines = source.splitlines()
   for i, sample in enumerate(samples):
-    print str(i).rjust(2), sample.__name__, '-', sample.__doc__
+    print((str(i).rjust(2), sample.__name__, '-', sample.__doc__))
   try:
-    i = int(raw_input('Select sample: ').strip())
+    i = int(input('Select sample: ').strip())
     sample = samples[i]
-    print '-' * 80
-    print 'def', '%s():' % sample.__name__
+    print(('-' * 80))
+    print(('def', '%s():' % sample.__name__))
     # print each line until a blank one (or eof).
-    for line in lines[sample.func_code.co_firstlineno:]:
+    for line in lines[sample.__code__.co_firstlineno:]:
       if not line:
         break
-      print line
-    print '-' * 80
+      print(line)
+    print(('-' * 80))
     sample()
   except (ValueError, IndexError):
-    print 'Bad selection.'
+    print('Bad selection.')

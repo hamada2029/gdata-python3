@@ -65,10 +65,10 @@ class BloggerExample:
     feed = self.client.get_blogs()
 
     # Print the results.
-    print feed.title.text
+    print((feed.title.text))
     for entry in feed.entry:
-      print "\t" + entry.title.text
-    print
+      print(("\t" + entry.title.text))
+    print()
 
   def CreatePost(self, title, content, is_draft):
     """This method creates a new post on a blog.  The new post can be stored as
@@ -90,13 +90,13 @@ class BloggerExample:
     feed = self.client.get_posts(self.blog_id)
 
     # Print the results.
-    print feed.title.text
+    print((feed.title.text))
     for entry in feed.entry:
       if not entry.title.text:
-        print "\tNo Title"
+        print("\tNo Title")
       else:
-        print "\t" + entry.title.text.encode('utf-8')
-    print
+        print(("\t" + entry.title.text.encode('utf-8')))
+    print()
 
   def PrintPostsInDateRange(self, start_time, end_time):
     """This method displays the title and modification time for any posts that
@@ -116,19 +116,19 @@ class BloggerExample:
     query = gdata.blogger.client.Query(updated_min=start_time,
                                        updated_max=end_time,
                                        order_by='updated')
-    print query.updated_min
-    print query.order_by
+    print((query.updated_min))
+    print((query.order_by))
     feed = self.client.get_posts(self.blog_id, query=query)
 
     # Print the results.
-    print feed.title.text + " posts between " + start_time + " and " + end_time
-    print feed.title.text
+    print((feed.title.text + " posts between " + start_time + " and " + end_time))
+    print((feed.title.text))
     for entry in feed.entry:
       if not entry.title.text:
-        print "\tNo Title"
+        print("\tNo Title")
       else:
-        print "\t" + entry.title.text
-    print
+        print(("\t" + entry.title.text))
+    print()
 
   def UpdatePostTitle(self, entry_to_update, new_title):
     """This method updates the title of the given post.  The GDataEntry object
@@ -168,11 +168,11 @@ class BloggerExample:
     feed = self.client.get_post_comments(self.blog_id, post_id)
 
     # Display the results
-    print feed.title.text
+    print((feed.title.text))
     for entry in feed.entry:
-      print "\t" + entry.title.text
-      print "\t" + entry.updated.text
-    print
+      print(("\t" + entry.title.text))
+      print(("\t" + entry.updated.text))
+    print()
 
   def DeleteComment(self, comment_entry):
     """This method removes the comment specified by the given edit_link_href, the
@@ -199,7 +199,7 @@ class BloggerExample:
     draft_post = self.CreatePost('Snorkling in Aruba',
       '<p>We had <b>so</b> much fun snorkling in Aruba<p>',
       True)
-    print 'Successfully created draft post: "' + draft_post.title.text + '".\n'
+    print(('Successfully created draft post: "' + draft_post.title.text + '".\n'))
 
     # Delete the draft blog post.
     self.client.delete(draft_post)
@@ -208,43 +208,43 @@ class BloggerExample:
     public_post = self.CreatePost("Back from vacation",
       "<p>I didn't want to leave Aruba, but I ran out of money :(<p>",
       False)
-    print "Successfully created public post: \"" + public_post.title.text + "\".\n"
+    print(("Successfully created public post: \"" + public_post.title.text + "\".\n"))
   
     # Demonstrate various feed queries.
-    print "Now listing all posts."
+    print("Now listing all posts.")
     self.PrintAllPosts()
-    print "Now listing all posts between 2007-04-04 and 2007-04-23."
+    print("Now listing all posts between 2007-04-04 and 2007-04-23.")
     self.PrintPostsInDateRange("2007-04-04", "2007-04-23")
 
     # Demonstrate updating a post's title.
-    print "Now updating the title of the post we just created:"
+    print("Now updating the title of the post we just created:")
     public_post = self.UpdatePostTitle(public_post, "The party's over")
-    print "Successfully changed the post's title to \"" + public_post.title.text + "\".\n"
+    print(("Successfully changed the post's title to \"" + public_post.title.text + "\".\n"))
   
     # Demonstrate how to retrieve the comments for a post.
 
     # Get the post ID and build the comments feed URI for the specified post
     post_id = public_post.get_post_id()
     
-    print "Now posting a comment on the post titled: \"" + public_post.title.text + "\"."
+    print(("Now posting a comment on the post titled: \"" + public_post.title.text + "\"."))
     comment = self.CreateComment(post_id, "Did you see any sharks?")
-    print "Successfully posted \"" + comment.content.text + "\" on the post titled: \"" + public_post.title.text + "\".\n"
+    print(("Successfully posted \"" + comment.content.text + "\" on the post titled: \"" + public_post.title.text + "\".\n"))
     
     comment_id = comment.GetCommentId()
     
-    print "Now printing all comments"
+    print("Now printing all comments")
     self.PrintAllComments(post_id)
    
     # Delete the comment we just posted
-    print "Now deleting the comment we just posted"
+    print("Now deleting the comment we just posted")
     self.DeleteComment(comment)
-    print "Successfully deleted comment." 
+    print("Successfully deleted comment.") 
     self.PrintAllComments(post_id)
 
     # Demonstrate deleting posts.
-    print "Now deleting the post titled: \"" + public_post.title.text + "\"."
+    print(("Now deleting the post titled: \"" + public_post.title.text + "\"."))
     self.DeletePost(public_post)
-    print "Successfully deleted post." 
+    print("Successfully deleted post.") 
     self.PrintAllPosts()
 
 

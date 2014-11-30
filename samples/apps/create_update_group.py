@@ -102,21 +102,21 @@ def CreateAndUpdateGroup(http, groups_client, domain):
                   authorized group provisioning client
     domain: String domain name
   """
-  group_id = raw_input('Enter the group id: ')
-  group_name = raw_input('Enter the group name: ')
-  group_description = raw_input('Enter the group description: ')
-  email_permission = raw_input('Enter the email permission: ')
+  group_id = eval(input('Enter the group id: '))
+  group_name = eval(input('Enter the group name: '))
+  group_description = eval(input('Enter the group description: '))
+  email_permission = eval(input('Enter the email permission: '))
 
   if not (group_id and group_name):
-    print 'One or more required fields missing: group id, group name'
+    print('One or more required fields missing: group id, group name')
     sys.exit(1)
 
   new_group = groups_client.CreateGroup(group_id=group_id,
       group_name=group_name, description=group_description,
       email_permission=email_permission)
-  print 'Group Created %s' % new_group.group_id
-  print 'Name: %s\nDescription %s\nEmail Permission %s' % (
-      new_group.group_name, new_group.description, new_group.email_permission)
+  print(('Group Created %s' % new_group.group_id))
+  print(('Name: %s\nDescription %s\nEmail Permission %s' % (
+      new_group.group_name, new_group.description, new_group.email_permission)))
 
   group_id = '%s@%s' % (new_group.group_id, domain)
   service = build('groupssettings', 'v1', http=http)
@@ -128,7 +128,7 @@ def CreateAndUpdateGroup(http, groups_client, domain):
           'whoCanViewMembership': 'ALL_IN_DOMAIN_CAN_VIEW'}
   # Update the group properties
   g = group_resource.update(groupUniqueId=group_id, body=body).execute()
-  print '\nUpdated Access Permissions to the group\n'
+  print('\nUpdated Access Permissions to the group\n')
   pprint.pprint(g)
 
 
@@ -137,7 +137,7 @@ def main(argv):
   storage = Storage('group.dat')
   credentials = storage.get()
   if credentials is None or credentials.invalid:
-    print 'Credentials are invalid or do not exist.'
+    print('Credentials are invalid or do not exist.')
     credentials = run(FLOW, storage)
 
   # Create an httplib2.Http object to handle our HTTP requests and authorize it
@@ -145,7 +145,7 @@ def main(argv):
   http = httplib2.Http()
   http = credentials.authorize(http)
 
-  domain = raw_input('Enter the domain: ')
+  domain = eval(input('Enter the domain: '))
 
   # Create an OAuth 2.0 token suitable for use with the GData client library
   oauth2token = GetOAuth2Token(credentials.client_id,

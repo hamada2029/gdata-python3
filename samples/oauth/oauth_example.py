@@ -49,11 +49,11 @@ class OAuthSample(object):
       feed: A gdata.docs.DocumentListFeed instance.
     """
     if not feed.entry:
-      print 'No entries in feed.\n'
+      print('No entries in feed.\n')
     
     docs_list = list(enumerate(feed.entry, start = 1))
     for i, entry in docs_list:
-      print '%d. %s\n' % (i, entry.title.text.encode('UTF-8'))
+      print(('%d. %s\n' % (i, entry.title.text.encode('UTF-8'))))
 
   def _ListAllDocuments(self):
     """Retrieves a list of all of a user's documents and displays them."""
@@ -63,30 +63,30 @@ class OAuthSample(object):
   def Run(self):
     """Demonstrates usage of OAuth authentication mode and retrieves a list of
     documents using the Document List Data API."""
-    print '\nSTEP 1: Set OAuth input parameters.'
+    print('\nSTEP 1: Set OAuth input parameters.')
     self.gd_client.SetOAuthInputParameters(
         gdata.auth.OAuthSignatureMethod.HMAC_SHA1,
         self.consumer_key, consumer_secret=self.consumer_secret)
-    print '\nSTEP 2: Fetch OAuth Request token.'
+    print('\nSTEP 2: Fetch OAuth Request token.')
     request_token = self.gd_client.FetchOAuthRequestToken()
-    print 'Request Token fetched: %s' % request_token
-    print '\nSTEP 3: Set the fetched OAuth token.'
+    print(('Request Token fetched: %s' % request_token))
+    print('\nSTEP 3: Set the fetched OAuth token.')
     self.gd_client.SetOAuthToken(request_token)
-    print 'OAuth request token set.'
-    print '\nSTEP 4: Generate OAuth authorization URL.'
+    print('OAuth request token set.')
+    print('\nSTEP 4: Generate OAuth authorization URL.')
     auth_url = self.gd_client.GenerateOAuthAuthorizationURL()
-    print 'Authorization URL: %s' % auth_url
-    raw_input('Manually go to the above URL and authenticate.'
-              'Press a key after authorization.')
-    print '\nSTEP 5: Upgrade to an OAuth access token.'
+    print(('Authorization URL: %s' % auth_url))
+    eval(input('Manually go to the above URL and authenticate.'
+              'Press a key after authorization.'))
+    print('\nSTEP 5: Upgrade to an OAuth access token.')
     self.gd_client.UpgradeToOAuthAccessToken()
-    print 'Access Token: %s' % (
-        self.gd_client.token_store.find_token(request_token.scopes[0]))
-    print '\nYour Documents:\n'
+    print(('Access Token: %s' % (
+        self.gd_client.token_store.find_token(request_token.scopes[0]))))
+    print('\nYour Documents:\n')
     self._ListAllDocuments()
-    print 'STEP 6: Revoke the OAuth access token after use.'
+    print('STEP 6: Revoke the OAuth access token after use.')
     self.gd_client.RevokeOAuthToken()
-    print 'OAuth access token revoked.'
+    print('OAuth access token revoked.')
 
 
 def main():
@@ -98,7 +98,7 @@ def main():
   try:
     opts, args = getopt.getopt(sys.argv[1:], '', ['consumer_key=',
                                                   'consumer_secret='])
-  except getopt.error, msg:
+  except getopt.error as msg:
     print ('python oauth_example.py --consumer_key [consumer_key] '
            '--consumer_secret [consumer_secret] ')
     sys.exit(2)
@@ -113,9 +113,9 @@ def main():
       consumer_secret = arg
 
   while not consumer_key:
-    consumer_key = raw_input('Please enter consumer key: ')
+    consumer_key = eval(input('Please enter consumer key: '))
   while not consumer_secret:
-    consumer_secret = raw_input('Please enter consumer secret: ')
+    consumer_secret = eval(input('Please enter consumer secret: '))
 
   sample = OAuthSample(consumer_key, consumer_secret)
   sample.Run()

@@ -98,10 +98,10 @@ class FestivalSettings(object):
     self.provisioning_client = gdata.apps.client.AppsClient(domain=self.domain)
     request_token = self.email_settings_client.GetOAuthToken(
         SCOPES, None, self.consumer_key, consumer_secret=self.consumer_secret)
-    print request_token.GenerateAuthorizationUrl()
+    print((request_token.GenerateAuthorizationUrl()))
 
-    raw_input('Manually go to the above URL and authenticate.'
-              'Press Return after authorization.')
+    eval(input('Manually go to the above URL and authenticate.'
+              'Press Return after authorization.'))
     access_token = self.email_settings_client.GetAccessToken(request_token)
     self.email_settings_client.auth_token = access_token
     self.provisioning_client.auth_token = access_token
@@ -140,7 +140,7 @@ class FestivalSettings(object):
         self.email_settings_client.CreateFilter(username=username,
                                                 has_the_word=tag,
                                                 label=label_name)
-    except gdata.client.RequestError, e:
+    except gdata.client.RequestError as e:
       if e.status == 503 and tries < MAX_RETRIES:
         time.sleep(2 ^ tries + random.randint(0, 10))
         self._CreateFestivalSettingsForUser(username, festival, tries+1)
@@ -150,12 +150,12 @@ class FestivalSettings(object):
     Asks application user for whom to create the festival wishes
     labels and filters.
     """
-    print 'Whom would you like to create labels for?'
+    print('Whom would you like to create labels for?')
     print ('1 - For all user in the domain.'
            '(WARNING: May take a long time depending on your domain size.)')
-    print '2 - Single user'
+    print('2 - Single user')
 
-    choice = raw_input('Enter your choice: ').strip()
+    choice = input('Enter your choice: ').strip()
     if choice.isdigit():
       choice = int(choice)
 
@@ -164,12 +164,12 @@ class FestivalSettings(object):
       for user in users.entry:
         self._CreateLabelsFiltersForUser(user.login.user_name)
     elif choice == 2:
-      username = raw_input('Enter a valid username: ')
+      username = eval(input('Enter a valid username: '))
       self._CreateLabelsFiltersForUser(username)
     else:
-      print 'Invalid choice'
+      print('Invalid choice')
       return
-    print 'Labels and Filters created successfully'
+    print('Labels and Filters created successfully')
 
 
 def PrintUsageString():
@@ -186,7 +186,7 @@ def main():
     opts, args = getopt.getopt(sys.argv[1:], '', ['consumer_key=',
                                                   'consumer_secret=',
                                                   'domain='])
-  except getopt.error, msg:
+  except getopt.error as msg:
     PrintUsageString()
     sys.exit(1)
 
@@ -202,7 +202,7 @@ def main():
       domain = arg
 
   if not (consumer_key and consumer_secret and domain):
-    print 'Requires exactly three flags.'
+    print('Requires exactly three flags.')
     PrintUsageString()
     sys.exit(1)
 
@@ -210,7 +210,7 @@ def main():
       consumer_key, consumer_secret, domain)
   try:
     festival_wishes_labels.Authorize()
-  except gdata.client.RequestError, e:
+  except gdata.client.RequestError as e:
     if e.status == 400:
       raise FestivalSettingsException('Invalid consumer credentials')
     else:
@@ -219,13 +219,13 @@ def main():
 
   try:
     festival_wishes_labels.Run()
-  except gdata.client.RequestError, e:
+  except gdata.client.RequestError as e:
     if e.status == 403:
       raise FestivalSettingsException('Invalid Domain')
     elif e.status == 400:
       raise FestivalSettingsException('Invalid username')
     else:
-      print e.reason
+      print((e.reason))
       raise FestivalSettingsException('Unknown error')
 
 

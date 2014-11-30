@@ -164,7 +164,7 @@ def requiresOAuth(fun):
     if self.client.has_access_token():
       try:
         fun(self, *args, **kwargs)
-      except gdata.service.RequestError, error:
+      except gdata.service.RequestError as error:
         if error.code in [401, 403]:
           self.redirect('/oauth/request_token')
         else:

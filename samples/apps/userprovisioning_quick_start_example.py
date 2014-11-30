@@ -61,10 +61,10 @@ class UserProvisioning(object):
         client_id=self.client_id, client_secret=self.client_secret,
         scope=SCOPE, user_agent=USER_AGENT)
     uri = self.token.generate_authorize_url()
-    print 'Please visit this URL to authorize the application:'
-    print uri
+    print('Please visit this URL to authorize the application:')
+    print(uri)
     # Get the verification code from the standard input.
-    code = raw_input('What is the verification code? ').strip()
+    code = input('What is the verification code? ').strip()
     self.token.get_access_token(code)
     self.client = gdata.apps.client.AppsClient(
         domain=self.domain, auth_token=self.token)
@@ -75,13 +75,13 @@ class UserProvisioning(object):
     Args:
       entry: [UserEntry] User entry corresponding to a user
     """
-    print '\nGiven Name: %s' % (entry.name.given_name)
-    print 'Family Name: %s' % (entry.name.family_name)
-    print 'Username: %s' % (entry.login.user_name)
-    print 'Is Admin: %s' % (entry.login.admin)
-    print 'Is Suspended: %s' % (entry.login.suspended)
-    print 'Change password at next login: %s\n' % (
-        entry.login.change_password)
+    print(('\nGiven Name: %s' % (entry.name.given_name)))
+    print(('Family Name: %s' % (entry.name.family_name)))
+    print(('Username: %s' % (entry.login.user_name)))
+    print(('Is Admin: %s' % (entry.login.admin)))
+    print(('Is Suspended: %s' % (entry.login.suspended)))
+    print(('Change password at next login: %s\n' % (
+        entry.login.change_password)))
 
   def _PrintNicknameDetails(self, entry):
     """Prints the attributes for a user nickname entry.
@@ -89,12 +89,12 @@ class UserProvisioning(object):
     Args:
       entry: [NicknameEntry]
     """
-    print 'Username: %s' % (entry.login.user_name)
-    print 'Nickname: %s\n' % (entry.nickname.name)
+    print(('Username: %s' % (entry.login.user_name)))
+    print(('Nickname: %s\n' % (entry.nickname.name)))
 
   def _GetChoice(self, for_value):
-    choice = raw_input(('(Optional) Enter a choice for %s\n'
-                        '1-True 2-False ') % (for_value))
+    choice = eval(input(('(Optional) Enter a choice for %s\n'
+                        '1-True 2-False ') % (for_value)))
     if choice == '1':
       return True
     return False
@@ -105,11 +105,11 @@ class UserProvisioning(object):
     user_name = given_name = family_name = password = None
     confirm_password = ''
     while not user_name:
-      user_name = raw_input('Enter a new username: ')
+      user_name = eval(input('Enter a new username: '))
     while not given_name:
-      given_name = raw_input('Enter given name for the user: ')
+      given_name = eval(input('Enter given name for the user: '))
     while not family_name:
-      family_name = raw_input('Enter family name for the user: ')
+      family_name = eval(input('Enter family name for the user: '))
     while not password == confirm_password:
       password = ''
       while not password:
@@ -118,16 +118,16 @@ class UserProvisioning(object):
         if password.__len__() == 0:
           break
         if password.__len__() < 8:
-          print 'Password must be at least 8 characters long'
+          print('Password must be at least 8 characters long')
           password = ''
       sys.stdout.write('Confirm password: ')
       confirm_password = getpass.getpass()
 
     is_admin = self._GetChoice('is_admin ')
-    hash_function = raw_input('(Optional) Enter a hash function ')
+    hash_function = eval(input('(Optional) Enter a hash function '))
     suspended = self._GetChoice('suspended ')
     change_password = self._GetChoice('change_password ')
-    quota = raw_input('(Optional) Enter a quota ')
+    quota = eval(input('(Optional) Enter a quota '))
 
     if quota == 'None' or not quota.isdigit():
       quota = None
@@ -137,24 +137,24 @@ class UserProvisioning(object):
         password_hash_function=hash_function,
         change_password=change_password)
     self._PrintUserDetails(user_entry)
-    print 'User Created'
+    print('User Created')
 
   def _UpdateUser(self):
     """Updates a user."""
 
-    user_name = raw_input('Enter the username ')
+    user_name = eval(input('Enter the username '))
     if user_name is None:
-      print 'Username missing\n'
+      print('Username missing\n')
       return
     user_entry = self.client.RetrieveUser(user_name=user_name)
-    print self._PrintUserDetails(user_entry)
+    print((self._PrintUserDetails(user_entry)))
 
     attributes = {1: 'given_name', 2: 'family_name', 3: 'user_name',
                   4: 'suspended', 5: 'is_admin'}
-    print attributes
-    attr = int(raw_input('\nEnter number(1-5) of attribute to be updated '))
+    print(attributes)
+    attr = int(eval(input('\nEnter number(1-5) of attribute to be updated ')))
 
-    updated_val = raw_input('Enter updated value ')
+    updated_val = eval(input('Enter updated value '))
     if attr == 1:
       user_entry.name.given_name = updated_val
     if attr == 2:
@@ -172,9 +172,9 @@ class UserProvisioning(object):
   def _RetrieveSingleUser(self):
     """Retrieves a single user."""
 
-    user_name = raw_input('Enter the username ')
+    user_name = eval(input('Enter the username '))
     if user_name is None:
-      print 'Username missing\n'
+      print('Username missing\n')
       return
     response = self.client.RetrieveUser(user_name=user_name)
     self._PrintUserDetails(response)
@@ -189,33 +189,33 @@ class UserProvisioning(object):
   def _DeleteUser(self):
     """Deletes a user."""
 
-    user_name = raw_input('Enter the username ')
+    user_name = eval(input('Enter the username '))
     if user_name is None:
-      print 'Username missing\n'
+      print('Username missing\n')
       return
 
     self.client.DeleteUser(user_name=user_name)
-    print 'User Deleted'
+    print('User Deleted')
 
   def _CreateNickname(self):
     """Creates a user alias."""
 
-    user_name = raw_input('Enter the username ')
-    nickname = raw_input('Enter a nickname for user ')
+    user_name = eval(input('Enter the username '))
+    nickname = eval(input('Enter a nickname for user '))
     if None in (user_name, nickname):
-      print 'Username/Nickname missing\n'
+      print('Username/Nickname missing\n')
       return
     nickname = self.client.CreateNickname(
         user_name=user_name, nickname=nickname)
-    print nickname
-    print 'Nickname Created'
+    print(nickname)
+    print('Nickname Created')
 
   def _RetrieveNickname(self):
     """Retrieves a nickname entry."""
 
-    nickname = raw_input('Enter the username ')
+    nickname = eval(input('Enter the username '))
     if nickname is None:
-      print 'Nickname missing\n'
+      print('Nickname missing\n')
       return
     response = self.client.RetrieveNickname(nickname=nickname)
     self._PrintNicknameDetails(response)
@@ -223,9 +223,9 @@ class UserProvisioning(object):
   def _RetrieveUserNicknames(self):
     """Retrieves all nicknames of a user."""
 
-    user_name = raw_input('Enter the username ')
+    user_name = eval(input('Enter the username '))
     if user_name is None:
-      print 'Username missing\n'
+      print('Username missing\n')
       return
     response = self.client.RetrieveNicknames(user_name=user_name)
     for entry in response.entry:
@@ -234,12 +234,12 @@ class UserProvisioning(object):
   def _DeleteNickname(self):
     """Deletes a nickname."""
 
-    nickname = raw_input('Enter the username ')
+    nickname = eval(input('Enter the username '))
     if nickname is None:
-      print 'Nickname missing\n'
+      print('Nickname missing\n')
       return
     self.client.DeleteNickname(nickname=nickname)
-    print 'Nickname deleted'
+    print('Nickname deleted')
 
   def Run(self):
     """Runs the sample by getting user input and taking appropriate action."""
@@ -267,14 +267,14 @@ class UserProvisioning(object):
     ]
     self._AuthorizeClient()
     while True:
-      print '\nChoose an option:\n0 - to exit'
+      print('\nChoose an option:\n0 - to exit')
       for i in range (0, len(functions_list)):
-        print '%d - %s' % ((i+1), functions_list[i]['description'])
-      choice = int(raw_input())
+        print(('%d - %s' % ((i+1), functions_list[i]['description'])))
+      choice = int(eval(input()))
       if choice == 0:
         break
       if choice < 0 or choice > 11:
-        print 'Not a valid option!'
+        print('Not a valid option!')
         continue
       functions_list[choice-1]['function']()
 
@@ -290,8 +290,8 @@ def main():
     opts, args = getopt.getopt(sys.argv[1:], '', ['client_id=',
                                                   'client_secret=',
                                                   'domain='])
-  except getopt.error, msg:
-    print 'Usage: %s' % usage
+  except getopt.error as msg:
+    print(('Usage: %s' % usage))
     return
 
   client_id = None
@@ -307,13 +307,13 @@ def main():
       domain = arg
 
   if None in (client_id, client_secret, domain):
-    print 'Usage: %s' % usage
+    print(('Usage: %s' % usage))
     return
 
   try:
     user_provisioning = UserProvisioning(client_id, client_secret, domain)
   except gdata.service.BadAuthentication:
-    print 'Invalid user credentials given.'
+    print('Invalid user credentials given.')
     return
 
   user_provisioning.Run()

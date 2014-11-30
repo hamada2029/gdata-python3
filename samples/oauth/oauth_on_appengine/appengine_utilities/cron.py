@@ -92,7 +92,7 @@ class Cron(object):
     def add_cron(self, cron_string):
         cron = cron_string.split(" ")
         if len(cron) is not 6:
-            raise ValueError, 'Invalid cron string. Format: * * * * * url'
+            raise ValueError('Invalid cron string. Format: * * * * * url')
         cron = {
             'min': cron[0],
             'hour': cron[1],
@@ -149,35 +149,35 @@ class Cron(object):
             elif v == "*":
                 return "*"
             else:
-                raise ValueError, "Invalid day of week."
+                raise ValueError("Invalid day of week.")
         elif t == "mon":
             if v >= 1 and v <= 12:
                 return [v]
             elif v == "*":
-                return range(1, 12)
+                return list(range(1, 12))
             else:
-                raise ValueError, "Invalid month."
+                raise ValueError("Invalid month.")
         elif t == "day":
             if v >= 1 and v <= 31:
                 return [v]
             elif v == "*":
-                return range(1, 31)
+                return list(range(1, 31))
             else:
-                raise ValueError, "Invalid day."
+                raise ValueError("Invalid day.")
         elif t == "hour":
             if v >= 0 and v <= 23:
                 return [v]
             elif v == "*":
-                return range(0, 23)
+                return list(range(0, 23))
             else:
-                raise ValueError, "Invalid hour."
+                raise ValueError("Invalid hour.")
         elif t == "min":
             if v >= 0 and v <= 59:
                 return [v]
             elif v == "*":
-                return range(0, 59)
+                return list(range(0, 59))
             else:
-                raise ValueError, "Invalid minute."
+                raise ValueError("Invalid minute.")
 
     def _validate_list(self, l, t):
         """
@@ -201,7 +201,7 @@ class Cron(object):
                     self._validate_type(v, t)
                     return_list.append(v)
                 except:
-                    raise ValueError, "Names are not allowed in lists."
+                    raise ValueError("Names are not allowed in lists.")
         # return a list of integers
         return return_list
 
@@ -218,13 +218,13 @@ class Cron(object):
         elements = r.split('-')
         # a range should be 2 elements
         if len(elements) is not 2:
-            raise ValueError, "Invalid range passed: " + str(r)
+            raise ValueError("Invalid range passed: " + str(r))
         # validate the minimum and maximum are valid for the type
         for e in elements:
             self._validate_type(int(e), t)
         # return a list of the numbers in the range.
         # +1 makes sure the end point is included in the return value
-        return range(int(elements[0]), int(elements[1]) + 1)
+        return list(range(int(elements[0]), int(elements[1]) + 1))
 
     def _validate_step(self, s, t):
         """
@@ -243,11 +243,11 @@ class Cron(object):
         elements = s.split('/')
         # a range should be 2 elements
         if len(elements) is not 2:
-            raise ValueError, "Invalid step passed: " + str(s)
+            raise ValueError("Invalid step passed: " + str(s))
         try:
             step = int(elements[1])
         except:
-            raise ValueError, "Invalid step provided " + str(s)
+            raise ValueError("Invalid step provided " + str(s))
         r_list = []
         # if the first element is *, use all valid numbers
         if elements[0] is "*" or elements[0] is "":
@@ -263,10 +263,10 @@ class Cron(object):
                     try:
                         r_list.extend(int(r))
                     except:
-                        raise ValueError, "Invalid step provided " + str(s)
+                        raise ValueError("Invalid step provided " + str(s))
         elif "-" in elements[0]:
             r_list.extend(self._validate_range(elements[0], t))
-        return range(r_list[0], r_list[-1] + 1, step)
+        return list(range(r_list[0], r_list[-1] + 1, step))
 
     def _validate_dow(self, dow):
         """
@@ -299,9 +299,9 @@ class Cron(object):
         elif "-" in dow:
             return(self._validate_range(dow, "dow"))
         else:
-            valid_numbers = range(0, 8)
+            valid_numbers = list(range(0, 8))
             if not int(dow) in valid_numbers:
-                raise ValueError, "Invalid day of week " + str(dow)
+                raise ValueError("Invalid day of week " + str(dow))
             else:
                 return [int(dow)]
 
@@ -324,7 +324,7 @@ class Cron(object):
             mon = months[mon]
             return [mon]
         elif mon is "*":
-            return range(1, 13)
+            return list(range(1, 13))
         elif "/" in mon:
             return(self._validate_step(mon, "mon"))
         elif "," in mon:
@@ -332,15 +332,15 @@ class Cron(object):
         elif "-" in mon:
             return(self._validate_range(mon, "mon"))
         else:
-            valid_numbers = range(1, 13)
+            valid_numbers = list(range(1, 13))
             if not int(mon) in valid_numbers:
-                raise ValueError, "Invalid month " + str(mon)
+                raise ValueError("Invalid month " + str(mon))
             else:
                 return [int(mon)]
 
     def _validate_day(self, day):
         if day is "*":
-            return range(1, 32)
+            return list(range(1, 32))
         elif "/" in day:
             return(self._validate_step(day, "day"))
         elif "," in day:
@@ -348,15 +348,15 @@ class Cron(object):
         elif "-" in day:
             return(self._validate_range(day, "day"))
         else:
-            valid_numbers = range(1, 31)
+            valid_numbers = list(range(1, 31))
             if not int(day) in valid_numbers:
-                raise ValueError, "Invalid day " + str(day)
+                raise ValueError("Invalid day " + str(day))
             else:
                 return [int(day)]
 
     def _validate_hour(self, hour):
         if hour is "*":
-            return range(0, 24)
+            return list(range(0, 24))
         elif "/" in hour:
             return(self._validate_step(hour, "hour"))
         elif "," in hour:
@@ -364,15 +364,15 @@ class Cron(object):
         elif "-" in hour:
             return(self._validate_range(hour, "hour"))
         else:
-            valid_numbers = range(0, 23)
+            valid_numbers = list(range(0, 23))
             if not int(hour) in valid_numbers:
-                raise ValueError, "Invalid hour " + str(hour)
+                raise ValueError("Invalid hour " + str(hour))
             else:
                 return [int(hour)]
 
     def _validate_min(self, min):
         if min is "*":
-            return range(0, 60)
+            return list(range(0, 60))
         elif "/" in min:
             return(self._validate_step(min, "min"))
         elif "," in min:
@@ -380,9 +380,9 @@ class Cron(object):
         elif "-" in min:
             return(self._validate_range(min, "min"))
         else:
-            valid_numbers = range(0, 59)
+            valid_numbers = list(range(0, 59))
             if not int(min) in valid_numbers:
-                raise ValueError, "Invalid min " + str(min)
+                raise ValueError("Invalid min " + str(min))
             else:
                 return [int(min)]
 

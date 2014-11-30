@@ -50,13 +50,13 @@ class OAuth2ClientSample(object):
                                            scope=SCOPE,
                                            user_agent='oauth2-provisioningv2')
       self.uri = self.token.generate_authorize_url()
-      print 'Please visit this URL to authorize the application:'
-      print self.uri
+      print('Please visit this URL to authorize the application:')
+      print((self.uri))
       # Get the verification code from the standard input.
-      code = raw_input('What is the verification code? ').strip()
+      code = input('What is the verification code? ').strip()
       self.token.get_access_token(code)
-    except gdata.gauth.OAuth2AccessTokenError, e:
-      print 'Invalid Access token, Check your credentials %s' % e
+    except gdata.gauth.OAuth2AccessTokenError as e:
+      print(('Invalid Access token, Check your credentials %s' % e))
       exit(0)
     self.domain = domain
     self.baseuri = '%s/%s' % (BASE_URL, domain)
@@ -79,14 +79,14 @@ class OAuth2ClientSample(object):
     for entry in feed.entry:
       user_name, domain = entry.member_id.split('@', 1)
       if entry.member_type == 'User' and domain == self.domain:
-        print 'creating filter for %s' % entry.member_id
+        print(('creating filter for %s' % entry.member_id))
         self.email_client.CreateFilter(user_name,
                                        does_not_have_the_word=self.domain,
                                        mark_as_read=True)
       elif entry.member_type == 'User':
-        print 'User belongs to other Domain %s' %entry.member_id
+        print(('User belongs to other Domain %s' %entry.member_id))
       else:
-        print 'Member is a group %s' %entry.member_id
+        print(('Member is a group %s' %entry.member_id))
 
   def run(self, group):
     feed = self.client.RetrieveAllMembers(group)

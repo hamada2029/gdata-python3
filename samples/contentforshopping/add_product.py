@@ -20,8 +20,8 @@ from gdata.contentforshopping.data import build_entry
 from gdata.contentforshopping.client import ContentForShoppingClient
 
 # Gather merchant information
-account_id = raw_input('Merchant Account ID? ').strip()
-email = raw_input('Google Email Address? ').strip()
+account_id = input('Merchant Account ID? ').strip()
+email = input('Google Email Address? ').strip()
 
 # Create a client
 client = ContentForShoppingClient(account_id)

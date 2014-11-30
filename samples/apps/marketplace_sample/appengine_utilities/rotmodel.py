@@ -31,7 +31,7 @@ from google.appengine.ext import db
 
 # settings
 try:
-    import settings_default
+    from . import settings_default
     import settings
 
     if settings.__name__.rsplit('.', 1)[0] != settings_default.__name__.rsplit('.', 1)[0]:
@@ -80,7 +80,7 @@ class ROTModel(db.Model):
     def get_by_key_name(cls, key_names, parent=None):
         if isinstance(parent, db.Model):
             parent = parent.key()
-        key_names, multiple = datastore.NormalizeAndTypeCheck(key_names, basestring)
+        key_names, multiple = datastore.NormalizeAndTypeCheck(key_names, str)
         keys = [datastore.Key.from_path(cls.kind(), name, parent=parent)
                 for name in key_names]
         count = 0

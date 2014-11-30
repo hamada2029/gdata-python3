@@ -67,14 +67,14 @@ class DocsSample(object):
     Args:
       feed: A gdata.docs.DocumentListFeed instance.
     """
-    print '\n'
+    print('\n')
     if not feed.entry:
-      print 'No entries in feed.\n'
-    print '%-18s %-12s %s' % ('TITLE', 'TYPE', 'RESOURCE ID')
+      print('No entries in feed.\n')
+    print(('%-18s %-12s %s' % ('TITLE', 'TYPE', 'RESOURCE ID')))
     for entry in feed.entry:
-      print '%-18s %-12s %s' % (truncate(entry.title.text.encode('UTF-8')),
+      print(('%-18s %-12s %s' % (truncate(entry.title.text.encode('UTF-8')),
                                 entry.GetDocumentType(),
-                                entry.resourceId.text)
+                                entry.resourceId.text)))
 
   def _GetFileExtension(self, file_name):
     """Returns the uppercase file extension for a file.
@@ -93,54 +93,54 @@ class DocsSample(object):
   def _UploadMenu(self):
     """Prompts that enable a user to upload a file to the Document List feed."""
     file_path = ''
-    file_path = raw_input('Enter path to file: ')
+    file_path = eval(input('Enter path to file: '))
 
     if not file_path:
       return
     elif not os.path.isfile(file_path):
-      print 'Not a valid file.'
+      print('Not a valid file.')
       return
 
     file_name = os.path.basename(file_path)
     ext = self._GetFileExtension(file_name)
 
     if not ext or ext not in gdata.docs.service.SUPPORTED_FILETYPES:
-      print 'File type not supported. Check the file extension.'
+      print('File type not supported. Check the file extension.')
       return
     else:
       content_type = gdata.docs.service.SUPPORTED_FILETYPES[ext]
 
     title = ''
     while not title:
-      title = raw_input('Enter name for document: ')
+      title = eval(input('Enter name for document: '))
 
     try:
       ms = gdata.MediaSource(file_path=file_path, content_type=content_type)
     except IOError:
-      print 'Problems reading file. Check permissions.'
+      print('Problems reading file. Check permissions.')
       return
 
     if ext in ['CSV', 'ODS', 'XLS', 'XLSX']:
-      print 'Uploading spreadsheet...'
+      print('Uploading spreadsheet...')
     elif ext in ['PPT', 'PPS']:
-      print 'Uploading presentation...'
+      print('Uploading presentation...')
     else:
-      print 'Uploading word processor document...'
+      print('Uploading word processor document...')
 
     entry = self.gd_client.Upload(ms, title)
 
     if entry:
-      print 'Upload successful!'
-      print 'Document now accessible at:', entry.GetAlternateLink().href
+      print('Upload successful!')
+      print(('Document now accessible at:', entry.GetAlternateLink().href))
     else:
-      print 'Upload error.'
+      print('Upload error.')
 
   def _DownloadMenu(self):
     """Prompts that enable a user to download a local copy of a document."""
     resource_id = ''
-    resource_id = raw_input('Enter an resource id: ')
+    resource_id = eval(input('Enter an resource id: '))
     file_path = ''
-    file_path = raw_input('Save file to: ')
+    file_path = eval(input('Save file to: '))
 
     if not file_path or not resource_id:
       return
@@ -149,7 +149,7 @@ class DocsSample(object):
     ext = self._GetFileExtension(file_name)
 
     if not ext or ext not in gdata.docs.service.SUPPORTED_FILETYPES:
-      print 'File type not supported. Check the file extension.'
+      print('File type not supported. Check the file extension.')
       return
     else:
       content_type = gdata.docs.service.SUPPORTED_FILETYPES[ext]
@@ -159,19 +159,19 @@ class DocsSample(object):
     # When downloading a spreadsheet, the authenticated request needs to be
     # sent with the spreadsheet service's auth token.
     if doc_type == 'spreadsheet':
-      print 'Downloading spreadsheet to %s...' % (file_path,)
+      print(('Downloading spreadsheet to %s...' % (file_path,)))
       docs_token = self.gd_client.GetClientLoginToken()
       self.gd_client.SetClientLoginToken(self.gs_client.GetClientLoginToken())
       self.gd_client.Export(resource_id, file_path, gid=0)
       self.gd_client.SetClientLoginToken(docs_token)
     else:
-      print 'Downloading document to %s...' % (file_path,)
+      print(('Downloading document to %s...' % (file_path,)))
       self.gd_client.Export(resource_id, file_path)
 
   def _ListDocuments(self):
     """Retrieves and displays a list of documents based on the user's choice."""
-    print 'Retrieve (all/document/folder/presentation/spreadsheet/pdf): '
-    category = raw_input('Enter a category: ')
+    print('Retrieve (all/document/folder/presentation/spreadsheet/pdf): ')
+    category = eval(input('Enter a category: '))
 
     if category == 'all':
       feed = self.gd_client.GetDocumentListFeed()
@@ -187,19 +187,19 @@ class DocsSample(object):
 
   def _ListAclPermissions(self):
     """Retrieves a list of a user's folders and displays them."""
-    resource_id = raw_input('Enter an resource id: ')
+    resource_id = eval(input('Enter an resource id: '))
     query = gdata.docs.service.DocumentAclQuery(resource_id)
-    print '\nListing document permissions:'
+    print('\nListing document permissions:')
     feed = self.gd_client.GetDocumentListAclFeed(query.ToUri())
     for acl_entry in feed.entry:
-      print '%s - %s (%s)' % (acl_entry.role.value, acl_entry.scope.value,
-                              acl_entry.scope.type)
+      print(('%s - %s (%s)' % (acl_entry.role.value, acl_entry.scope.value,
+                              acl_entry.scope.type)))
 
   def _ModifyAclPermissions(self):
     """Create or updates the ACL entry on an existing document."""
-    resource_id = raw_input('Enter an resource id: ')
-    email = raw_input('Enter an email address: ')
-    role_value = raw_input('Enter a permission (reader/writer/owner/remove): ')
+    resource_id = eval(input('Enter an resource id: '))
+    email = eval(input('Enter an email address: '))
+    role_value = eval(input('Enter a permission (reader/writer/owner/remove): '))
 
     uri = gdata.docs.service.DocumentAclQuery(resource_id).ToUri()
     acl_feed = self.gd_client.GetDocumentListAclFeed(uri)
@@ -227,11 +227,11 @@ class DocsSample(object):
       inserted_entry = self.gd_client.Post(
         acl_entry, uri, converter=gdata.docs.DocumentListAclEntryFromString)
 
-    print '\nListing document permissions:'
+    print('\nListing document permissions:')
     acl_feed = self.gd_client.GetDocumentListAclFeed(uri)
     for acl_entry in acl_feed.entry:
-      print '%s - %s (%s)' % (acl_entry.role.value, acl_entry.scope.value,
-                              acl_entry.scope.type)
+      print(('%s - %s (%s)' % (acl_entry.role.value, acl_entry.scope.value,
+                              acl_entry.scope.type)))
 
   def _FullTextSearch(self):
     """Searches a user's documents for a text string.
@@ -241,7 +241,7 @@ class DocsSample(object):
     corresponds to the contents of the q parameter in the feed. Note that this
     parameter searches the content of documents, not just their titles.
     """
-    input = raw_input('Enter search term: ')
+    input = eval(input('Enter search term: '))
     query = gdata.docs.service.DocumentQuery(text_query=input)
     feed = self.gd_client.Query(query.ToUri())
     self._PrintFeed(feed)
@@ -267,16 +267,16 @@ class DocsSample(object):
       The integer of the menu item chosen by the user.
     """
     while True:
-      input = raw_input('> ')
+      input = eval(input('> '))
 
       try:
         num = int(input)
       except ValueError:
-        print 'Invalid choice. Please choose a value between 1 and', max
+        print(('Invalid choice. Please choose a value between 1 and', max))
         continue
 
       if num > max or num < 1:
-        print 'Invalid choice. Please choose a value between 1 and', max
+        print(('Invalid choice. Please choose a value between 1 and', max))
       else:
         return num
 
@@ -300,10 +300,10 @@ class DocsSample(object):
         elif choice == 6:
           self._ModifyAclPermissions()
         elif choice == 7:
-          print '\nGoodbye.'
+          print('\nGoodbye.')
           return
     except KeyboardInterrupt:
-      print '\nGoodbye.'
+      print('\nGoodbye.')
       return
 
 
@@ -312,8 +312,8 @@ def main():
   # Parse command line options
   try:
     opts, args = getopt.getopt(sys.argv[1:], '', ['user=', 'pw='])
-  except getopt.error, msg:
-    print 'python docs_example.py --user [username] --pw [password] '
+  except getopt.error as msg:
+    print('python docs_example.py --user [username] --pw [password] ')
     sys.exit(2)
 
   user = ''
@@ -327,17 +327,17 @@ def main():
       pw = arg
 
   while not user:
-    print 'NOTE: Please run these tests only with a test account.'
-    user = raw_input('Please enter your username: ')
+    print('NOTE: Please run these tests only with a test account.')
+    user = eval(input('Please enter your username: '))
   while not pw:
     pw = getpass.getpass()
     if not pw:
-      print 'Password cannot be blank.'
+      print('Password cannot be blank.')
 
   try:
     sample = DocsSample(user, pw)
   except gdata.service.BadAuthentication:
-    print 'Invalid user credentials given.'
+    print('Invalid user credentials given.')
     return
 
   sample.Run()

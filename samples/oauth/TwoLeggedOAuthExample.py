@@ -30,10 +30,10 @@ CONSUMER_KEY = 'yourdomain.com'
 CONSUMER_SECRET = 'YOUR_CONSUMER_KEY'
 
 def PrintContacts(client):
-  print '\nListing contacts for %s...' % client.auth_token.requestor_id
+  print(('\nListing contacts for %s...' % client.auth_token.requestor_id))
   feed = client.GetContacts()
   for entry in feed.entry:
-    print entry.title.text
+    print((entry.title.text))
 
 
 # Contacts Data API Example ====================================================
@@ -58,12 +58,12 @@ docs_client.auth_token = two_legged_oauth_token
 docs_client.ssl = True
 
 # POST - upload a document
-print "\nUploading doc to %s's account..." % docs_client.auth_token.requestor_id
+print(("\nUploading doc to %s's account..." % docs_client.auth_token.requestor_id))
 entry = docs_client.Upload('test.txt', 'MyDocTitle', content_type='text/plain')
-print 'Document now accessible online at:', entry.GetAlternateLink().href
+print(('Document now accessible online at:', entry.GetAlternateLink().href))
 
 # GET - fetch the user's document list
-print '\nListing Google Docs for %s...' % docs_client.auth_token.requestor_id
+print(('\nListing Google Docs for %s...' % docs_client.auth_token.requestor_id))
 feed = docs_client.GetDocList()
 for entry in feed.entry:
-  print entry.title.text
+  print((entry.title.text))

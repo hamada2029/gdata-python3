@@ -59,7 +59,7 @@ class EmailMigrationSample(object):
     """
     if os.path.isfile(path):
       if os.path.splitext(path)[1] != '.txt':
-        print "The input file is not a .txt file"
+        print("The input file is not a .txt file")
         return
       self._MigrateOneMail(path)
     elif os.path.isdir(path):
@@ -73,7 +73,7 @@ class EmailMigrationSample(object):
         if os.path.isfile(filepath) and os.path.splitext(filepath)[1] == '.txt':
           txt_file_paths.append(filepath)
       if not txt_file_paths:
-        print "Found no .txt file in the directory"
+        print("Found no .txt file in the directory")
         return
       elif len(txt_file_paths) == 1:
         # Don't use threading if there's only one txt file in the dir 
@@ -87,13 +87,13 @@ class EmailMigrationSample(object):
     Args:
       path: The path of the message file
     """
-    print "Attempting to migrate 1 message..."
+    print("Attempting to migrate 1 message...")
     content = self._ReadFileAsString(path)
     self.service.ImportMail(user_name=options.username,
                             mail_message=content,
                             mail_item_properties=self.mail_item_properties,
                             mail_labels=self.mail_labels)
-    print "Successfully migrated 1 message."
+    print("Successfully migrated 1 message.")
 
   def _MigrateManyMails(self, paths):
     """Imports several messages via the ImportMultipleMails service. 
@@ -101,7 +101,7 @@ class EmailMigrationSample(object):
     Args:
       paths: List of paths of message files
     """
-    print "Attempting to migrate %d messages..." % (len(paths))
+    print(("Attempting to migrate %d messages..." % (len(paths))))
     for path in paths:
       content = self._ReadFileAsString(path)
       self.service.AddMailEntry(mail_message=content,
@@ -109,7 +109,7 @@ class EmailMigrationSample(object):
                                 mail_labels=self.mail_labels,
                                 identifier=path)
     success = self.service.ImportMultipleMails(user_name=options.username)
-    print "Successfully migrated %d of %d messages." % (success, len(paths))
+    print(("Successfully migrated %d of %d messages." % (success, len(paths))))
 
   def _ReadFileAsString(self, path):
     """Reads the file found at path into a string
@@ -130,7 +130,7 @@ class EmailMigrationSample(object):
         file_str.append(eachline)
       input_file.close()
       return ''.join(file_str)
-    except IOError, e:
+    except IOError as e:
       raise IOError(e.args[1] + ': ' + path)
 
 
@@ -167,7 +167,7 @@ def main():
   options.file = options.file.strip()
 
   if not os.path.exists(options.file):
-    print "Invalid file or directory path"
+    print("Invalid file or directory path")
     return
 
   sample = EmailMigrationSample(domain=options.domain,

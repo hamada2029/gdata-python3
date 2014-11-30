@@ -67,21 +67,21 @@ class UserProfileAndContactsSample(object):
     """
     for email in profile.email:
       if email.primary == 'true':
-        print 'Email: %s (primary)' % email.address
+        print(('Email: %s (primary)' % email.address))
       else:
-        print 'Email: %s' % email.address
+        print(('Email: %s' % email.address))
     if profile.name:
-      print 'Name: %s' % profile.name.full_name.text
+      print(('Name: %s' % profile.name.full_name.text))
     if profile.nickname:
-      print 'Nickname: %s' % profile.nickname.text
+      print(('Nickname: %s' % profile.nickname.text))
     if profile.occupation:
-      print 'Occupation: %s' % profile.occupation.text
+      print(('Occupation: %s' % profile.occupation.text))
     if profile.gender:
-      print 'Gender: %s' % profile.gender.value
+      print(('Gender: %s' % profile.gender.value))
     if profile.birthday:
-      print 'Birthday: %s' % profile.birthday.when
+      print(('Birthday: %s' % profile.birthday.when))
     for phone_number in profile.phone_number:
-      print 'Phone Number: %s' % phone_number.text
+      print(('Phone Number: %s' % phone_number.text))
 
   def GetProfile(self, admin_id, user_id):
     """Retrieves the profile of a user.
@@ -116,8 +116,8 @@ class UserProfileAndContactsSample(object):
       contact_feed = self.contacts_client.GetContacts()
       for contact_entry in contact_feed.entry:
         contacts.append(contact_entry.title.text)
-    except gdata.client.Unauthorized, e:
-      print 'Error: %s %s' % (e.status, e.reason)
+    except gdata.client.Unauthorized as e:
+      print(('Error: %s %s' % (e.status, e.reason)))
     return contacts
 
   def Run(self, admin_id, user_id):
@@ -128,16 +128,16 @@ class UserProfileAndContactsSample(object):
       user_id: String, user whose information is retrieved.
     """
     self.TwoLOAuthorize(admin_id)
-    print 'Profile of user: %s' % user_id
+    print(('Profile of user: %s' % user_id))
     profile = self.GetProfile(admin_id, user_id)
     self.PrintProfile(profile)
     user = self.apps_client.RetrieveUser(user_id)
-    print 'Is admin: %s' % user.login.admin
-    print 'Suspended: %s' % user.login.suspended
+    print(('Is admin: %s' % user.login.admin))
+    print(('Suspended: %s' % user.login.suspended))
     contacts = self.GetContacts(user_id)
-    print '\nContacts of user '
+    print('\nContacts of user ')
     for contact in contacts:
-      print contact
+      print(contact)
 
 
 def main():

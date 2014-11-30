@@ -36,18 +36,18 @@ contacts.SetOAuthInputParameters(
     two_legged_oauth=True, requestor_id=requestor_id)
 
 # GET - fetch user's contact list
-print "\nList of contacts for %s:" % (requestor_id,)
+print(("\nList of contacts for %s:" % (requestor_id,)))
 feed = contacts.GetContactsFeed()
 for entry in feed.entry:
-  print entry.title.text
+  print((entry.title.text))
   
 # GET - fetch another user's contact list
 requestor_id = 'another_user@yourdomain.com'
-print "\nList of contacts for %s:" % (requestor_id,)
+print(("\nList of contacts for %s:" % (requestor_id,)))
 contacts.GetOAuthInputParameters().requestor_id = requestor_id
 feed = contacts.GetContactsFeed()
 for entry in feed.entry:
-  print entry.title.text
+  print((entry.title.text))
 
 
 # Google Documents List Data API ===============================================
@@ -57,16 +57,16 @@ docs.SetOAuthInputParameters(
     two_legged_oauth=True, requestor_id=requestor_id)
 
 # POST - upload a document
-print "\nUploading document to %s's Google Documents account:" % (requestor_id,)
+print(("\nUploading document to %s's Google Documents account:" % (requestor_id,)))
 ms = gdata.MediaSource(
     file_path='/path/to/test.txt',
     content_type=gdata.docs.service.SUPPORTED_FILETYPES['TXT'])
 
 # GET - fetch user's document list
 entry = docs.UploadDocument(ms, 'Company Perks')
-print 'Document now accessible online at:', entry.GetAlternateLink().href
+print(('Document now accessible online at:', entry.GetAlternateLink().href))
 
-print "\nList of Google Documents for %s" % (requestor_id,)
+print(("\nList of Google Documents for %s" % (requestor_id,)))
 feed = docs.GetDocumentListFeed()
 for entry in feed.entry:
-  print entry.title.text
+  print((entry.title.text))

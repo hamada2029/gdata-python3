@@ -29,11 +29,11 @@ import sys
 
 def PrintReturns(pfx, d):
   """Print returns."""
-  print pfx, '%1.5f(1w)  %1.5f(4w)  %1.5f(3m)  %1.5f(YTD)' % tuple(
-    float(i) for i in (d.return1w, d.return4w, d.return3m, d.returnYTD))
+  print((pfx, '%1.5f(1w)  %1.5f(4w)  %1.5f(3m)  %1.5f(YTD)' % tuple(
+    float(i) for i in (d.return1w, d.return4w, d.return3m, d.returnYTD))))
   pfx = ' ' * len(pfx)
-  print pfx, '%1.5f(1y)  %1.5f(3y)  %1.5f(5y)  %1.5f(overall)' % tuple(
-    float(i) for i in (d.return1y, d.return3y, d.return5y, d.return_overall))
+  print((pfx, '%1.5f(1y)  %1.5f(3y)  %1.5f(5y)  %1.5f(overall)' % tuple(
+    float(i) for i in (d.return1y, d.return3y, d.return5y, d.return_overall))))
 
 
 PrRtn = PrintReturns
@@ -41,38 +41,38 @@ PrRtn = PrintReturns
 
 def PrintTransactions(transactions):
   """Print transactions."""
-  print "    Transactions:"
+  print("    Transactions:")
   fmt = '    %4s %-23s %-10s %6s %-11s %-11s'
-  print fmt % ('ID','Date','Type','Shares','Price','Commission')
+  print((fmt % ('ID','Date','Type','Shares','Price','Commission')))
   for txn in transactions:
     d = txn.transaction_data
-    print fmt % (txn.transaction_id, d.date or '----', d.type,
-        d.shares, d.price.money[0], d.commission.money[0])
+    print((fmt % (txn.transaction_id, d.date or '----', d.type,
+        d.shares, d.price.money[0], d.commission.money[0])))
     if d.notes:
-        print "         Notes:", d.notes
-  print
+        print(("         Notes:", d.notes))
+  print()
 
 
 def PrintPosition(pos, with_returns=False):
   """Print single position."""
-  print '    Position      :', pos.position_title
-  print '    Ticker ID     :', pos.ticker_id
-  print '    Symbol        :', pos.symbol
-  print '    Last updated  :', pos.updated.text
+  print(('    Position      :', pos.position_title))
+  print(('    Ticker ID     :', pos.ticker_id))
+  print(('    Symbol        :', pos.symbol))
+  print(('    Last updated  :', pos.updated.text))
   d = pos.position_data
-  print '    Shares        :', d.shares
+  print(('    Shares        :', d.shares))
   if with_returns:
-    print '    Gain %        :', d.gain_percentage
+    print(('    Gain %        :', d.gain_percentage))
     PrRtn('    Returns       :', d)
-    print '    Cost basis    :', d.cost_basis
-    print '    Days gain     :', d.days_gain
-    print '    Gain          :', d.gain
-    print '    Market value  :', d.market_value
-  print
+    print(('    Cost basis    :', d.cost_basis))
+    print(('    Days gain     :', d.days_gain))
+    print(('    Gain          :', d.gain))
+    print(('    Market value  :', d.market_value))
+  print()
   if pos.transactions:
-    print "    <inlined transactions>\n"
+    print("    <inlined transactions>\n")
     PrintTransactions(pos.transactions)
-    print "    </inlined transactions>\n"
+    print("    </inlined transactions>\n")
 
 
 def PrintPositions(positions, with_returns=False):
@@ -82,23 +82,23 @@ def PrintPositions(positions, with_returns=False):
 
 def PrintPortfolio(pfl, with_returns=False):
   """Print single portfolio."""
-  print 'Portfolio Title   :', pfl.portfolio_title
-  print 'Portfolio ID      :', pfl.portfolio_id
-  print '  Last updated    :', pfl.updated.text
+  print(('Portfolio Title   :', pfl.portfolio_title))
+  print(('Portfolio ID      :', pfl.portfolio_id))
+  print(('  Last updated    :', pfl.updated.text))
   d = pfl.portfolio_data
-  print '  Currency        :', d.currency_code
+  print(('  Currency        :', d.currency_code))
   if with_returns:
-    print '  Gain %          :', d.gain_percentage
+    print(('  Gain %          :', d.gain_percentage))
     PrRtn('  Returns         :', d)
-    print '  Cost basis      :', d.cost_basis
-    print '  Days gain       :', d.days_gain
-    print '  Gain            :', d.gain
-    print '  Market value    :', d.market_value
-  print
+    print(('  Cost basis      :', d.cost_basis))
+    print(('  Days gain       :', d.days_gain))
+    print(('  Gain            :', d.gain))
+    print(('  Market value    :', d.market_value))
+  print()
   if pfl.positions:
-    print "  <inlined positions>\n"
+    print("  <inlined positions>\n")
     PrintPositions(pfl.positions, with_returns)
-    print "  </inlined positions>\n"
+    print("  </inlined positions>\n")
 
 
 def PrintPortfolios(portfolios, with_returns=False):
@@ -108,7 +108,7 @@ def PrintPortfolios(portfolios, with_returns=False):
 
 def ShowCallDetails(meth):
   def wrap(*args, **kwargs):
-    print '@', meth.__name__, args[1:], kwargs
+    print(('@', meth.__name__, args[1:], kwargs))
     meth(*args, **kwargs)
   return wrap
 
@@ -177,16 +177,16 @@ class FinanceTester(object):
     pfl_one = 'Portfolio Test: Emerging Markets 12345'
     pfl_two = 'Portfolio Test: Renewable Energy 31415'
 
-    print '---- Deleting portfolios ----'
+    print('---- Deleting portfolios ----')
     self.DeletePortfoliosByName([pfl_one, pfl_two])
     PrintPortfolios(self.GetPortfolios())
-    print '---- Adding new portfolio ----'
+    print('---- Adding new portfolio ----')
     pfl = self.AddPortfolio(pfl_one, 'SGD')
     PrintPortfolios(self.GetPortfolios())
-    print '---- Changing portfolio title and currency code ----'
+    print('---- Changing portfolio title and currency code ----')
     pfl = self.UpdatePortfolio(pfl, pfl_two, 'USD')
     PrintPortfolios(self.GetPortfolios())
-    print '---- Deleting portfolio ----'
+    print('---- Deleting portfolio ----')
     self.DeletePortfolio(pfl)
     PrintPortfolios(self.GetPortfolios())
 
@@ -237,13 +237,13 @@ class FinanceTester(object):
     pfl_title = 'Transaction Test: Technology 27182'
     self.DeletePortfoliosByName([pfl_title])
 
-    print '---- Adding new portfolio ----'
+    print('---- Adding new portfolio ----')
     pfl = self.AddPortfolio(pfl_title, 'USD')
     PrintPortfolios(self.GetPortfolios())
 
-    print '---- Adding buy transactions ----'
+    print('---- Adding buy transactions ----')
     tkr1 = 'NASDAQ:GOOG'
-    date = datetime.datetime(2009,04,01)
+    date = datetime.datetime(2009,0o4,0o1)
     days = datetime.timedelta(1)
     txn1 = self.Buy(pfl, tkr1, shares=500, price=321.00, date=date)
     txn2 = self.Buy(pfl, tkr1, shares=150, price=312.00, date=date+15*days)
@@ -251,14 +251,14 @@ class FinanceTester(object):
     PrintPosition(pos, with_returns=True)
     PrintTransactions(self.GetTransactions(pos))
 
-    print '---- Adding sell transactions ----'
+    print('---- Adding sell transactions ----')
     txn3 = self.Sell(pfl, tkr1, shares=400, price=322.00, date=date+30*days)
     txn4 = self.Sell(pfl, tkr1, shares=200, price=330.00, date=date+45*days)
     pos = self.GetPosition(portfolio=pfl, ticker=tkr1, with_returns=True)
     PrintPosition(pos, with_returns=True)
     PrintTransactions(self.GetTransactions(pos))
 
-    print "---- Modifying first and deleting third ----"
+    print("---- Modifying first and deleting third ----")
     txn1.transaction_data.shares = '400.0'
     self.UpdateTransaction(txn1)
     self.DeleteTransaction(txn3)
@@ -266,12 +266,12 @@ class FinanceTester(object):
     PrintPosition(pos, with_returns=True)
     PrintTransactions(self.GetTransactions(pos))
 
-    print "---- Deleting position ----"
-    print "Number of positions (before):", len(self.GetPositions(pfl))
+    print("---- Deleting position ----")
+    print(("Number of positions (before):", len(self.GetPositions(pfl))))
     self.DeletePosition(pos)
-    print "Number of positions (after) :", len(self.GetPositions(pfl))
+    print(("Number of positions (after) :", len(self.GetPositions(pfl))))
 
-    print '---- Deleting portfolio ----'
+    print('---- Deleting portfolio ----')
     self.DeletePortfolio(pfl)
     PrintPortfolios(self.GetPortfolios())
 
@@ -282,7 +282,7 @@ if __name__ == '__main__':
     password = sys.argv[2]
     cases = sys.argv[3:]
   except IndexError:
-    print "Usage: test_finance account@google.com password [0 1 2...]"
+    print("Usage: test_finance account@google.com password [0 1 2...]")
     sys.exit(1)
 
   tester = FinanceTester(email, password)
@@ -295,7 +295,7 @@ if __name__ == '__main__':
       lambda: tester.TestShowDetails(with_returns=True, inline_positions=True,
           inline_transactions=True),]
   if not cases:
-    cases = range(len(tests))
+    cases = list(range(len(tests)))
   for i in cases:
-    print "===== TEST CASE", i, "="*50
+    print(("===== TEST CASE", i, "="*50))
     tests[int(i)]()

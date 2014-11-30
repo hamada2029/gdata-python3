@@ -29,26 +29,26 @@ username = ''
 password = ''
 site_uri = ''
 
-username = raw_input('Please enter your username: ')
+username = eval(input('Please enter your username: '))
 password = getpass.getpass()
-site_uri = raw_input('Please enter your site url: ')
+site_uri = eval(input('Please enter your site url: '))
 
 client = gdata.webmastertools.service.GWebmasterToolsService(
     email=username, 
     password=password, source='PythonWebmasterToolsSample-1')
 
-print 'Logging in'
+print('Logging in')
 client.ProgrammaticLogin()
 
-print 'Retrieving Sitemaps feed'
+print('Retrieving Sitemaps feed')
 feed = client.GetSitemapsFeed(site_uri)
 
 # Format the feed
-print
-print 'You have %d sitemap(s), last updated at %s' % (
-    len(feed.entry), feed.updated.text)
-print
-print '='*80
+print()
+print(('You have %d sitemap(s), last updated at %s' % (
+    len(feed.entry), feed.updated.text)))
+print()
+print(('='*80))
 
 
 def safeElementText(element):
@@ -59,10 +59,10 @@ def safeElementText(element):
 
 # Format each site
 for entry in feed.entry:
-  print entry.title.text.replace('http://', '')[:80]
-  print "  Last Updated   : %29s              Status: %10s" % (
-      entry.updated.text[:29], entry.sitemap_status.text[:10])
-  print "  Last Downloaded: %29s           URL Count: %10s" % (
+  print((entry.title.text.replace('http://', '')[:80]))
+  print(("  Last Updated   : %29s              Status: %10s" % (
+      entry.updated.text[:29], entry.sitemap_status.text[:10])))
+  print(("  Last Downloaded: %29s           URL Count: %10s" % (
       safeElementText(entry.sitemap_last_downloaded)[:29],
-      safeElementText(entry.sitemap_url_count)[:10])
-print
+      safeElementText(entry.sitemap_url_count)[:10])))
+print()

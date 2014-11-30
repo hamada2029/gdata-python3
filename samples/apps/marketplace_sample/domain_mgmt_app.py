@@ -24,8 +24,8 @@ __author__ = 'Gunjan Sharma <gunjansharma@google.com>'
 import logging
 import os
 import re
-import urllib
-from urlparse import urlparse
+import urllib.request, urllib.parse, urllib.error
+from urllib.parse import urlparse
 from django.utils import simplejson as json
 from google.appengine.api import users
 from google.appengine.ext import webapp
@@ -70,7 +70,7 @@ class MainHandler(TwoLeggedOauthTokenGenerator):
       session['domain'] = domain
     else:
       self.redirect('/_ah/login_required?' +
-                    urllib.urlencode((self.request.str_params)))
+                    urllib.parse.urlencode((self.request.str_params)))
 
     path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
     self.response.out.write(template.render(path, {}))

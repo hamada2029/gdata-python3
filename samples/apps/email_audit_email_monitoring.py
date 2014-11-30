@@ -59,9 +59,9 @@ class EmailMonitoring(object):
     request_token = self.service.FetchOAuthRequestToken()
     self.service.SetOAuthToken(request_token)
     auth_url = self.service.GenerateOAuthAuthorizationURL()
-    print auth_url
-    raw_input('Manually go to the above URL and authenticate.'
-              'Press Return after authorization.')
+    print(auth_url)
+    eval(input('Manually go to the above URL and authenticate.'
+              'Press Return after authorization.'))
     self.service.UpgradeToOAuthAccessToken()
 
   def _CheckUsername(self, username):
@@ -74,7 +74,7 @@ class EmailMonitoring(object):
       True if username is valid, False otherwise.
     """
     if len(username) > 64:
-      print 'Username length should be less than 64'
+      print('Username length should be less than 64')
       return False
     pattern = re.compile('[^\w\.\+-_\']+')
     return not bool(pattern.search(username))
@@ -90,9 +90,9 @@ class EmailMonitoring(object):
     """
     username = ''
     while not username:
-      username = raw_input('Enter a valid %s username: ' % typeof)
+      username = eval(input('Enter a valid %s username: ' % typeof))
       if not self._CheckUsername(username):
-        print 'Invalid username'
+        print('Invalid username')
         username = ''
     return username
 
@@ -110,15 +110,15 @@ class EmailMonitoring(object):
     if not is_neccessary:
       extra_stmt = '. Press enter to skip.'
     while not date:
-      date = raw_input(
-          'Enter a valid date as (yyyy-mm-dd HH:MM)%s:' % extra_stmt)
+      date = eval(input(
+          'Enter a valid date as (yyyy-mm-dd HH:MM)%s:' % extra_stmt))
       if not (date and is_neccessary):
         return date
       try:
         datetime.strptime(date, '%Y-%m-%d %H:%M')
         return date
       except ValueError:
-        print 'Not a valid date!'
+        print('Not a valid date!')
         date = ''
 
   def _GetBool(self, name):
@@ -130,7 +130,7 @@ class EmailMonitoring(object):
     Returns:
       A boolean for an entity represented by name.
     """
-    choice = raw_input(
+    choice = input(
         'Enter your choice (t/f) for %s (defaults to False):' % name).strip()
     if choice == 't':
       return True
@@ -158,24 +158,24 @@ class EmailMonitoring(object):
         incoming_headers, outgoing_headers,
         drafts, drafts_headers,
         chats, chats_headers)
-    print 'Email monitor created/updated successfully!\n'
+    print('Email monitor created/updated successfully!\n')
 
   def _RetrieveEmailMonitor(self):
     """Retrieves all email monitors for a user."""
     src_user = self._GetValidUsername('source')
     monitors = self.service.getEmailMonitors(src_user)
     for monitor in monitors:
-      for key in monitor.keys():
-        print '%s ----------- %s' % (key, monitor.get(key))
-      print ''
-    print 'Email monitors retrieved successfully!\n'
+      for key in list(monitor.keys()):
+        print(('%s ----------- %s' % (key, monitor.get(key))))
+      print('')
+    print('Email monitors retrieved successfully!\n')
 
   def _DeleteEmailMonitor(self):
     """Deletes an email monitor."""
     src_user = self._GetValidUsername('source')
     dest_user = self._GetValidUsername('destination')
     self.service.deleteEmailMonitor(src_user, dest_user)
-    print 'Email monitor deleted successfully!\n'
+    print('Email monitor deleted successfully!\n')
 
   def Run(self):
     """Handles the flow of the sample."""
@@ -199,23 +199,23 @@ class EmailMonitoring(object):
     ]
 
     while True:
-      print 'What would you like to do? Choose an option:'
-      print '0 - To exit'
+      print('What would you like to do? Choose an option:')
+      print('0 - To exit')
       for i in range (0, len(functions_list)):
-        print '%d - %s' % ((i + 1), functions_list[i].get('description'))
-      choice = raw_input('Enter your choice: ').strip()
+        print(('%d - %s' % ((i + 1), functions_list[i].get('description'))))
+      choice = input('Enter your choice: ').strip()
       if choice.isdigit():
         choice = int(choice)
       if choice == 0:
         break
       if choice < 0 or choice > len(functions_list):
-        print 'Not a valid option!'
+        print('Not a valid option!')
         continue
       try:
         functions_list[choice - 1].get('function')()
-      except gdata.apps.service.AppsForYourDomainException, e:
+      except gdata.apps.service.AppsForYourDomainException as e:
         if e.error_code == 1301:
-          print '\nError: Invalid username!!\n'
+          print('\nError: Invalid username!!\n')
         else:
           raise e
 
@@ -234,7 +234,7 @@ def main():
     opts, args = getopt.getopt(sys.argv[1:], '', ['consumer_key=',
                                                   'consumer_secret=',
                                                   'domain='])
-  except getopt.error, msg:
+  except getopt.error as msg:
     PrintUsageString()
     sys.exit(1)
 
@@ -250,7 +250,7 @@ def main():
       domain = arg
 
   if not (consumer_key and consumer_secret and domain):
-    print 'Requires exactly three flags.'
+    print('Requires exactly three flags.')
     PrintUsageString()
     sys.exit(1)
 
@@ -258,11 +258,11 @@ def main():
     email_monitoring = EmailMonitoring(
         consumer_key, consumer_secret, domain)
     email_monitoring.Run()
-  except gdata.apps.service.AppsForYourDomainException, e:
+  except gdata.apps.service.AppsForYourDomainException as e:
     raise EmailMonitoringException('Invalid Domain')
-  except gdata.service.FetchingOAuthRequestTokenFailed, e:
+  except gdata.service.FetchingOAuthRequestTokenFailed as e:
     raise EmailMonitoringException('Invalid consumer credentials')
-  except Exception, e:
+  except Exception as e:
     if e.args[0].get('status') == 503:
       raise EmailMonitoringException('Server busy')
     elif e.args[0].get('status') == 500:

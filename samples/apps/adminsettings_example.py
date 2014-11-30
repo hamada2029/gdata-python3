@@ -54,66 +54,66 @@ class AdminSettingsSample(object):
 
   def Run(self):
     #pause 1 sec inbetween calls to prevent quota warning
-    print 'Google Apps Domain: ', self.gd_client.domain
+    print(('Google Apps Domain: ', self.gd_client.domain))
     time.sleep(1)
-    print 'Default Language: ', self.gd_client.GetDefaultLanguage()
+    print(('Default Language: ', self.gd_client.GetDefaultLanguage()))
     time.sleep(1)
-    print 'Organization Name: ', self.gd_client.GetOrganizationName()
+    print(('Organization Name: ', self.gd_client.GetOrganizationName()))
     time.sleep(1)
-    print 'Maximum Users: ', self.gd_client.GetMaximumNumberOfUsers()
+    print(('Maximum Users: ', self.gd_client.GetMaximumNumberOfUsers()))
     time.sleep(1)
-    print 'Current Users: ', self.gd_client.GetCurrentNumberOfUsers()
+    print(('Current Users: ', self.gd_client.GetCurrentNumberOfUsers()))
     time.sleep(1)
-    print 'Domain is Verified: ',self.gd_client.IsDomainVerified()
+    print(('Domain is Verified: ',self.gd_client.IsDomainVerified()))
     time.sleep(1)
-    print 'Support PIN: ',self.gd_client.GetSupportPIN()
+    print(('Support PIN: ',self.gd_client.GetSupportPIN()))
     time.sleep(1)
-    print 'Domain Edition: ', self.gd_client.GetEdition()
+    print(('Domain Edition: ', self.gd_client.GetEdition()))
     time.sleep(1)
-    print 'Customer PIN: ', self.gd_client.GetCustomerPIN()
+    print(('Customer PIN: ', self.gd_client.GetCustomerPIN()))
     time.sleep(1)
-    print 'Domain Creation Time: ', self.gd_client.GetCreationTime()
+    print(('Domain Creation Time: ', self.gd_client.GetCreationTime()))
     time.sleep(1)
-    print 'Domain Country Code: ', self.gd_client.GetCountryCode()
+    print(('Domain Country Code: ', self.gd_client.GetCountryCode()))
     time.sleep(1)
-    print 'Admin Secondary Email: ', self.gd_client.GetAdminSecondaryEmail()
+    print(('Admin Secondary Email: ', self.gd_client.GetAdminSecondaryEmail()))
     time.sleep(1)
     cnameverificationstatus = self.gd_client.GetCNAMEVerificationStatus()
-    print 'CNAME Verification Record Name: ', cnameverificationstatus['recordName']
-    print 'CNAME Verification Verified: ', cnameverificationstatus['verified']
-    print 'CNAME Verification Method: ', cnameverificationstatus['verificationMethod']
+    print(('CNAME Verification Record Name: ', cnameverificationstatus['recordName']))
+    print(('CNAME Verification Verified: ', cnameverificationstatus['verified']))
+    print(('CNAME Verification Method: ', cnameverificationstatus['verificationMethod']))
     time.sleep(1)
     mxverificationstatus = self.gd_client.GetMXVerificationStatus()
-    print 'MX Verification Verified: ', mxverificationstatus['verified']
-    print 'MX Verification Method: ', mxverificationstatus['verificationMethod']
+    print(('MX Verification Verified: ', mxverificationstatus['verified']))
+    print(('MX Verification Method: ', mxverificationstatus['verificationMethod']))
     time.sleep(1)
     ssosettings = self.gd_client.GetSSOSettings()
-    print 'SSO Enabled: ', ssosettings['enableSSO']
-    print 'SSO Signon Page: ', ssosettings['samlSignonUri']
-    print 'SSO Logout Page: ', ssosettings['samlLogoutUri']
-    print 'SSO Password Page: ', ssosettings['changePasswordUri']
-    print 'SSO Whitelist IPs: ', ssosettings['ssoWhitelist']
-    print 'SSO Use Domain Specific Issuer: ', ssosettings['useDomainSpecificIssuer']
+    print(('SSO Enabled: ', ssosettings['enableSSO']))
+    print(('SSO Signon Page: ', ssosettings['samlSignonUri']))
+    print(('SSO Logout Page: ', ssosettings['samlLogoutUri']))
+    print(('SSO Password Page: ', ssosettings['changePasswordUri']))
+    print(('SSO Whitelist IPs: ', ssosettings['ssoWhitelist']))
+    print(('SSO Use Domain Specific Issuer: ', ssosettings['useDomainSpecificIssuer']))
     time.sleep(1)
     ssokey = self.gd_client.GetSSOKey()
-    print 'SSO Key Modulus: ', ssokey['modulus']
-    print 'SSO Key Exponent: ', ssokey['exponent']
-    print 'SSO Key Algorithm: ', ssokey['algorithm']
-    print 'SSO Key Format: ', ssokey['format']
-    print 'User Migration Enabled: ', self.gd_client.IsUserMigrationEnabled()
+    print(('SSO Key Modulus: ', ssokey['modulus']))
+    print(('SSO Key Exponent: ', ssokey['exponent']))
+    print(('SSO Key Algorithm: ', ssokey['algorithm']))
+    print(('SSO Key Format: ', ssokey['format']))
+    print(('User Migration Enabled: ', self.gd_client.IsUserMigrationEnabled()))
     time.sleep(1)
     outboundgatewaysettings = self.gd_client.GetOutboundGatewaySettings()
-    print 'Outbound Gateway Smart Host: ', outboundgatewaysettings['smartHost']
-    print 'Outbound Gateway Mode: ', outboundgatewaysettings['smtpMode']
+    print(('Outbound Gateway Smart Host: ', outboundgatewaysettings['smartHost']))
+    print(('Outbound Gateway Mode: ', outboundgatewaysettings['smtpMode']))
 
 def main():
   """Demonstrates use of the Admin Settings API using the AdminSettingsSample object."""
   # Parse command line options
   try:
     opts, args = getopt.getopt(sys.argv[1:], '', ['user=', 'pw=', 'domain='])
-  except getopt.error, msg:
-    print 'python adminsettings_example.py --user [username] --pw [password]'
-    print ' --domain [domain]'
+  except getopt.error as msg:
+    print('python adminsettings_example.py --user [username] --pw [password]')
+    print(' --domain [domain]')
     sys.exit(2)
 
   user = ''
@@ -130,19 +130,19 @@ def main():
       domain = arg
 
   while not domain:
-    print 'NOTE: Please run these tests only with a test account.'
-    domain = raw_input('Please enter your apps domain: ')
+    print('NOTE: Please run these tests only with a test account.')
+    domain = eval(input('Please enter your apps domain: '))
   while not user:
-    user = raw_input('Please enter a administrator account: ')+'@'+domain
+    user = eval(input('Please enter a administrator account: '))+'@'+domain
   while not pw:
     pw = getpass.getpass('Please enter password: ')
     if not pw:
-      print 'Password cannot be blank.'
+      print('Password cannot be blank.')
 
   try:
     sample = AdminSettingsSample(user, pw, domain)
   except gdata.service.BadAuthentication:
-    print 'Invalid user credentials given.'
+    print('Invalid user credentials given.')
     return
 
   sample.Run()

@@ -63,10 +63,10 @@ class MultiDomainQuickStartExample(object):
         client_id=self.client_id, client_secret=self.client_secret,
         scope=SCOPE, user_agent=USER_AGENT)
     uri = token.generate_authorize_url()
-    print 'Please visit this URL to authorize the application:'
-    print uri
+    print('Please visit this URL to authorize the application:')
+    print(uri)
     # Get the verification code from the standard input.
-    code = raw_input('What is the verification code? ').strip()
+    code = input('What is the verification code? ').strip()
     token.get_access_token(code)
     self.multidomain_client = (
         gdata.apps.multidomain.client.MultiDomainProvisioningClient(
@@ -79,14 +79,14 @@ class MultiDomainQuickStartExample(object):
          entry: [UserEntry] User entry corresponding to a user
     """
 
-    print 'First Name: %s' % (entry.first_name)
-    print 'Last Name: %s' % (entry.last_name)
-    print 'Email: %s' % (entry.email)
-    print 'Is Admin: %s' % (entry.is_admin)
-    print 'Is Suspended: %s' % (entry.suspended)
-    print 'Change password at next login: %s' % (
-        entry.change_password_at_next_login)
-    print '\n'
+    print(('First Name: %s' % (entry.first_name)))
+    print(('Last Name: %s' % (entry.last_name)))
+    print(('Email: %s' % (entry.email)))
+    print(('Is Admin: %s' % (entry.is_admin)))
+    print(('Is Suspended: %s' % (entry.suspended)))
+    print(('Change password at next login: %s' % (
+        entry.change_password_at_next_login)))
+    print('\n')
 
   def _PrintAliasDetails(self, entry):
     """Prints all the information for a user alias entry.
@@ -95,9 +95,9 @@ class MultiDomainQuickStartExample(object):
       entry: [AliasEntry] Alias entry correspoding to an alias
     """
 
-    print 'User Email: %s' % (entry.user_email)
-    print 'Alias Email: %s' % (entry.alias_email)
-    print '\n'
+    print(('User Email: %s' % (entry.user_email)))
+    print(('Alias Email: %s' % (entry.alias_email)))
+    print('\n')
 
   def _GetChoice(self, for_field):
     """Gets a choice for a field.
@@ -108,8 +108,8 @@ class MultiDomainQuickStartExample(object):
     Return:
       True/False/None: Depending on the choice made by the user.
     """
-    choice = int(raw_input(('Enter a choice for %s\n'
-                            '1-True 2-False 3-Default/Skip: ') % (for_field)))
+    choice = int(eval(input(('Enter a choice for %s\n'
+                            '1-True 2-False 3-Default/Skip: ') % (for_field))))
     if choice == 1:
       return True
     elif choice == 2:
@@ -131,16 +131,16 @@ class MultiDomainQuickStartExample(object):
       extra_stmt = '. Press enter to not update the field'
     user_data = UserData()
     while not user_data.email:
-      user_data.email = raw_input('Enter a valid email address'
-                                  '(username@domain.com): ')
+      user_data.email = eval(input('Enter a valid email address'
+                                  '(username@domain.com): '))
     while not user_data.first_name:
-      user_data.first_name = raw_input(('Enter first name for the user%s: ')
-                                       % (extra_stmt))
+      user_data.first_name = eval(input(('Enter first name for the user%s: ')
+                                       % (extra_stmt)))
       if function == 'update':
         break
     while not user_data.last_name:
-      user_data.last_name = raw_input(('Enter last name for the user%s: ')
-                                      % (extra_stmt))
+      user_data.last_name = eval(input(('Enter last name for the user%s: ')
+                                      % (extra_stmt)))
       if function == 'update':
         break
     while not user_data.password == user_data.confirm_password:
@@ -152,7 +152,7 @@ class MultiDomainQuickStartExample(object):
         if function == 'update' and user_data.password.__len__() == 0:
           break
         if user_data.password.__len__() < 8:
-          print 'Password must be at least 8 characters long'
+          print('Password must be at least 8 characters long')
           user_data.password = ''
       if function == 'update' and user_data.password.__len__() == 0:
         break
@@ -160,11 +160,11 @@ class MultiDomainQuickStartExample(object):
       user_data.confirm_password = getpass.getpass()
 
     user_data.is_admin = self._GetChoice('is_admin')
-    user_data.hash_function = raw_input('Enter a hash function or None: ')
+    user_data.hash_function = eval(input('Enter a hash function or None: '))
     user_data.suspended = self._GetChoice('suspended')
     user_data.change_password = self._GetChoice('change_password')
     user_data.ip_whitelisted = self._GetChoice('ip_whitelisted')
-    user_data.quota = raw_input('Enter a quota or None: ')
+    user_data.quota = eval(input('Enter a quota or None: '))
 
     if user_data.quota == 'None' or not user_data.quota.isdigit():
       user_data.quota = None
@@ -215,9 +215,9 @@ class MultiDomainQuickStartExample(object):
     old_email = ''
     new_email = ''
     while not old_email:
-      old_email = raw_input('Enter old email address(username@domain.com): ')
+      old_email = eval(input('Enter old email address(username@domain.com): '))
     while not new_email:
-      new_email = raw_input('Enter new email address(username@domain.com): ')
+      new_email = eval(input('Enter new email address(username@domain.com): '))
 
     self.multidomain_client.RenameUser(old_email, new_email)
 
@@ -226,7 +226,7 @@ class MultiDomainQuickStartExample(object):
 
     email = ''
     while not email:
-      email = raw_input('Enter a valid email address(username@domain.com): ')
+      email = eval(input('Enter a valid email address(username@domain.com): '))
 
     response = self.multidomain_client.RetrieveUser(email)
     self._PrintUserDetails(response)
@@ -243,7 +243,7 @@ class MultiDomainQuickStartExample(object):
 
     email = ''
     while not email:
-      email = raw_input('Enter a valid email address(username@domain.com): ')
+      email = eval(input('Enter a valid email address(username@domain.com): '))
 
     self.multidomain_client.DeleteUser(email)
 
@@ -253,10 +253,10 @@ class MultiDomainQuickStartExample(object):
     email = ''
     alias = ''
     while not email:
-      email = raw_input('Enter a valid email address(username@domain.com): ')
+      email = eval(input('Enter a valid email address(username@domain.com): '))
     while not alias:
-      alias = raw_input('Enter a valid alias email address'
-                        '(username@domain.com): ')
+      alias = eval(input('Enter a valid alias email address'
+                        '(username@domain.com): '))
     self.multidomain_client.CreateAlias(email, alias)
 
   def _RetrieveAlias(self):
@@ -264,8 +264,8 @@ class MultiDomainQuickStartExample(object):
 
     alias = ''
     while not alias:
-      alias = raw_input('Enter a valid alias email address'
-                        '(username@domain.com): ')
+      alias = eval(input('Enter a valid alias email address'
+                        '(username@domain.com): '))
     response = self.multidomain_client.RetrieveAlias(alias)
     self._PrintAliasDetails(response)
 
@@ -281,7 +281,7 @@ class MultiDomainQuickStartExample(object):
 
     email = ''
     while not email:
-      email = raw_input('Enter a valid email address(username@domain.com): ')
+      email = eval(input('Enter a valid email address(username@domain.com): '))
     response = self.multidomain_client.RetrieveAllUserAliases(email)
     for entry in response.entry:
       self._PrintAliasDetails(entry)
@@ -291,8 +291,8 @@ class MultiDomainQuickStartExample(object):
 
     alias = ''
     while not alias:
-      alias = raw_input('Enter a valid alias email address'
-                        '(username@domain.com): ')
+      alias = eval(input('Enter a valid alias email address'
+                        '(username@domain.com): '))
     self.multidomain_client.DeleteAlias(alias)
 
   def Run(self):
@@ -325,14 +325,14 @@ class MultiDomainQuickStartExample(object):
     ]
 
     while True:
-      print 'Choose an option:\n0 - to exit'
+      print('Choose an option:\n0 - to exit')
       for i in range (0, len(functions_list)):
-        print '%d - %s' % ((i+1), functions_list[i]['description'])
-      choice = int(raw_input())
+        print(('%d - %s' % ((i+1), functions_list[i]['description'])))
+      choice = int(eval(input()))
       if choice == 0:
         break
       if choice < 0 or choice > len(functions_list):
-        print 'Not a valid option!'
+        print('Not a valid option!')
         continue
       functions_list[choice-1]['function']()
 
@@ -345,7 +345,7 @@ def main():
     opts, args = getopt.getopt(sys.argv[1:], '', ['client_id=',
                                                   'client_secret=',
                                                   'domain='])
-  except getopt.error, msg:
+  except getopt.error as msg:
     print ('python multidomain_provisioning_quick_start_example.py'
            '--client_id [clientId] --client_secret [clientSecret]'
            '--domain [domain]')
@@ -364,17 +364,17 @@ def main():
       domain = arg
 
   while not client_id:
-    client_id = raw_input('Please enter a clientId: ')
+    client_id = eval(input('Please enter a clientId: '))
   while not client_secret:
-    client_secret = raw_input('Please enter a clientSecret: ')
+    client_secret = eval(input('Please enter a clientSecret: '))
   while not domain:
-    domain = raw_input('Please enter domain name (example.com): ')
+    domain = eval(input('Please enter domain name (example.com): '))
 
   try:
     multidomain_quick_start_example = MultiDomainQuickStartExample(
         client_id, client_secret, domain)
   except gdata.service.BadAuthentication:
-    print 'Invalid user credentials given.'
+    print('Invalid user credentials given.')
     return
 
   multidomain_quick_start_example.Run()

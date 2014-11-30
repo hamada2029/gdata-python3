@@ -49,10 +49,10 @@ class GroupsQuickStartExample(object):
         client_id=self.client_id, client_secret=self.client_secret,
         scope=SCOPE, user_agent=USER_AGENT)
     uri = token.generate_authorize_url()
-    print 'Please visit this URL to authorize the application:'
-    print uri
+    print('Please visit this URL to authorize the application:')
+    print(uri)
     # Get the verification code from the standard input.
-    code = raw_input('What is the verification code? ').strip()
+    code = input('What is the verification code? ').strip()
     token.get_access_token(code)
     self.groups_client = gdata.apps.groups.client.GroupsProvisioningClient(
         domain=self.domain, auth_token=token)
@@ -65,8 +65,8 @@ class GroupsQuickStartExample(object):
     """
     group_id = ''
     while not group_id:
-      group_id = raw_input('Enter a valid group email address'
-                           '(group@domain.com): ')
+      group_id = eval(input('Enter a valid group email address'
+                           '(group@domain.com): '))
     return group_id
 
   def _GetValidMemberId(self):
@@ -77,8 +77,8 @@ class GroupsQuickStartExample(object):
     """
     member_id = ''
     while not member_id:
-      member_id = raw_input('Enter a valid member email address'
-                            '(username@domain.com): ')
+      member_id = eval(input('Enter a valid member email address'
+                            '(username@domain.com): '))
     return member_id
 
   def _PrintGroupDetails(self, group_entry):
@@ -87,11 +87,11 @@ class GroupsQuickStartExample(object):
     Args:
       group_entry: [GroupEntry] contains all the data about the group.
     """
-    print 'Group ID: ' + group_entry.group_id
-    print 'Group Name: ' + group_entry.group_name
-    print 'Description: ' + group_entry.description
-    print 'Email Permissions: ' + group_entry.email_permission
-    print ''
+    print(('Group ID: ' + group_entry.group_id))
+    print(('Group Name: ' + group_entry.group_name))
+    print(('Description: ' + group_entry.description))
+    print(('Email Permissions: ' + group_entry.email_permission))
+    print('')
 
   def _PrintMemberDetails(self, member_entry):
     """Print all the details of a group member.
@@ -99,10 +99,10 @@ class GroupsQuickStartExample(object):
     Args:
       member_entry: [GroupMemberEntry] contains all the data about the group member.
     """
-    print 'Member ID: ' + member_entry.member_id
-    print 'Member Type: ' + member_entry.member_type
-    print 'Is Direct Member: ' + member_entry.direct_member
-    print ''
+    print(('Member ID: ' + member_entry.member_id))
+    print(('Member Type: ' + member_entry.member_type))
+    print(('Is Direct Member: ' + member_entry.direct_member))
+    print('')
 
   def _TakeGroupData(self, function='create'):
     """Takes input data for _UpdateGroup and _CreateGroup functions.
@@ -121,20 +121,20 @@ class GroupsQuickStartExample(object):
     group_data = gdata.apps.groups.data.GroupEntry()
     group_data.group_id = self._GetValidGroupId()
     while not group_data.group_name:
-      group_data.group_name = raw_input('Enter name for the group%s: '
-                                        % extra_stmt)
+      group_data.group_name = eval(input('Enter name for the group%s: '
+                                        % extra_stmt))
       if function == 'update':
         break
-    group_data.description = raw_input('Enter description for the group%s: '
-                                       % extra_stmt)
+    group_data.description = eval(input('Enter description for the group%s: '
+                                       % extra_stmt))
 
-    print ('Choose an option for email permission%s:'
-           % extra_stmt)
+    print(('Choose an option for email permission%s:'
+           % extra_stmt))
     i = 1
     for option in email_permission_options:
-      print '%d - %s' % (i, option)
+      print(('%d - %s' % (i, option)))
       i += 1
-    choice = (raw_input())
+    choice = (eval(input()))
     if not choice:
       choice = -1
     choice = int(choice)
@@ -173,7 +173,7 @@ class GroupsQuickStartExample(object):
   def _RetrieveAllGroupsForMember(self):
     """Retrieves all the groups the user is a member of."""
     member_id = self._GetValidMemberId()
-    direct_only = raw_input('Write true/false for direct_only: ')
+    direct_only = eval(input('Write true/false for direct_only: '))
     if direct_only == 'true':
       direct_only = True
     else:
@@ -246,14 +246,14 @@ class GroupsQuickStartExample(object):
     ]
 
     while True:
-      print 'Choose an option:\n0 - to exit'
+      print('Choose an option:\n0 - to exit')
       for i in range (0, len(functions_list)):
-        print '%d - %s' % ((i+1), functions_list[i]['description'])
-      choice = int(raw_input())
+        print(('%d - %s' % ((i+1), functions_list[i]['description'])))
+      choice = int(eval(input()))
       if choice == 0:
         break
       if choice < 0 or choice > len(functions_list):
-        print 'Not a valid option!'
+        print('Not a valid option!')
         continue
       functions_list[choice-1]['function']()
 
@@ -265,7 +265,7 @@ def main():
     opts, args = getopt.getopt(sys.argv[1:], '', ['client_id=',
                                                   'client_secret=',
                                                   'domain='])
-  except getopt.error, msg:
+  except getopt.error as msg:
     print ('python groups_provisioning_quick_start_example.py'
            ' --client_id [clientId] --client_secret [clientSecret]'
            ' --domain [domain]')
@@ -284,17 +284,17 @@ def main():
       domain = arg
 
   while not client_id:
-    client_id = raw_input('Please enter a clientId: ')
+    client_id = eval(input('Please enter a clientId: '))
   while not client_secret:
-    client_secret = raw_input('Please enter a clientSecret: ')
+    client_secret = eval(input('Please enter a clientSecret: '))
   while not domain:
-    domain = raw_input('Please enter domain name (example.com): ')
+    domain = eval(input('Please enter domain name (example.com): '))
 
   try:
     groups_quick_start_example = GroupsQuickStartExample(
         client_id, client_secret, domain)
   except gdata.service.BadAuthentication:
-    print 'Invalid user credentials given.'
+    print('Invalid user credentials given.')
     return
 
   groups_quick_start_example.CreateGroupsClient()
