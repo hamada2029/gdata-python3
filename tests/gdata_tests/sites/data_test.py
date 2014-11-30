@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright 2009 Google Inc. All Rights Reserved.
 #
@@ -179,7 +179,7 @@ class ContentFeedTest(unittest.TestCase):
              'listpage': self.feed.GetListPages,
              'webpage': self.feed.GetWebpages}
 
-    for k, v in kinds.items():
+    for k, v in list(kinds.items()):
       entries = v()
       self.assertEqual(len(entries), 1)
       for entry in entries:

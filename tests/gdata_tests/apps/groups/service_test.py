@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2008 Google
 #
@@ -67,7 +67,7 @@ class GroupsTest(unittest.TestCase):
       self.user_yuji = self.apps_client.CreateUser(
           user_name=user_name, family_name=family_name, given_name=given_name,
           password=password, suspended=suspended)
-      print('User ' + user_name + ' created')
+      print(('User ' + user_name + ' created'))
     except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
@@ -83,7 +83,7 @@ class GroupsTest(unittest.TestCase):
       self.user_taro = self.apps_client.CreateUser(
           user_name=user_name, family_name=family_name, given_name=given_name,
           password=password, suspended=suspended)
-      print('User ' + user_name + ' created')
+      print(('User ' + user_name + ' created'))
     except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
@@ -94,13 +94,13 @@ class GroupsTest(unittest.TestCase):
     for user in self.created_users:
       try:
         self.apps_client.DeleteUser(user.login.user_name)
-        print('User ' + user.login.user_name + ' deleted')
+        print(('User ' + user.login.user_name + ' deleted'))
       except Exception as e:
         print(e)
     for group in self.created_groups:
       try:
         self.groups_client.DeleteGroup(group)
-        print('Group ' + group + ' deleted')
+        print(('Group ' + group + ' deleted'))
       except Exception as e:
         print(e)
 
@@ -264,7 +264,7 @@ if __name__ == '__main__':
 
 NOTE: Please run these tests only with a test user account.
 """)
-  domain = input('Google Apps domain: ')
-  admin_email = '%s@%s' % (input('Administrator username: '), domain)
+  domain = eval(input('Google Apps domain: '))
+  admin_email = '%s@%s' % (eval(input('Administrator username: ')), domain)
   admin_password = getpass.getpass('Administrator password: ')
   unittest.main()

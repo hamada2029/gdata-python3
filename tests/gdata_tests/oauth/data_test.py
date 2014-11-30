@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 __author__ = 'samuel.cyprian@gmail.com (Samuel Cyprian)'
@@ -185,7 +185,7 @@ class OAuthRequestTest(OAuthTest):
       self.assertTrue(header_with_realm.find(k) > -1)
 
   def check_for_params_in_string(self, params, s):
-    for k, v in params.items():
+    for k, v in list(params.items()):
       self.assertTrue(s.find(oauth.escape(k)) > -1)
       self.assertTrue(s.find(oauth.escape(v)) > -1)
           

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright 2011 Google Inc. All Rights Reserved.
 #
@@ -548,7 +548,7 @@ class MetadataTest(DocsTestCase):
 
 def suite():
   suite = unittest.TestSuite()
-  for key, value in RESOURCES.items():
+  for key, value in list(RESOURCES.items()):
     for case in [ResourcesTest, AclTest, RevisionsTest, ChangesTest]:
       tests = unittest.TestLoader().loadTestsFromTestCase(case)
       for test in tests:

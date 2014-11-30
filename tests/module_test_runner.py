@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2006 Google Inc.
 #
@@ -44,7 +44,7 @@ class ModuleTestRunner(object):
     runner = unittest.TextTestRunner()
     for module in self.modules:
       # Set any module variables according to the contents in the settings
-      for setting, value in self.settings.items():
+      for setting, value in list(self.settings.items()):
         try:
           setattr(module, setting, value)
         except AttributeError:
@@ -53,5 +53,5 @@ class ModuleTestRunner(object):
           pass
       # We have set all of the applicable settings for the module, now
       # run the tests.
-      print('\nRunning all tests in module', module.__name__)
+      print(('\nRunning all tests in module', module.__name__))
       runner.run(unittest.defaultTestLoader.loadTestsFromModule(module))    

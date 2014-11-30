@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2006 Google Inc.
 #
@@ -22,9 +22,9 @@ import sys
 import unittest
 import getopt
 import getpass
-from . import module_test_runner
-from . import run_data_tests
-from . import run_service_tests
+import module_test_runner
+import run_data_tests
+import run_service_tests
 
 
 if __name__ == '__main__':

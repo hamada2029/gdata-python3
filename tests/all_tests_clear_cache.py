@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 #
 #    Copyright (C) 2009 Google Inc.
 #
@@ -22,7 +22,7 @@ __author__ = 'j.s@google.com (Jeff Scudder)'
 
 
 import unittest
-from . import all_tests
+import all_tests
 from gdata.test_config import settings
 
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2007 SIOS Technology, Inc.
 #
@@ -135,6 +135,6 @@ class AppsServiceTestForGetGeneratorForAllUsers(AppsServiceBaseTest,
 
 if __name__ == '__main__':
   print ('The tests may delete or update your data.')
-  apps_username = input('Please enter your username: ')
+  apps_username = eval(input('Please enter your username: '))
   apps_password = getpass.getpass()
   unittest.main()

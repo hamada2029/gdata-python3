@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*-*- encoding: utf-8 -*-*-
 #
 # Copyright (C) 2006 Google Inc.
@@ -792,11 +792,11 @@ class UtfParsingTest(unittest.TestCase):
   def testMemberStringEncoding(self):
     atom_entry = atom.core.parse(self.test_xml, atom.data.Entry)
     self.assertTrue(isinstance(atom_entry.title.type, str))
-    self.assertEqual(atom_entry.title.type, '\u03B1\u03BB\u03C6\u03B1')
-    self.assertEqual(atom_entry.title.text, '\u03B1\u03BB\u03C6\u03B1')
+    self.assertEqual(atom_entry.title.type, '\\u03B1\\u03BB\\u03C6\\u03B1')
+    self.assertEqual(atom_entry.title.text, '\\u03B1\\u03BB\\u03C6\\u03B1')
 
     # Setting object members to unicode strings is supported.
-    atom_entry.title.type = '\u03B1\u03BB\u03C6\u03B1'
+    atom_entry.title.type = '\\u03B1\\u03BB\\u03C6\\u03B1'
     xml = atom_entry.ToString()
     # The unicode code points should be converted to XML escaped sequences.
     self.assertTrue('&#945;&#955;&#966;&#945;' in xml)
@@ -811,13 +811,13 @@ class UtfParsingTest(unittest.TestCase):
     # Test something else than utf-8
     atom.core.STRING_ENCODING = 'iso8859_7'
     atom_entry = atom.core.parse(self.test_xml, atom.data.Entry)
-    self.assertTrue(atom_entry.title.type == '\u03B1\u03BB\u03C6\u03B1')
-    self.assertTrue(atom_entry.title.text == '\u03B1\u03BB\u03C6\u03B1')
+    self.assertTrue(atom_entry.title.type == '\\u03B1\\u03BB\\u03C6\\u03B1')
+    self.assertTrue(atom_entry.title.text == '\\u03B1\\u03BB\\u03C6\\u03B1')
 
     # Test using unicode strings directly for object members
     atom_entry = atom.core.parse(self.test_xml, atom.data.Entry)
-    self.assertTrue(atom_entry.title.type == '\u03B1\u03BB\u03C6\u03B1')
-    self.assertTrue(atom_entry.title.text == '\u03B1\u03BB\u03C6\u03B1')
+    self.assertTrue(atom_entry.title.type == '\\u03B1\\u03BB\\u03C6\\u03B1')
+    self.assertTrue(atom_entry.title.text == '\\u03B1\\u03BB\\u03C6\\u03B1')
     
     # Make sure that we can use plain text when MEMBER_STRING_ENCODING is 
     # unicode

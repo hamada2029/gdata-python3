@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 #
 #    Copyright (C) 2009 Google Inc.
 #
@@ -22,8 +22,8 @@ __author__ = 'j.s@google.com (Jeff Scudder)'
 
 
 import unittest
-from . import coverage
-from . import all_tests
+import coverage
+import all_tests
 import atom.core
 import atom.http_core
 import atom.mock_http_core

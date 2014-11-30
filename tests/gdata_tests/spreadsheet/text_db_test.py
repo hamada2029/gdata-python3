@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright Google 2007-2008, all rights reserved.
 #
@@ -202,8 +202,8 @@ class TableTest(unittest.TestCase):
 
 if __name__ == '__main__':
   if not username:
-    username = input('Spreadsheets API | Text DB Tests\n'
-                         'Please enter your username: ')
+    username = eval(input('Spreadsheets API | Text DB Tests\n'
+                         'Please enter your username: '))
   if not password:
     password = getpass.getpass()  
   unittest.main()

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2008 Google
 #
@@ -71,7 +71,7 @@ class OrganizationTest(unittest.TestCase):
                                                    given_name=given_name,
                                                    password=password,
                                                    suspended=suspended)
-      print('User ' + user_name + ' created')
+      print(('User ' + user_name + ' created'))
     except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
@@ -89,7 +89,7 @@ class OrganizationTest(unittest.TestCase):
                                                    given_name=given_name,
                                                    password=password,
                                                    suspended=suspended)
-      print('User ' + user_name + ' created')
+      print(('User ' + user_name + ' created'))
     except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
@@ -107,7 +107,7 @@ class OrganizationTest(unittest.TestCase):
                                                    given_name=given_name,
                                                    password=password,
                                                    suspended=suspended)
-      print('User ' + user_name + ' created')
+      print(('User ' + user_name + ' created'))
     except Exception as e:
       self.fail('Unexpected exception occurred: %s' % e)
 
@@ -118,7 +118,7 @@ class OrganizationTest(unittest.TestCase):
     for user in self.created_users:
       try:
         self.apps_client.DeleteUser(user.login.user_name)
-        print('User ' + user.login.user_name + ' deleted')
+        print(('User ' + user.login.user_name + ' deleted'))
       except Exception as e:
         print(e)
     # We reverse to delete sub OrgUnit first
@@ -126,7 +126,7 @@ class OrganizationTest(unittest.TestCase):
     for org_unit_path in self.created_org_units:
       try:
         self.organization_client.DeleteOrgUnit(self.customer_id, org_unit_path)
-        print('OrgUnit ' + org_unit_path + ' deleted')
+        print(('OrgUnit ' + org_unit_path + ' deleted'))
       except Exception as e:
         print(e)
 
@@ -324,7 +324,7 @@ if __name__ == '__main__':
 
 NOTE: Please run these tests only with a test user account.
 """)
-  domain = input('Google Apps domain: ')
-  admin_email = '%s@%s' % (input('Administrator username: '), domain)
+  domain = eval(input('Google Apps domain: '))
+  admin_email = '%s@%s' % (eval(input('Administrator username: ')), domain)
   admin_password = getpass.getpass('Administrator password: ')
   unittest.main()

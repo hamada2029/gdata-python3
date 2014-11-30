@@ -768,7 +768,7 @@ class FindScopesForService(unittest.TestCase):
 
   def test_find_all_scopes(self):
     count = 0
-    for key, scopes in gdata.gauth.AUTH_SCOPES.items():
+    for key, scopes in list(gdata.gauth.AUTH_SCOPES.items()):
       count += len(scopes)
     self.assertEqual(count, len(gdata.gauth.find_scopes_for_services()))
 

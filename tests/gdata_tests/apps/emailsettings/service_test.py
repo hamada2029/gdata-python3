@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2008 Google
 #
@@ -119,8 +119,8 @@ if __name__ == '__main__':
 
 NOTE: Please run these tests only with a test user account.
 """)
-  domain = input('Google Apps domain: ')
-  admin_email = '%s@%s' % (input('Administrator username: '), domain)
+  domain = eval(input('Google Apps domain: '))
+  admin_email = '%s@%s' % (eval(input('Administrator username: ')), domain)
   admin_password = getpass.getpass('Administrator password: ')
-  username = input('Test username: ')
+  username = eval(input('Test username: '))
   unittest.main()

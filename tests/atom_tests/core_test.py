@@ -345,45 +345,45 @@ class CharacterEncodingTest(unittest.TestCase):
 
   def testUnicodeInputString(self):
     # Test parsing the inner text.
-    self.assertEqual(parse('<x>&#948;</x>').text, '\u03b4')
-    self.assertEqual(parse('<x>\u03b4</x>').text, '\u03b4')
+    self.assertEqual(parse('<x>&#948;</x>').text, '\\u03b4')
+    self.assertEqual(parse('<x>\\u03b4</x>').text, '\\u03b4')
 
     # Test output valid XML.
     self.assertEqual(parse('<x>&#948;</x>').to_string(), '<x>&#948;</x>')
-    self.assertEqual(parse('<x>\u03b4</x>').to_string(), '<x>&#948;</x>')
+    self.assertEqual(parse('<x>\\u03b4</x>').to_string(), '<x>&#948;</x>')
 
     # Test setting the inner text and output valid XML.
-    e = create('x', '\u03b4')
+    e = create('x', '\\u03b4')
     self.assertEqual(e.to_string(), '<x>&#948;</x>')
-    self.assertEqual(e.text, '\u03b4')
+    self.assertEqual(e.text, '\\u03b4')
     self.assertTrue(isinstance(e.text, str))
     self.assertEqual(create('x', '\xce\xb4'.decode('utf-8')).to_string(),
                      '<x>&#948;</x>')
 
   def testUnicodeTagsAndAttributes(self):
     # Begin with test to show underlying ElementTree behavior.
-    t = ElementTree.fromstring('<del\u03b4ta>test</del\u03b4ta>'.encode('utf-8'))
-    self.assertEqual(t.tag, 'del\u03b4ta')
-    self.assertEqual(parse('<\u03b4elta>test</\u03b4elta>')._qname,
-                     '\u03b4elta')
+    t = ElementTree.fromstring('<del\\u03b4ta>test</del\\u03b4ta>'.encode('utf-8'))
+    self.assertEqual(t.tag, 'del\\u03b4ta')
+    self.assertEqual(parse('<\\u03b4elta>test</\\u03b4elta>')._qname,
+                     '\\u03b4elta')
     # Test unicode attribute names and values.
-    t = ElementTree.fromstring('<x \u03b4a="\u03b4b" />'.encode('utf-8'))
-    self.assertEqual(t.attrib, {'\u03b4a': '\u03b4b'})
-    self.assertEqual(parse('<x \u03b4a="\u03b4b" />').get_attributes(
-        '\u03b4a')[0].value, '\u03b4b')
+    t = ElementTree.fromstring('<x \\u03b4a="\\u03b4b" />'.encode('utf-8'))
+    self.assertEqual(t.attrib, {'\\u03b4a': '\\u03b4b'})
+    self.assertEqual(parse('<x \\u03b4a="\\u03b4b" />').get_attributes(
+        '\\u03b4a')[0].value, '\\u03b4b')
     x = create('x', None)
-    x._other_attributes['a'] = '\u03b4elta'
+    x._other_attributes['a'] = '\\u03b4elta'
     self.assertTrue(x.to_string().startswith('<x a="&#948;elta"'))
 
   def testUtf8InputString(self):
     # Test parsing inner text.
-    self.assertEqual(parse('<x>&#948;</x>').text, '\u03b4')
-    self.assertEqual(parse('<x>\u03b4</x>'.encode('utf-8')).text, '\u03b4')
-    self.assertEqual(parse('<x>\xce\xb4</x>').text, '\u03b4')
+    self.assertEqual(parse('<x>&#948;</x>').text, '\\u03b4')
+    self.assertEqual(parse('<x>\\u03b4</x>'.encode('utf-8')).text, '\\u03b4')
+    self.assertEqual(parse('<x>\xce\xb4</x>').text, '\\u03b4')
 
     # Test output valid XML.
     self.assertEqual(parse('<x>&#948;</x>').to_string(), '<x>&#948;</x>')
-    self.assertEqual(parse('<x>\u03b4</x>'.encode('utf-8')).to_string(),
+    self.assertEqual(parse('<x>\\u03b4</x>'.encode('utf-8')).to_string(),
                      '<x>&#948;</x>')
     self.assertEqual(parse('<x>\xce\xb4</x>').to_string(), '<x>&#948;</x>')
 
@@ -394,18 +394,18 @@ class CharacterEncodingTest(unittest.TestCase):
     self.assertEqual(e.text, '\xce\xb4')
     self.assertTrue(isinstance(e.text, str))
     self.assertTrue(isinstance(e.to_string(), str))
-    self.assertEqual(create('x', '\u03b4'.encode('utf-8')).to_string(),
+    self.assertEqual(create('x', '\\u03b4'.encode('utf-8')).to_string(),
                      '<x>&#948;</x>')
     # Test attributes and values with UTF-8 inputs.
     self.assertEqual(parse('<x \xce\xb4a="\xce\xb4b" />').get_attributes(
-        '\u03b4a')[0].value, '\u03b4b')
+        '\\u03b4a')[0].value, '\\u03b4b')
 
   def testUtf8TagsAndAttributes(self):
     self.assertEqual(
-        parse('<\u03b4elta>test</\u03b4elta>'.encode('utf-8'))._qname,
-        '\u03b4elta')
+        parse('<\\u03b4elta>test</\\u03b4elta>'.encode('utf-8'))._qname,
+        '\\u03b4elta')
     self.assertEqual(parse('<\xce\xb4elta>test</\xce\xb4elta>')._qname,
-                     '\u03b4elta')
+                     '\\u03b4elta')
     # Test an element with UTF-8 in the attribute value.
     x = create('x', None)
     x._other_attributes['a'] = '\xce\xb4'
@@ -416,14 +416,14 @@ class CharacterEncodingTest(unittest.TestCase):
     BIG_ENDIAN = 0
     LITTLE_ENDIAN = 1
     # Test parsing inner text.
-    self.assertEqual(parse('<x>\u03b4</x>'.encode('utf-16')).text, '\u03b4')
+    self.assertEqual(parse('<x>\\u03b4</x>'.encode('utf-16')).text, '\\u03b4')
 
     # Test output valid XML.
-    self.assertEqual(parse('<x>\u03b4</x>'.encode('utf-16')).to_string(),
+    self.assertEqual(parse('<x>\\u03b4</x>'.encode('utf-16')).to_string(),
                      '<x>&#948;</x>')
 
     # Test setting the inner text and output valid XML.
-    e = create('x', '\u03b4'.encode('utf-16'))
+    e = create('x', '\\u03b4'.encode('utf-16'))
     self.assertEqual(e.to_string(encoding='utf-16'), '<x>&#948;</x>')
     # Don't change the encoding until the we convert to an XML string.
     # Allow either little-endian or big-endian byte orderings.
@@ -444,11 +444,11 @@ class CharacterEncodingTest(unittest.TestCase):
 
   def testOtherEncodingInTagsAndAttributes(self):
     self.assertEqual(
-        parse('<\u03b4elta>test</\u03b4elta>'.encode('utf-16'))._qname,
-        '\u03b4elta')
+        parse('<\\u03b4elta>test</\\u03b4elta>'.encode('utf-16'))._qname,
+        '\\u03b4elta')
     # Test an element with UTF-16 in the attribute value.
     x = create('x', None)
-    x._other_attributes['a'] = '\u03b4'.encode('utf-16')
+    x._other_attributes['a'] = '\\u03b4'.encode('utf-16')
     self.assertTrue(x.to_string(encoding='UTF-16').startswith('<x a="&#948;"'))
 
 

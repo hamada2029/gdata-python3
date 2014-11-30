@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright 2009 Google Inc. All Rights Reserved.
 #
@@ -190,6 +190,6 @@ class H9NoticeTest(unittest.TestCase):
 if __name__ == '__main__':
   print ('Health API Tests\nNOTE: Please run these tests only with a test '
          'account. The tests may delete or update your data.')
-  username = input('Please enter your username: ')
+  username = eval(input('Please enter your username: '))
   password = getpass.getpass()
   unittest.main()

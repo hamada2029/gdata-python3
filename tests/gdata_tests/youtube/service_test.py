@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2008 Google Inc.
 #
@@ -568,9 +568,9 @@ class YouTubeServiceTest(unittest.TestCase):
 if __name__ == '__main__':
   print ('NOTE: Please run these tests only with a test account. '
          'The tests may delete or update your data.')
-  username = input('Please enter your username: ')
+  username = eval(input('Please enter your username: '))
   password = getpass.getpass()
-  developer_key = input('Please enter your developer key: ')
-  video_file_location = input(
-      'Please enter the absolute path to a video file: ')
+  developer_key = eval(input('Please enter your developer key: '))
+  video_file_location = eval(input(
+      'Please enter the absolute path to a video file: '))
   unittest.main()

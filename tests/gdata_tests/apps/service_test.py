@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2007 SIOS Technology, Inc.
 #
@@ -496,7 +496,7 @@ if __name__ == '__main__':
   print ('Google Apps Service Tests\nNOTE: Please run these tests only with '
          'a test domain. The tests may delete or update your domain\'s '
          'account data.')
-  apps_domain = input('Please enter your domain: ')
-  apps_username = input('Please enter your username of admin account: ')
+  apps_domain = eval(input('Please enter your domain: '))
+  apps_username = eval(input('Please enter your username of admin account: '))
   apps_password = getpass.getpass()
   unittest.main()

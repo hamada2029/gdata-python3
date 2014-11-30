@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright 2009 Google Inc. All Rights Reserved.
 #
@@ -405,7 +405,7 @@ class DocumentListExportTest(DocumentsListServiceTest):
 if __name__ == '__main__':
   print ('DocList API Tests\nNOTE: Please run these tests only with a test '
          'account. The tests may delete or update your data.')
-  username = input('Please enter your username: ')
+  username = eval(input('Please enter your username: '))
   password = getpass.getpass()
   if client.GetClientLoginToken() is None:
     client.ClientLogin(username, password,

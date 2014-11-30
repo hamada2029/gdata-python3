@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*-*- encoding: utf-8 -*-*-
 #
 # Copyright (C) 2006 Google Inc.
@@ -622,7 +622,7 @@ class UtfParsingTest(unittest.TestCase):
     self.test_xml = """<?xml version="1.0" encoding="utf-8"?>
 <entry xmlns='http://www.w3.org/2005/Atom'>
   <id>http://www.google.com/test/id/url</id>
-  <title type='\u03B1\u03BB\u03C6\u03B1'>\u03B1\u03BB\u03C6\u03B1</title>
+  <title type='\\u03B1\\u03BB\\u03C6\\u03B1'>\\u03B1\\u03BB\\u03C6\\u03B1</title>
 </entry>"""
 
   def testMemberStringEncoding(self):
@@ -634,9 +634,9 @@ class UtfParsingTest(unittest.TestCase):
 
     # Setting object members to unicode strings is supported even if 
     # MEMBER_STRING_ENCODING is set 'utf-8' (should it be?)
-    atom_entry.title.type = '\u03B1\u03BB\u03C6\u03B1'
+    atom_entry.title.type = '\\u03B1\\u03BB\\u03C6\\u03B1'
     xml = atom_entry.ToString()
-    self.assertTrue('\u03B1\u03BB\u03C6\u03B1'.encode('utf-8') in xml)
+    self.assertTrue('\\u03B1\\u03BB\\u03C6\\u03B1'.encode('utf-8') in xml)
 
     # Make sure that we can use plain text when MEMBER_STRING_ENCODING is utf8
     atom_entry.title.type = "plain text"
@@ -648,16 +648,16 @@ class UtfParsingTest(unittest.TestCase):
     # Test something else than utf-8
     atom.MEMBER_STRING_ENCODING = 'iso8859_7'
     atom_entry = atom.EntryFromString(self.test_xml)
-    self.assertTrue(atom_entry.title.type == '\u03B1\u03BB\u03C6\u03B1'.encode(
+    self.assertTrue(atom_entry.title.type == '\\u03B1\\u03BB\\u03C6\\u03B1'.encode(
         'iso8859_7'))
-    self.assertTrue(atom_entry.title.text == '\u03B1\u03BB\u03C6\u03B1'.encode(
+    self.assertTrue(atom_entry.title.text == '\\u03B1\\u03BB\\u03C6\\u03B1'.encode(
         'iso8859_7'))
 
     # Test using unicode strings directly for object members
     atom.MEMBER_STRING_ENCODING = str
     atom_entry = atom.EntryFromString(self.test_xml)
-    self.assertTrue(atom_entry.title.type == '\u03B1\u03BB\u03C6\u03B1')
-    self.assertTrue(atom_entry.title.text == '\u03B1\u03BB\u03C6\u03B1')
+    self.assertTrue(atom_entry.title.type == '\\u03B1\\u03BB\\u03C6\\u03B1')
+    self.assertTrue(atom_entry.title.text == '\\u03B1\\u03BB\\u03C6\\u03B1')
     
     # Make sure that we can use plain text when MEMBER_STRING_ENCODING is 
     # unicode

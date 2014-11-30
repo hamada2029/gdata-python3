@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python3
 #
 # Copyright 2008 Google Inc. All Rights Reserved.
 #
@@ -64,8 +64,8 @@ class MigrationTest(unittest.TestCase):
 if __name__ == '__main__':
   print("Google Apps Email Migration Service Tests\n\n"
         "NOTE: Please run these tests only with a test user account.\n")
-  domain = input('Google Apps domain: ')
-  admin_email = '%s@%s' % (input('Administrator username: '), domain)
+  domain = eval(input('Google Apps domain: '))
+  admin_email = '%s@%s' % (eval(input('Administrator username: ')), domain)
   admin_password = getpass.getpass('Administrator password: ')
-  username = input('Test username: ')
+  username = eval(input('Test username: '))
   unittest.main()

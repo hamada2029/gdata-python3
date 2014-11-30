@@ -116,14 +116,14 @@ if __name__ == '__main__':
 
   while not email:
     print('NOTE: Please run these tests only with a test account.')
-    email = input('Please enter your email: ')
+    email = eval(input('Please enter your email: '))
   while not password:
     password = getpass.getpass('Please enter password: ')
     if not password:
       print('Password cannot be blank.')
   while not domain:
     print('NOTE: Please run these tests only with a test account.')
-    domain = input('Please enter your Apps domain: ')
+    domain = eval(input('Please enter your Apps domain: '))
 
   suite = unittest.makeSuite(ProfilesServiceTest)
   unittest.TextTestRunner().run(suite)

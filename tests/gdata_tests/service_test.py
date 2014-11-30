@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2006 Google Inc.
 #
@@ -572,6 +572,6 @@ class TokenLookupTest(unittest.TestCase):
 if __name__ == '__main__':
   print ('GData Service Media Unit Tests\nNOTE: Please run these tests only '
          'with a test  account. The tests may delete or update your data.')
-  username = input('Please enter your username: ')
+  username = eval(input('Please enter your username: '))
   password = getpass.getpass()
   unittest.main()
