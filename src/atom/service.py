@@ -723,17 +723,18 @@ def CalculateDataLength(data):
     data: object If this is not a string or ElementTree element this funtion
         will return None.
   """
+  #If non-ascii is in data, Content-Length will be too short.
   if isinstance(data, str):
-    return len(data)
+    return len(  data.encode('utf-8')  )
   elif isinstance(data, list):
     return None
   elif ElementTree.iselement(data):
-    return len(ElementTree.tostring(data))
+    return len(  ElementTree.tostring(data).encode('utf-8')  )
   elif hasattr(data, 'read'):
     # If this is a file-like object, don't try to guess the length.
     return None
   else:
-    return len(str(data))
+    return len(  str(data).encode('utf-8')  )
     
 
 def deprecation(message):
